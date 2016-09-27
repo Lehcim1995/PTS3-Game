@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 /**
  * Created by michel on 27-9-2016.
  */
-public interface GameObject
+public interface IGameObject
 {
     Texture GetTexture();
     void SetTexture(Texture tex);
@@ -24,4 +24,6 @@ public interface GameObject
     void OnCollisionEnter();
     void OnCollisionExit();
     void OnCollisionStay();
+
+    void Update();
 }

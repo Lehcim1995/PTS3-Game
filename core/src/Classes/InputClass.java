@@ -1,5 +1,7 @@
 package Classes;
 
+import Interfaces.IGameObject;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 /**
@@ -7,6 +9,8 @@ import com.badlogic.gdx.InputProcessor;
  */
 public class InputClass implements InputProcessor
 {
+    private IGameObject player;
+
     public InputClass()
     {
     }
@@ -14,7 +18,25 @@ public class InputClass implements InputProcessor
     @Override
     public boolean keyDown(int keycode)
     {
-        
+        switch(keycode)
+        {
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+                //Left
+                break;
+            case Input.Keys.D:
+            case Input.Keys.RIGHT:
+                //Right
+                break;
+            case Input.Keys.W:
+            case Input.Keys.UP:
+                //Up
+                break;
+            case Input.Keys.S:
+            case Input.Keys.DOWN:
+                //Down
+                break;
+        }
         return false;
     }
 
