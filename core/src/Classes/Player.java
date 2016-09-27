@@ -90,5 +90,7 @@ public class Player extends GameObject
         if (walkingDown){ pos.y -= 1; }
         if (walkingLeft){ pos.x -= 1; }
         if (walkingRight){ pos.x += 1; }
+
+        position.add(pos.scl(speed));
     }
 }

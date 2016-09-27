@@ -9,7 +9,7 @@ import com.badlogic.gdx.InputProcessor;
  */
 public class InputClass implements InputProcessor
 {
-    private IGameObject player;
+    private Player player;
 
     public InputClass()
     {
@@ -23,27 +23,54 @@ public class InputClass implements InputProcessor
             case Input.Keys.A:
             case Input.Keys.LEFT:
                 //Left
+                player.Walk(Player.walkDir.Left, true);
                 break;
             case Input.Keys.D:
             case Input.Keys.RIGHT:
                 //Right
+                player.Walk(Player.walkDir.Right, true);
                 break;
             case Input.Keys.W:
             case Input.Keys.UP:
                 //Up
+                player.Walk(Player.walkDir.Up, true);
                 break;
             case Input.Keys.S:
             case Input.Keys.DOWN:
                 //Down
+                player.Walk(Player.walkDir.Down, true);
                 break;
         }
-        return false;
+        return true;
     }
 
     @Override
     public boolean keyUp(int keycode)
     {
-        return false;
+        switch(keycode)
+        {
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+                //Left
+                player.Walk(Player.walkDir.Left, false);
+                break;
+            case Input.Keys.D:
+            case Input.Keys.RIGHT:
+                //Right
+                player.Walk(Player.walkDir.Right, false);
+                break;
+            case Input.Keys.W:
+            case Input.Keys.UP:
+                //Up
+                player.Walk(Player.walkDir.Up, false);
+                break;
+            case Input.Keys.S:
+            case Input.Keys.DOWN:
+                //Down
+                player.Walk(Player.walkDir.Down, false);
+                break;
+        }
+        return true;
     }
 
     @Override
