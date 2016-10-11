@@ -127,10 +127,10 @@ public class Player extends GameObject
     {
         Vector2 pos = new Vector2();
         //System.out.println("Update");
-        if (ic.GetKey(Input.Keys.W)){ pos.y += 1; System.out.println("Up"); }
-        if (ic.GetKey(Input.Keys.S)){ pos.y -= 1; System.out.println("Down");}
-        if (ic.GetKey(Input.Keys.A)){ pos.x -= 1; System.out.println("Left");}
-        if (ic.GetKey(Input.Keys.D)){ pos.x += 1; System.out.println("Right");}
+        if (ic.GetKey(Input.Keys.W)){ pos.y += 1; }
+        if (ic.GetKey(Input.Keys.S)){ pos.y -= 1;}
+        if (ic.GetKey(Input.Keys.A)){ pos.x -= 1;}
+        if (ic.GetKey(Input.Keys.D)){ pos.x += 1;}
 
         position.add(pos.scl(speed));
     }

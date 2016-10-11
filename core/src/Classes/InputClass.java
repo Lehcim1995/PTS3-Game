@@ -74,6 +74,7 @@ public class InputClass implements InputProcessor
     public boolean touchDown (int x, int y, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
             // Some stuff
+            System.out.println("Pew");
             player.Shoot();
             return true;
         }
