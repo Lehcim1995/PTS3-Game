@@ -60,4 +60,8 @@ public class GameManager
     {
 
     }
+
+    public Player GetSpectatedPlayer(int item) {
+        return playerList.get(item);
+    }
 }
