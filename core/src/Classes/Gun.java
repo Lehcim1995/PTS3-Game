@@ -92,10 +92,16 @@ public class Gun
     {
         Projectile projectile = new Projectile(this, owner.position, owner.GetRotation(), new CircleShape());
         GameManager.getInstance().AddProjectile(projectile);
+        currentBullets--;
+        if(currentBullets <= 0)
+        {
+            Reload();
+        }
     }
 
     public void Reload()
     {
-
+        currentBullets = maxBullets;
+        //TODO: reloadtimer in reload methode
     }
 }
