@@ -3,6 +3,8 @@ package Classes;
 import Interfaces.IGameObject;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 import sun.util.resources.cldr.aa.CalendarData_aa_ER;
 
@@ -96,7 +98,13 @@ public class InputClass implements InputProcessor
     @Override
     public boolean mouseMoved(int screenX, int screenY)
     {
-        return false;
+
+        float deltaX = (int)player.GetScreenPosition().x - screenX;
+        float deltaY = (int)player.GetScreenPosition().y - screenY;
+        Vector2 delta = new Vector2(deltaX, deltaY);
+
+        player.rotation = delta.angle();
+        return true;
     }
 
     @Override

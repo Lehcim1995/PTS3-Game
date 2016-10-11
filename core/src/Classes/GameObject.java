@@ -1,6 +1,7 @@
 package Classes;
 
 import Interfaces.IGameObject;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -54,6 +55,8 @@ abstract class GameObject implements IGameObject
     {
         return position;
     }
+
+    public Vector2 GetScreenPosition() { return new Vector2(position.x, Gdx.app.getGraphics().getHeight() - position.y ); }
 
     @Override
     public void SetPosition(Vector2 pos)

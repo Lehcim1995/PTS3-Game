@@ -16,10 +16,10 @@ public class KillLog
         this.player = player;
     }
 
-    // GetGun() moet nog gemaakt worden
+
     @Override
     public String toString()
     {
-        return projectile.GetGun().GetOwner().GetName() + " Shot " + player.GetName() ;
+        return projectile.GetGun().getOwner() + " " + projectile.GetGun().getShootType() + " " + player.GetName() ;
     }
 }
