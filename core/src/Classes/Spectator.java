@@ -13,12 +13,22 @@ public class Spectator extends GameObject
     public Spectator(String name, GameManager gameManager) {
         this.name = name;
         this.gm = gameManager;
-        playerFromList = 0;
+        this.playerFromList = 0;
         SetSpectatedPlayer();
     }
 
     public String getName() {
         return name;
+    }
+
+    public String GetSpectatedName() {
+        String spectatedName = "No player available to spectate";
+
+        if (player != null) {
+            spectatedName = player.GetName();
+        }
+
+        return spectatedName;
     }
 
     public void SetSpectatedPlayer() {

@@ -42,4 +42,28 @@ public class User
         }
         this.matchesPlayed++;
     }
+
+    public String GetName() { return name; }
+
+    public int GetKills() { return  kills; }
+
+    public int GetShots() { return shots; }
+
+    public int GetMatchesPlayed() { return matchesPlayed; }
+
+    public int GetMatchesWon() { return matchesWon; }
+
+    public int GetMatchesLost() { return matchesLost; }
+
+    public float GetKDRatio() {
+        return (float) kills / deaths;
+    }
+
+    public float GetAccuracyPercentage() {
+        return (float) (shotsHit / shots) * 100;
+    }
+
+    public float GetWinPercentage() {
+        return (float) (matchesWon / matchesLost) * 100;
+    }
 }
