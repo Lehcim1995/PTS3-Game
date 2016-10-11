@@ -36,6 +36,7 @@ public class GameManager
 
     }
 
+    //TODO CheckHit registratie
     public void CheckHit(Projectile projectile)
     {
         /*Vector2 playerPosition;
@@ -49,12 +50,13 @@ public class GameManager
 
     public void SpawnPlayer(Player player)
     {
-
+        player.Spawn();
     }
 
+    //TODO start a match
     public void StartMatch()
     {
-
+        level = new Level();
     }
 
     public void EndMatch()
@@ -92,4 +94,6 @@ public class GameManager
     {
         bullets.add(projectile);
     }
+
+    
 }
