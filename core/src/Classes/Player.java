@@ -111,5 +111,10 @@ public class Player extends GameObject
         position.add(pos.scl(speed));
     }
 
+    public String GetName()
+    {
+        return this.name;
+    }
+
 
 }
