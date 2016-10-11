@@ -71,8 +71,12 @@ public class InputClass implements InputProcessor
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button)
-    {
+    public boolean touchDown (int x, int y, int pointer, int button) {
+        if (button == Input.Buttons.LEFT) {
+            // Some stuff
+            player.Shoot();
+            return true;
+        }
         return false;
     }
 
