@@ -3,8 +3,10 @@ package Classes;
 import Interfaces.IGameObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.input.*;
@@ -36,6 +38,10 @@ public class Player extends GameObject
     private boolean walkingLeft;
     private boolean walkingRight;
 
+    //Apperence
+    private float width = 17;
+    private Color color = Color.BLACK;
+
     //
     private InputClass ic;
 
@@ -63,7 +69,7 @@ public class Player extends GameObject
     {
         super();
         position = new Vector2(0, 0);
-        speed = 1;
+        speed = 125.1248f;
         ic = new InputClass(this);
         Gdx.input.setInputProcessor(ic);
     }
@@ -93,7 +99,7 @@ public class Player extends GameObject
 
     public void Shoot()
     {
-        this.gunEquipped.Shoot();
+        //this.gunEquipped.Shoot();
 
     }
 
@@ -115,10 +121,15 @@ public class Player extends GameObject
     public void Draw(ShapeRenderer sr)
     {
 
-        sr.setColor(1, 0, 0, 1);
+        sr.setColor(color);
         //shapeRenderer.line(position.x, position.y, mous
         // e.x, mouse.y);
-        sr.circle(position.x, position.y, 15);
+        sr.circle(position.x, position.y, width);
+
+        float rad = MathUtils.degreesToRadians * (rotation - 90);
+        Vector2 rot = new Vector2(width * MathUtils.sin(rad),width * MathUtils.cos(rad));
+        sr.setColor(Color.RED);
+        sr.line(position.x, position.y, position.x + rot.x, position.y + rot.y);
         //sr.dispose();
     }
 
@@ -132,7 +143,7 @@ public class Player extends GameObject
         if (ic.GetKey(Input.Keys.A)){ pos.x -= 1;}
         if (ic.GetKey(Input.Keys.D)){ pos.x += 1;}
 
-        position.add(pos.scl(speed));
+        position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));
     }
 
     public String GetName()

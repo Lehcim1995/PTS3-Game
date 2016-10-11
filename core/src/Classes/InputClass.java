@@ -98,10 +98,12 @@ public class InputClass implements InputProcessor
     @Override
     public boolean mouseMoved(int screenX, int screenY)
     {
+
         float deltaX = (int)player.GetScreenPosition().x - screenX;
         float deltaY = (int)player.GetScreenPosition().y - screenY;
+        Vector2 delta = new Vector2(deltaX, deltaY);
 
-        player.rotation = MathUtils.atan2(deltaY, deltaX);
+        player.rotation = delta.angle();
         return true;
     }
 
