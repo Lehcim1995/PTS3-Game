@@ -25,4 +25,8 @@ public class Chat
         this.time = cal.getTime();
     }
 
+    @Override
+    public String toString() {
+        return time.toString() + " - " + fromPlayer.GetName() + " : " + message;
+    }
 }
