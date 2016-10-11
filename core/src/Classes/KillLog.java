@@ -15,4 +15,10 @@ public class KillLog
         this.projectile = projectile;
         this.player = player;
     }
+
+    @Override
+    public String toString()
+    {
+        return player + " " + projectile;
+    }
 }
