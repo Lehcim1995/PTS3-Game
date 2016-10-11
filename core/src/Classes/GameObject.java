@@ -38,6 +38,12 @@ abstract class GameObject implements IGameObject
         this.boundingShape = boundingShape;
     }
 
+    public GameObject(Vector2 position, float rotation)
+    {
+        this.position = position;
+        this.rotation = rotation;
+    }
+
     @Override
     public Texture GetTexture()
     {
@@ -106,7 +112,6 @@ abstract class GameObject implements IGameObject
 
     }
 
-    @Override
     public void Update()
     {
 

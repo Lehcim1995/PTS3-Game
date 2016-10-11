@@ -71,7 +71,6 @@ public class Player extends GameObject
         position = new Vector2(0, 0);
         speed = 125.1248f;
         ic = new InputClass(this);
-        Gdx.input.setInputProcessor(ic);
     }
 
 
@@ -99,8 +98,7 @@ public class Player extends GameObject
 
     public void Shoot()
     {
-        //this.gunEquipped.Shoot();
-
+        this.gunEquipped.Shoot();
     }
 
     public void Spawn()

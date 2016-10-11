@@ -1,6 +1,7 @@
 package Classes;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 
@@ -77,7 +78,7 @@ public class Gun
     }
 
     //</editor-fold>
-    public Gun(String name, float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, String shootType, boolean hasInfinit, float bulletSpeed, int projectileDamage)
+    public Gun(String name, float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, String shootType, boolean hasInfinit, float bulletSpeed, int projectileDamage, Player owner)
     {
         this.name = name;
         this.reloadTime = reloadTime;
@@ -89,10 +90,11 @@ public class Gun
         this.hasInfinit = hasInfinit;
         this.bulletSpeed = bulletSpeed;
         this.projectileDamage = projectileDamage;
+        this.owner = owner;
     }
     public void Shoot()
     {
-        Projectile projectile = new Projectile(this, owner.position, owner.GetRotation(), new CircleShape());
+        Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x , owner.GetPosition().y), owner.GetRotation());
         GameManager.getInstance().AddProjectile(projectile);
         currentBullets--;
         if(currentBullets <= 0)

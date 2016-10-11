@@ -1,7 +1,11 @@
 package com.asom.mygame;
 
+import Classes.GameManager;
 import Classes.Player;
+import Classes.Projectile;
+import Interfaces.IGameObject;
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
@@ -13,6 +17,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 
 public class MainClass extends ApplicationAdapter
 {
@@ -33,8 +39,8 @@ public class MainClass extends ApplicationAdapter
         mouse = new Vector2(0, 0);
         camera = new OrthographicCamera();
         shapeRenderer = new ShapeRenderer();
-        //Shape s = new CircleShape();dddddddddddd
-        //plddder = new Player(img, position, 0, s);
+        //Shape s = new CircleShape();
+        //player = new Player(img, position, 0, s);
         player = new Player();
     }
 
@@ -54,12 +60,22 @@ public class MainClass extends ApplicationAdapter
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         player.Draw(shapeRenderer);
+        for(IGameObject go :  GameManager.getInstance().GetProjectile())
+        {
+            ((Projectile)go).Draw(shapeRenderer);
+        }
+
         shapeRenderer.end();
     }
 
     public void update()
     {
         player.Update();
+        //GameManager.getInstance().
+        for(IGameObject go :  GameManager.getInstance().GetProjectile())
+        {
+            go.Update();
+        }
     }
 
     private void inputhandler()
@@ -93,4 +109,5 @@ public class MainClass extends ApplicationAdapter
         shapeRenderer.dispose();
 
     }
+
 }
