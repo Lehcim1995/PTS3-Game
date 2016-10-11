@@ -13,5 +13,7 @@ public class Projectile
     public Projectile(Gun gun)
     {
         this.gun = gun;
+        bulletSpeed = gun.bulletSpeed;
+        damage = gun.projectileDamage;
     }
 }
