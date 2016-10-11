@@ -29,4 +29,9 @@ public class Projectile extends GameObject
         bulletSpeed = gun.getBulletSpeed();
         damage = gun.getProjectileDamage();
     }
+
+    public Projectile GetGun()
+    {
+        return gun;
+    }
 }
