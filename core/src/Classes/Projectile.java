@@ -21,4 +21,12 @@ public class Projectile extends GameObject
         bulletSpeed = gun.getBulletSpeed();
         damage = gun.getProjectileDamage();
     }
+
+    public Projectile(Gun gun, Vector2 position, float rotation, Shape boundingShape)
+    {
+        super (position, rotation, boundingShape);
+        this.gun = gun;
+        bulletSpeed = gun.getBulletSpeed();
+        damage = gun.getProjectileDamage();
+    }
 }

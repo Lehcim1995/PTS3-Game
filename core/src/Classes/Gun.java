@@ -1,5 +1,9 @@
 package Classes;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+
 /**
  * Created by myron on 11-10-16.
  */
@@ -86,7 +90,8 @@ public class Gun
     }
     public void Shoot()
     {
-        Projectile projectile = new Projectile(this);
+        Projectile projectile = new Projectile(this, owner.position, owner.GetRotation(), new CircleShape());
+
         //GameManager.instance
         //instantieer Projectile met positie van player en richting van player.
         //add to gamemanager
