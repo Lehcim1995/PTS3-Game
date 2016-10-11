@@ -1,6 +1,7 @@
 package Classes;
 
 import java.util.ArrayList;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Nick on 11-10-2016.
@@ -18,6 +19,7 @@ public class GameManager
 
     private GameManager()
     {
+        playerList = new ArrayList<Player>();
         spectators = new ArrayList<Spectator>();
         bullets = new ArrayList<Projectile>();
         killLogs = new ArrayList<KillLog>();
@@ -36,7 +38,13 @@ public class GameManager
 
     public void CheckHit(Projectile projectile)
     {
+        /*Vector2 playerPosition;
+        Vector2 projectilePosition = projectile.GetPosition();
+        for (Player p: playerList)
+        {
+            playerPosition = p.GetPosition();
 
+        }*/
     }
 
     public void SpawnPlayer(Player player)
@@ -56,7 +64,12 @@ public class GameManager
 
     public void LeaveMatch(Player player)
     {
+        playerList.remove(player);
+    }
 
+    public void LeaveMatch(Spectator spectator)
+    {
+        spectators.remove(spectator);
     }
 
     public void Chat(String message, Player player)
