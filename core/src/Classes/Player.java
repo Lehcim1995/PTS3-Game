@@ -12,13 +12,18 @@ public class Player extends GameObject
 {
     //Normal vars
     private String name;
-    private int kills;
     private float health;
-    private int maxhealth;
+    private int maxHealth;
     private float speed;
-    private float maxspeed;
+    private float maxSpeed;
     private float acceleration;
     private float deAcceleration;
+
+    //Game vars
+    private int kills;
+    private int deaths;
+    private int shots;
+    private int shotsHit;
 
     //implementation vars
     private boolean walkingUp;
