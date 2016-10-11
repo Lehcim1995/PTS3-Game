@@ -11,7 +11,7 @@ public class GameManager
     private Level level;
     private ArrayList<Spectator> spectators;
     private ArrayList<Projectile> bullets;
-    private ArrayList<Killlog> killlogs;
+    private ArrayList<KillLog> killLogs;
     private ArrayList<Player> playerList;
     private ArrayList<Chat> chats;
 
@@ -22,7 +22,7 @@ public class GameManager
         this.level = level;
         spectators = new ArrayList<Spectator>();
         bullets = new ArrayList<Projectile>();
-        killlogs = new ArrayList<Killog>();
+        killLogs = new ArrayList<KillLog>();
         chats = new ArrayList<Chat>();
     }
 
