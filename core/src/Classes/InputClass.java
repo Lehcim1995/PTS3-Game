@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
@@ -39,7 +40,8 @@ public class InputClass implements InputProcessor
 
     public boolean GetKeyDown(int code)
     {
-        return KeymapHold.get(code).booleanValue();
+        return false;
+        //return KeymapDown.get(code).compareTo(Date.from(Instant.now()));
     }
 
     @Override
