@@ -86,10 +86,15 @@ public class Gun
     }
     public void Shoot()
     {
+        Projectile projectile = new Projectile(this);
+        //GameManager.instance
+        //instantieer Projectile met positie van player en richting van player.
+        //add to gamemanager
 
-    };
+    }
+
     public void Reload()
     {
 
-    };
+    }
 }

@@ -18,6 +18,7 @@ public class Player extends GameObject
     private float maxSpeed;
     private float acceleration;
     private float deAcceleration;
+    private Gun gunEquipped;
 
     //Game vars
     private int kills;
@@ -49,6 +50,12 @@ public class Player extends GameObject
         super();
     }
 
+    public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape, String name, Gun gunEquipped)
+    {
+        super(texture, position, rotation, boundingShape);
+        this.name = name;
+        this.gunEquipped = gunEquipped;
+    }
 
     public void Walk(walkDir dir, boolean setWalking)
     {
@@ -73,6 +80,7 @@ public class Player extends GameObject
 
     public void Shoot()
     {
+        this.gunEquipped.Shoot();
 
     }
 
