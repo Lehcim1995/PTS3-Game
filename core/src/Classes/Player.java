@@ -1,9 +1,13 @@
 package Classes;
 
 import Interfaces.IGameObject;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.input.*;
 
 /**
  * Created by michel on 27-9-2016.
@@ -31,6 +35,9 @@ public class Player extends GameObject
     private boolean walkingLeft;
     private boolean walkingRight;
 
+    //
+    private InputClass ic;
+
     enum walkDir
     {
         Up,
@@ -47,8 +54,12 @@ public class Player extends GameObject
     public Player()
     {
         super();
-    }
+        position = new Vector2(0,0);
+        speed = 1;
+        ic = new InputClass(this);
+        Gdx.input.setInputProcessor(ic);
 
+    }
 
     public void Walk(walkDir dir, boolean setWalking)
     {
@@ -91,14 +102,25 @@ public class Player extends GameObject
 
     }
 
+    public void Draw(ShapeRenderer sr)
+    {
+
+        sr.setColor(1, 0, 0, 1);
+        //shapeRenderer.line(position.x, position.y, mous
+        // e.x, mouse.y);
+        sr.circle(position.x, position.y, 15);
+        //sr.dispose();
+    }
+
     @Override
     public void Update()
     {
         Vector2 pos = new Vector2();
-        if (walkingUp){ pos.y += 1; }
-        if (walkingDown){ pos.y -= 1; }
-        if (walkingLeft){ pos.x -= 1; }
-        if (walkingRight){ pos.x += 1; }
+        //System.out.println("Update");
+        if (ic.GetKey(Input.Keys.W)){ pos.y += 1; System.out.println("Up"); }
+        if (ic.GetKey(Input.Keys.S)){ pos.y -= 1; System.out.println("Down");}
+        if (ic.GetKey(Input.Keys.A)){ pos.x -= 1; System.out.println("Left");}
+        if (ic.GetKey(Input.Keys.D)){ pos.x += 1; System.out.println("Right");}
 
         position.add(pos.scl(speed));
     }

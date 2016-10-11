@@ -35,6 +35,7 @@ public class MainClass extends ApplicationAdapter
         shapeRenderer = new ShapeRenderer();
         //Shape s = new CircleShape();dddddddddddd
         //plddder = new Player(img, position, 0, s);
+        player = new Player();
     }
 
     @Override
@@ -52,15 +53,13 @@ public class MainClass extends ApplicationAdapter
         //shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1, 0, 0, 1);
-        shapeRenderer.line(position.x, position.y, mouse.x, mouse.y);
-        shapeRenderer.circle(position.x, position.y, 15);
+        player.Draw(shapeRenderer);
         shapeRenderer.end();
     }
 
     public void update()
     {
-        inputhandler();
+        player.Update();
     }
 
     private void inputhandler()

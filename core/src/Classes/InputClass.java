@@ -4,7 +4,9 @@ import Interfaces.IGameObject;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
+import sun.util.resources.cldr.aa.CalendarData_aa_ER;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
@@ -22,14 +24,15 @@ public class InputClass implements InputProcessor
 
     private final float holdDownTimer = 15;
 
-    public InputClass()
+    public InputClass(Player p)
     {
         KeymapHold = new HashMap<Integer, Boolean>();
+        player = p;
     }
 
     public boolean GetKey(int code)
     {
-        return KeymapHold.get(code).booleanValue();
+        return KeymapHold.get(code) == null ? false : KeymapHold.get(code).booleanValue();
     }
 
     public boolean GetKeyUp(int code)
@@ -40,14 +43,15 @@ public class InputClass implements InputProcessor
     public boolean GetKeyDown(int code)
     {
         return false;
-        //return KeymapDown.get(code).compareTo(Date.from(Instant.now()));
+        //return KeymapDown.get(code).getTime();
     }
 
     @Override
     public boolean keyDown(int keycode)
     {
+        //System.out.println("Keydown");
         KeymapHold.put(keycode, true);
-
+        //KeymapDown.put(keycode, Calendar.getInstance().getTime());
         return true;
     }
 
@@ -55,6 +59,7 @@ public class InputClass implements InputProcessor
     public boolean keyUp(int keycode)
     {
         KeymapHold.put(keycode, false);
+        //KeymapUp.put(keycode, Calendar.getInstance().getTime());
 
         return true;
     }
