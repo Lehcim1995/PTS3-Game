@@ -6,6 +6,7 @@ package Classes;
 public class ClientConnect
 {
     private static ClientConnect instance;
+    private GameManager gameManager;
 
     private ClientConnect()
     {
