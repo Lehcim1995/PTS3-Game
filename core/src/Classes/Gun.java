@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
  */
 public class Gun
 {
+    private String name;
     private float reloadTime;
     private float bulletsPerSecond;
     private float spread;
@@ -76,8 +77,9 @@ public class Gun
     }
 
     //</editor-fold>
-    public Gun(float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, String shootType, boolean hasInfinit, float bulletSpeed, int projectileDamage)
+    public Gun(String name, float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, String shootType, boolean hasInfinit, float bulletSpeed, int projectileDamage)
     {
+        this.name = name;
         this.reloadTime = reloadTime;
         this.bulletsPerSecond = bulletsPerSecond;
         this.spread = spread;
@@ -103,5 +105,10 @@ public class Gun
     {
         currentBullets = maxBullets;
         //TODO: reloadtimer in reload methode
+    }
+
+    public String ToString()
+    {
+        return name + " " + " Ammo" + currentBullets + "/" + maxBullets;
     }
 }
