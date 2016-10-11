@@ -30,7 +30,7 @@ public class Projectile extends GameObject
         damage = gun.getProjectileDamage();
     }
 
-    public Projectile GetGun()
+    public Gun GetGun()
     {
         return gun;
     }
