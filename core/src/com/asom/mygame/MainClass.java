@@ -1,5 +1,6 @@
 package com.asom.mygame;
 
+import Classes.Player;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 
 public class MainClass extends ApplicationAdapter
 {
@@ -19,6 +22,7 @@ public class MainClass extends ApplicationAdapter
     Vector2 mouse;
     private Camera camera;
     private ShapeRenderer shapeRenderer;
+    private Player player;
 
     @Override
     public void create()
@@ -29,12 +33,14 @@ public class MainClass extends ApplicationAdapter
         mouse = new Vector2(0, 0);
         camera = new OrthographicCamera();
         shapeRenderer = new ShapeRenderer();
+        Shape s = new CircleShape();
+        player = new Player(img, position, 0, s);
     }
 
     @Override
     public void render()
     {
-        inputhandler();
+        update();
 
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -50,7 +56,11 @@ public class MainClass extends ApplicationAdapter
         shapeRenderer.line(position.x, position.y, mouse.x, mouse.y);
         shapeRenderer.circle(position.x, position.y, 15);
         shapeRenderer.end();
+    }
 
+    public void update()
+    {
+        inputhandler();
     }
 
     private void inputhandler()

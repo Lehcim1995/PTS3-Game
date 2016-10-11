@@ -3,6 +3,11 @@ package Classes;
 import Interfaces.IGameObject;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Timer;
 
 /**
  * Created by michel on 27-9-2016.
@@ -10,66 +15,46 @@ import com.badlogic.gdx.InputProcessor;
 public class InputClass implements InputProcessor
 {
     private Player player;
+    private HashMap<Integer,Boolean> KeymapHold;
+    private HashMap<Integer,Date> KeymapUp;
+    private HashMap<Integer,Date> KeymapDown;
+    private Timer timer;
+
+    private final float holdDownTimer = 15;
 
     public InputClass()
     {
+        KeymapHold = new HashMap<Integer, Boolean>();
+    }
+
+    public boolean GetKey(int code)
+    {
+        return KeymapHold.get(code).booleanValue();
+    }
+
+    public boolean GetKeyUp(int code)
+    {
+        return false;
+    }
+
+    public boolean GetKeyDown(int code)
+    {
+        return KeymapHold.get(code).booleanValue();
     }
 
     @Override
     public boolean keyDown(int keycode)
     {
-        switch(keycode)
-        {
-            case Input.Keys.A:
-            case Input.Keys.LEFT:
-                //Left
-                player.Walk(Player.walkDir.Left, true);
-                break;
-            case Input.Keys.D:
-            case Input.Keys.RIGHT:
-                //Right
-                player.Walk(Player.walkDir.Right, true);
-                break;
-            case Input.Keys.W:
-            case Input.Keys.UP:
-                //Up
-                player.Walk(Player.walkDir.Up, true);
-                break;
-            case Input.Keys.S:
-            case Input.Keys.DOWN:
-                //Down
-                player.Walk(Player.walkDir.Down, true);
-                break;
-        }
+        KeymapHold.put(keycode, true);
+
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode)
     {
-        switch(keycode)
-        {
-            case Input.Keys.A:
-            case Input.Keys.LEFT:
-                //Left
-                player.Walk(Player.walkDir.Left, false);
-                break;
-            case Input.Keys.D:
-            case Input.Keys.RIGHT:
-                //Right
-                player.Walk(Player.walkDir.Right, false);
-                break;
-            case Input.Keys.W:
-            case Input.Keys.UP:
-                //Up
-                player.Walk(Player.walkDir.Up, false);
-                break;
-            case Input.Keys.S:
-            case Input.Keys.DOWN:
-                //Down
-                player.Walk(Player.walkDir.Down, false);
-                break;
-        }
+        KeymapHold.put(keycode, false);
+
         return true;
     }
 

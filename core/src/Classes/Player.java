@@ -34,7 +34,6 @@ public class Player extends GameObject
         Right
     }
 
-
     public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape)
     {
         super(texture, position, rotation, boundingShape);
@@ -93,4 +92,6 @@ public class Player extends GameObject
 
         position.add(pos.scl(speed));
     }
+
+
 }
