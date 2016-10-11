@@ -55,6 +55,8 @@ abstract class GameObject implements IGameObject
         return position;
     }
 
+    public Vector2 GetScreenPosition() { return position; }
+
     @Override
     public void SetPosition(Vector2 pos)
     {
