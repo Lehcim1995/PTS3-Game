@@ -28,7 +28,7 @@ public class MainClass extends ApplicationAdapter
     public void create()
     {
         batch = new SpriteBatch();
-        img = new Texture(Gdx.files.internal("D:\\Fontys ICT\\Jaar 2\\Java\\PTS3-Game\\core\\assets\\badlogic.jpg"));
+        img = new Texture(Gdx.files.internal("core\\assets\\badlogic.jpg"));
         position = new Vector2(0, 0);
         mouse = new Vector2(0, 0);
         camera = new OrthographicCamera();
