@@ -39,6 +39,11 @@ public class Player extends GameObject
         super(texture, position, rotation, boundingShape);
     }
 
+    public Player()
+    {
+        super();
+    }
+
 
     public void Walk(walkDir dir, boolean setWalking)
     {

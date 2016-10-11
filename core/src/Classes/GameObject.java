@@ -18,7 +18,12 @@ abstract class GameObject implements IGameObject
     protected float rotation;
     protected Shape boundingShape;
 
-    public GameObject(Texture texture, Vector2 position, float rotation, Shape boundingShape)
+    protected GameObject ()
+    {
+
+    }
+
+    protected GameObject(Texture texture, Vector2 position, float rotation, Shape boundingShape)
     {
         this.texture = texture;
         this.position = position;
