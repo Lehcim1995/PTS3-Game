@@ -33,8 +33,8 @@ public class MainClass extends ApplicationAdapter
         mouse = new Vector2(0, 0);
         camera = new OrthographicCamera();
         shapeRenderer = new ShapeRenderer();
-        //Shape s = new CircleShape();
-        //player = new Player(img, position, 0, s);
+        //Shape s = new CircleShape();dddddddddddd
+        //plddder = new Player(img, position, 0, s);
     }
 
     @Override
