@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class GameManager
 {
+    private static GameManager instance;
     private String name;
     private Level level;
     private ArrayList<Spectator> spectators;
@@ -15,15 +16,17 @@ public class GameManager
     private ArrayList<Player> playerList;
     private ArrayList<Chat> chats;
 
-    public GameManager(ArrayList<Player> players, Level level, String name)
+    private GameManager()
     {
-        this.name = name;
-        this.playerList = players;
-        this.level = level;
         spectators = new ArrayList<Spectator>();
         bullets = new ArrayList<Projectile>();
         killLogs = new ArrayList<KillLog>();
         chats = new ArrayList<Chat>();
+    }
+
+    public static GameManager getInstance()
+    {
+        return instance == null ? instance = new GameManager() : instance;
     }
 
     public void Update()
@@ -58,7 +61,8 @@ public class GameManager
 
     public void Chat(String message, Player player)
     {
-
+        Chat chat = new Chat(message, player);
+        chats.add(chat);
     }
 
     public Player GetSpectatedPlayer(int item) {

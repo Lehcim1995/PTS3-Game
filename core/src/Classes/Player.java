@@ -22,6 +22,7 @@ public class Player extends GameObject
     private float maxSpeed;
     private float acceleration;
     private float deAcceleration;
+    private Gun gunEquipped;
 
     //Game vars
     private int kills;
@@ -51,15 +52,23 @@ public class Player extends GameObject
         super(texture, position, rotation, boundingShape);
     }
 
+    public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape, String name, Gun gunEquipped)
+    {
+        super(texture, position, rotation, boundingShape);
+        this.name = name;
+        this.gunEquipped = gunEquipped;
+    }
+
     public Player()
     {
         super();
-        position = new Vector2(0,0);
+        position = new Vector2(0, 0);
         speed = 1;
         ic = new InputClass(this);
         Gdx.input.setInputProcessor(ic);
-
     }
+
+
 
     public void Walk(walkDir dir, boolean setWalking)
     {
@@ -84,6 +93,7 @@ public class Player extends GameObject
 
     public void Shoot()
     {
+        this.gunEquipped.Shoot();
 
     }
 
@@ -123,6 +133,11 @@ public class Player extends GameObject
         if (ic.GetKey(Input.Keys.D)){ pos.x += 1; System.out.println("Right");}
 
         position.add(pos.scl(speed));
+    }
+
+    public String GetName()
+    {
+        return this.name;
     }
 
 
