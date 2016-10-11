@@ -95,5 +95,9 @@ public class GameManager
         bullets.add(projectile);
     }
 
+    public ArrayList<Projectile> GetProjectile()
+    {
+        return bullets;
+    }
     
 }
