@@ -79,7 +79,13 @@ public class GameManager
     }
 
     public Player GetSpectatedPlayer(int item) {
-        return playerList.get(item);
+
+        while (item < 0)
+        {
+            item += playerList.size();
+        }
+
+        return  playerList.get(item % playerList.size());
     }
 
     public void AddProjectile(Projectile projectile)
