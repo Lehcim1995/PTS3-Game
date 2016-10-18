@@ -79,7 +79,6 @@ public class InputClass implements InputProcessor
             // Some stuff
             //System.out.println("Pew");
             ///player.Shoot();
-            System.out.println("Down");
             player.setShooting(true);
             return true;
         }
@@ -100,7 +99,6 @@ public class InputClass implements InputProcessor
         if (button == Input.Buttons.LEFT) {
             player.getGunEquipped().setHasShot(false);
             player.setShooting(false);
-            System.out.println("up");
             return true;
         }
         return false;
