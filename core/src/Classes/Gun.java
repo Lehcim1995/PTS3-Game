@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.Shape;
 
 import java.util.Timer;
 
+import static com.badlogic.gdx.utils.TimeUtils.millis;
+
 /**
  * Created by myron on 11-10-16.
  */
@@ -27,6 +29,17 @@ public class Gun
 
     private Thread reloadThread = null;
     private Thread shootThread = null;
+    private long lastShot;
+    private boolean reloading = false;
+    private boolean hasShot = false;
+
+    public enum gunType
+    {
+        Automatic,
+        BoltAction
+    }
+
+    private gunType GunMode = gunType.Automatic;
 
     //<editor-fold desc="Getters & Setters">
     public float getReloadTime()
@@ -92,6 +105,9 @@ public class Gun
         this.bulletsPerSecond = bulletsPerSecond;
         this.spread = spread;
         this.currentBullets = currentBullets;
+        if (currentBullets > maxBullets) {
+            this.currentBullets = maxBullets;
+        }
         this.maxBullets = maxBullets;
         this.shootType = shootType;
         this.hasInfinit = hasInfinit;
@@ -103,36 +119,37 @@ public class Gun
             totalBullets = maxBullets * 4;
         }
     }
+
+    public void setHasShot(boolean hasShot)
+    {
+        this.hasShot = hasShot;
+    }
+
+    public boolean isHasShot()
+    {
+        return hasShot;
+    }
+
     public void Shoot()
     {
-        if (shootThread == null || !shootThread.isAlive())
+
+        System.out.println("pew");
+
+        if (millis() - lastShot > 1000 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
-            if (currentBullets > 0) {
-                final Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x, owner.GetPosition().y), owner.GetRotation());
-                shootThread = new Thread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        try
-                        {
-                            GameManager.getInstance().AddProjectile(projectile);
-                            currentBullets--;
-                            Thread.sleep(1000 / (long) bulletsPerSecond);
-                        }
-                        catch (InterruptedException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                shootThread.start();
-            }
+            System.out.println("    pew");
+            Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x, owner.GetPosition().y), owner.GetRotation());
+
+            GameManager.getInstance().AddProjectile(projectile);
+            currentBullets--;
+            hasShot = true;
+            lastShot = millis();
         }
     }
 
     public void Reload()
     {
+
         if(!owner.reloadThread)
         {
             if (reloadThread == null || !reloadThread.isAlive())

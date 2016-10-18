@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 import sun.util.resources.cldr.aa.CalendarData_aa_ER;
 
 import java.util.Calendar;
@@ -77,13 +78,16 @@ public class InputClass implements InputProcessor
         if (button == Input.Buttons.LEFT) {
             // Some stuff
             //System.out.println("Pew");
-            player.Shoot();
+            ///player.Shoot();
+            System.out.println("Down");
+            player.setShooting(true);
             return true;
         }
         if (button == Input.Buttons.RIGHT) {
             // Some stuff
             //System.out.println("Pew");
             GameManager.getInstance().ClearProjectiles();
+
             return true;
         }
 
@@ -93,19 +97,29 @@ public class InputClass implements InputProcessor
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
+        if (button == Input.Buttons.LEFT) {
+            player.getGunEquipped().setHasShot(false);
+            player.setShooting(false);
+            System.out.println("up");
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
-        return false;
+        float deltaX = (int)player.GetScreenPosition().x - screenX;
+        float deltaY = (int)player.GetScreenPosition().y - screenY;
+        Vector2 delta = new Vector2(deltaX, deltaY);
+
+        player.rotation = delta.angle();
+        return true;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY)
     {
-
         float deltaX = (int)player.GetScreenPosition().x - screenX;
         float deltaY = (int)player.GetScreenPosition().y - screenY;
         Vector2 delta = new Vector2(deltaX, deltaY);

@@ -47,6 +47,7 @@ public class Player extends GameObject
     private Color color = Color.BLACK;
     //
     private InputClass ic;
+    private boolean shooting = false;
 
     public boolean reloadThread = false;
 
@@ -70,7 +71,7 @@ public class Player extends GameObject
         position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
         speed = 125.1248f;
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("kankergun", 0, 10, 0, 10, 10, "kut", true, 25, 10, this);
+        this.gunEquipped = new Gun("kankergun", 0, 1, 0, 10, 5, "kut", true, 25, 10, this);
         Gdx.input.setInputProcessor(ic);
 
         Vector2 v1 = new Vector2(width, width);
@@ -150,6 +151,21 @@ public class Player extends GameObject
         //sr.dispose();
     }
 
+    public Gun getGunEquipped()
+    {
+        return gunEquipped;
+    }
+
+    public boolean isShooting()
+    {
+        return shooting;
+    }
+
+    public void setShooting(boolean shooting)
+    {
+        this.shooting = shooting;
+    }
+
     @Override
     public void Update()
     {
@@ -180,9 +196,16 @@ public class Player extends GameObject
             Spawn();
         }
 
+
+
         position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));
         hitbox.setPosition(position.x, position.y);
         hitbox.setRotation(-rotation);
+
+        if (shooting)
+        {
+            Shoot();
+        }
 
     }
 

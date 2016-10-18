@@ -76,6 +76,7 @@ public class Projectile extends GameObject
 
         hitbox.setPosition(position.x, position.y);
         hitbox.setRotation(-rotation);
+
     }
 
     @Override
@@ -83,7 +84,10 @@ public class Projectile extends GameObject
     {
         if (other instanceof Projectile)
         {
-            GameManager.getInstance().ClearProjectile(this);
+            if (((Projectile)other).gun.getOwner() != gun.getOwner() )
+            {
+                GameManager.getInstance().ClearProjectile(this);
+            }
         }
         else if (other instanceof Player && gun.getOwner() != other)
         {

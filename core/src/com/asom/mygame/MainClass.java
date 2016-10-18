@@ -14,6 +14,8 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
+import java.util.Iterator;
+
 public class MainClass extends ApplicationAdapter
 {
     SpriteBatch batch;
@@ -57,20 +59,21 @@ public class MainClass extends ApplicationAdapter
         //shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for(Classes.GameObject go :  GameManager.getInstance().getObjects())
+        for (Iterator<GameObject> iterator = GameManager.getInstance().getObjects().iterator(); iterator.hasNext(); )
         {
+            GameObject go = iterator.next();
             go.Draw(shapeRenderer);
         }
 
         shapeRenderer.end();
-
+/*
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
         for(Classes.GameObject go :  GameManager.getInstance().getObjects())
         {
-            shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
+            //shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
         }
-        shapeRenderer.end();
+        shapeRenderer.end();*/
     }
 
     public void update()

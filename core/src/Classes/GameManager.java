@@ -1,6 +1,7 @@
 package Classes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.*;
@@ -39,8 +40,11 @@ public class GameManager
 
     public void Update()
     {
-        for (GameObject go1: objects)
+        ArrayList<GameObject> g = (ArrayList<GameObject>) objects.clone();
+        Iterator iterator = g.iterator();
+        while (iterator.hasNext())
         {
+            GameObject go1 = (GameObject) iterator.next();
             go1.Update();
         }
 
