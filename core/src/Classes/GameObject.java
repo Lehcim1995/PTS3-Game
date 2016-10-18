@@ -4,6 +4,7 @@ import Interfaces.IGameObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by michel on 27-9-2016.
  */
-abstract class GameObject implements IGameObject
+public class GameObject implements IGameObject
 {
 
     protected Texture texture;
@@ -255,6 +256,11 @@ abstract class GameObject implements IGameObject
     }
 
     public void Draw()
+    {
+
+    }
+
+    public void Draw(ShapeRenderer sr)
     {
 
     }

@@ -18,6 +18,7 @@ import com.badlogic.gdx.input.*;
  */
 public class Player extends GameObject
 {
+    public boolean reloadThread;
     //Normal vars
     private String name;
     private float health;
@@ -27,34 +28,21 @@ public class Player extends GameObject
     private float acceleration;
     private float deAcceleration;
     private Gun gunEquipped;
-
     //Game vars
     private int kills;
     private int deaths;
     private int shots;
     private int shotsHit;
-
     //implementation vars
     private boolean walkingUp;
     private boolean walkingDown;
     private boolean walkingLeft;
     private boolean walkingRight;
-
     //Apperence
     private float width = 17;
     private Color color = Color.BLACK;
-
     //
     private InputClass ic;
-    public boolean reloadThread;
-
-    enum walkDir
-    {
-        Up,
-        Down,
-        Left,
-        Right
-    }
 
     public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape)
     {
@@ -74,20 +62,18 @@ public class Player extends GameObject
         position = new Vector2(50, 50);
         speed = 125.1248f;
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("kankergun",0,10,0,10,10,"kut",true,25,10,this);
+        this.gunEquipped = new Gun("kankergun", 0, 10, 0, 10, 10, "kut", true, 25, 10, this);
         Gdx.input.setInputProcessor(ic);
 
-        Vector2 v1 = new Vector2(width,width);
-        Vector2 v2 = new Vector2(-width,width);
-        Vector2 v3 = new Vector2(width,-width);
-        Vector2 v4 = new Vector2(-width,-width);
-        Vector2[] v5 = {v1,v2,v4,v3};
+        Vector2 v1 = new Vector2(width, width);
+        Vector2 v2 = new Vector2(-width, width);
+        Vector2 v3 = new Vector2(width, -width);
+        Vector2 v4 = new Vector2(-width, -width);
+        Vector2[] v5 = {v1, v2, v4, v3};
 
         setHitbox(v5);
         //setOrigin(new Vector2(position.x - width/2,position.y + width/2 ));
     }
-
-
 
     public void Walk(walkDir dir, boolean setWalking)
     {
@@ -136,6 +122,7 @@ public class Player extends GameObject
 
     }
 
+    @Override
     public void Draw(ShapeRenderer sr)
     {
 
@@ -145,7 +132,7 @@ public class Player extends GameObject
         sr.circle(position.x, position.y, width);
 
         float rad = MathUtils.degreesToRadians * (rotation - 90);
-        Vector2 rot = new Vector2(width * MathUtils.sin(rad),width * MathUtils.cos(rad));
+        Vector2 rot = new Vector2(width * MathUtils.sin(rad), width * MathUtils.cos(rad));
         sr.setColor(Color.RED);
         sr.line(position.x, position.y, position.x + rot.x, position.y + rot.y);
 
@@ -158,28 +145,43 @@ public class Player extends GameObject
     {
         Vector2 pos = new Vector2();
         //System.out.println("Update");
-        if (ic.GetKey(Input.Keys.W)){ pos.y += 1; }
-        if (ic.GetKey(Input.Keys.S)){ pos.y -= 1;}
-        if (ic.GetKey(Input.Keys.A)){ pos.x -= 1;}
-        if (ic.GetKey(Input.Keys.D)){ pos.x += 1;}
-        if (ic.GetKey(Input.Keys.R)){ Reload(); }
+        if (ic.GetKey(Input.Keys.W))
+        {
+            pos.y += 1;
+        }
+        if (ic.GetKey(Input.Keys.S))
+        {
+            pos.y -= 1;
+        }
+        if (ic.GetKey(Input.Keys.A))
+        {
+            pos.x -= 1;
+        }
+        if (ic.GetKey(Input.Keys.D))
+        {
+            pos.x += 1;
+        }
+        if (ic.GetKey(Input.Keys.R))
+        {
+            Reload();
+        }
 
         position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));
         hitbox.setPosition(position.x, position.y);
         hitbox.setRotation(-rotation);
 
-
-        for (Projectile b : GameManager.getInstance().GetProjectile())
-        {
-            if (isOverlap(hitbox, b.getHitbox()))
-            {
-                System.out.println("Hit ");
-            }
-        }
     }
 
     public String GetName()
     {
         return this.name;
+    }
+
+    enum walkDir
+    {
+        Up,
+        Down,
+        Left,
+        Right
     }
 }

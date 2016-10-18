@@ -20,6 +20,7 @@ public class GameManager
     private ArrayList<KillLog> killLogs;
     private ArrayList<Player> playerList;
     private ArrayList<Chat> chats;
+    private ArrayList<GameObject> objects;
 
     private GameManager()
     {
@@ -28,6 +29,7 @@ public class GameManager
         bullets = new ArrayList<Projectile>();
         killLogs = new ArrayList<KillLog>();
         chats = new ArrayList<Chat>();
+        objects =  new ArrayList<GameObject>();
     }
 
     public static GameManager getInstance()
@@ -37,15 +39,31 @@ public class GameManager
 
     public void Update()
     {
-        for (Player p: playerList)
+        for (GameObject go1: objects)
         {
-            for (Projectile b : bullets)
+            go1.Update();
+        }
+
+        ArrayList<GameObject[]> hitlist = new ArrayList<GameObject[]>();
+        for (GameObject go1: objects)
+        {
+            for (GameObject go2: objects)
             {
-                if (p.isHit(b))
+                if (go1 != go2)
                 {
-                    System.out.println("HIT");
+                    if (go1.isHit(go2))
+                    {
+                        System.out.println(go1.getClass().toString());
+                        //go1.OnCollisionEnter(go2);
+                        hitlist.add(new GameObject[]{go1, go2});
+                    }
                 }
             }
+        }
+
+        for (GameObject[] golist : hitlist)
+        {
+            golist[0].OnCollisionEnter(golist[1]);
         }
     }
 
@@ -118,11 +136,33 @@ public class GameManager
     public void AddProjectile(Projectile projectile)
     {
         bullets.add(projectile);
+        objects.add(projectile);
+    }
+
+    public void ClearProjectiles()
+    {
+        objects.removeAll(bullets);
+        bullets.clear();
+    }
+
+    public void ClearProjectile(Projectile p)
+    {
+        objects.remove(p);
+        bullets.remove(p);
     }
 
     public ArrayList<Projectile> GetProjectile()
     {
         return bullets;
     }
-    
+
+    public void addGameObject(GameObject go)
+    {
+        objects.add(go);
+    }
+
+    public ArrayList<GameObject> getObjects()
+    {
+        return objects;
+    }
 }

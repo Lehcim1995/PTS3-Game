@@ -83,7 +83,7 @@ public class InputClass implements InputProcessor
         if (button == Input.Buttons.RIGHT) {
             // Some stuff
             //System.out.println("Pew");
-            GameManager.getInstance().GetProjectile().clear();
+            GameManager.getInstance().ClearProjectiles();
             return true;
         }
 

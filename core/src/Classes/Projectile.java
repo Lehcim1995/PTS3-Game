@@ -1,5 +1,6 @@
 package Classes;
 
+import Interfaces.IGameObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -59,6 +60,7 @@ public class Projectile extends GameObject
         return gun;
     }
 
+    @Override
     public void Draw(ShapeRenderer sr)
     {
         sr.setColor(Color.GREEN);
@@ -74,5 +76,14 @@ public class Projectile extends GameObject
 
         hitbox.setPosition(position.x, position.y);
         hitbox.setRotation(-rotation);
+    }
+
+    @Override
+    public void OnCollisionEnter(IGameObject other)
+    {
+        if (other instanceof Projectile)
+        {
+            GameManager.getInstance().ClearProjectile(this);
+        }
     }
 }

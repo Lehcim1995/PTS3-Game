@@ -1,9 +1,6 @@
 package com.asom.mygame;
 
-import Classes.GameManager;
-import Classes.Player;
-import Classes.Projectile;
-import Interfaces.IGameObject;
+import Classes.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -39,6 +36,7 @@ public class MainClass extends ApplicationAdapter
         //Shape s = new CircleShape();
         //player = new Player(img, position, 0, s);
         player = new Player();
+        GameManager.getInstance().addGameObject(player);
     }
 
     @Override
@@ -56,32 +54,24 @@ public class MainClass extends ApplicationAdapter
         //shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        player.Draw(shapeRenderer);
-        for(IGameObject go :  GameManager.getInstance().GetProjectile())
+        for(Classes.GameObject go :  GameManager.getInstance().getObjects())
         {
-            ((Projectile)go).Draw(shapeRenderer);
+            go.Draw(shapeRenderer);
         }
 
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.polygon(player.getHitbox().getTransformedVertices());
-        for(IGameObject go :  GameManager.getInstance().GetProjectile())
+        for(Classes.GameObject go :  GameManager.getInstance().getObjects())
         {
-            shapeRenderer.polygon(((Projectile)go).getHitbox().getTransformedVertices());
+            shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
         }
         shapeRenderer.end();
     }
 
     public void update()
     {
-        player.Update();
-        //GameManager.getInstance().
-        for(IGameObject go :  GameManager.getInstance().GetProjectile())
-        {
-            go.Update();
-        }
         GameManager.getInstance().Update();
     }
 
