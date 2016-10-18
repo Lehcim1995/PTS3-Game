@@ -42,6 +42,10 @@ public class Gun
     private gunType GunMode = gunType.Automatic;
 
     //<editor-fold desc="Getters & Setters">
+    public String getName() {
+        return name;
+    }
+
     public float getReloadTime()
     {
         return reloadTime;

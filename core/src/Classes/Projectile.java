@@ -96,7 +96,7 @@ public class Projectile extends GameObject
         }
         else if (other instanceof Player && gun.getOwner() != other)
         {
-            System.out.println("Dead");
+            System.out.println(new KillLog(this, (Player) other));
             GameManager.getInstance().ClearProjectile(this);
             ((Player) other).Die();
         }

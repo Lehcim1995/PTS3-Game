@@ -11,7 +11,7 @@ public class KillLog
    private Projectile projectile;
    private Player player;
 
-    public void Killlog(Projectile projectile, Player player){
+    public KillLog(Projectile projectile, Player player){
         this.projectile = projectile;
         this.player = player;
     }
@@ -20,6 +20,6 @@ public class KillLog
     @Override
     public String toString()
     {
-        return projectile.GetGun().getOwner() + " " + projectile.GetGun().getShootType() + " " + player.GetName() ;
+        return projectile.GetGun().getOwner().GetName() + " " + projectile.GetGun().toString() + " " + player.GetName() ;
     }
 }
