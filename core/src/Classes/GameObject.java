@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -29,12 +30,14 @@ public class GameObject implements IGameObject
     {
 
     }
+
     protected GameObject(Vector2 position, float rotation, Polygon hitbox)
     {
         this.position = position;
         this.rotation = rotation;
         this.hitbox = hitbox;
     }
+
     protected GameObject(Texture texture, Vector2 position, float rotation, Shape boundingShape)
     {
         this.texture = texture;
@@ -71,6 +74,28 @@ public class GameObject implements IGameObject
         Vector2[] v5 = {v1,v2,v4,v3};
 
         return v5;
+    }
+
+    public final static Vector2[] CIRCLEHITBOX(float size)
+    {
+        return CIRCLEHITBOX(size, 18);
+    }
+
+    public final static Vector2[] CIRCLEHITBOX(float size, int vertices)
+    {
+        Vector2[] vList = new Vector2[vertices];
+        double rad = Math.toRadians(360 / vertices );
+
+        for(int i = 0; i < vertices; i++)
+        {
+            float x = MathUtils.sin((float)(rad * i));
+            float y = MathUtils.cos((float)(rad * i));
+            Vector2 v = new Vector2(x,y);
+            v = v.scl(size);
+            vList[i] = v;
+        }
+
+        return vList;
     }
 
     public final static Vector2[] DEFAULTHITBOX(float height, float width)

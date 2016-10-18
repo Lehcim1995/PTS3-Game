@@ -21,7 +21,7 @@ public class Level
     private long seed;
     private ArrayList<LevelBlock> levelBlocks;
     private ArrayList<LevelBlock> blockModule;
-    private int levelSize = 4;
+    private int levelSize = 8;
     private int row = 1;
     private int block = 1;
     private int blockSize = 1;

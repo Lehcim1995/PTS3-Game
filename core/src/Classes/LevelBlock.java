@@ -16,6 +16,9 @@ public class LevelBlock extends GameObject
 {
 
     private Color color = Color.BLACK;
+    private float size = 26;
+    private float halfSize = size/2;
+
     public LevelBlock(Vector2 position, float rotation, Vector2[] hitbox) {
         super (position, rotation);
         this.setHitbox(hitbox);
@@ -24,7 +27,8 @@ public class LevelBlock extends GameObject
     public void Draw(ShapeRenderer sr)
     {
         sr.setColor(Color.BROWN);
-        sr.rect(position.x - 13, position.y - 13, 13 * 2, 13 * 2);
+
+        sr.rect(position.x - halfSize, position.y - halfSize, size, size);
     }
 
     @Override

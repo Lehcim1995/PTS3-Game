@@ -43,7 +43,8 @@ public class Player extends GameObject
     private boolean walkingLeft;
     private boolean walkingRight;
     //Appearance
-    private float width = 17;
+    private float width = 34;
+    private float halfWidth = width/2;
     private Color color = Color.BLACK;
     //
     private InputClass ic;
@@ -51,6 +52,7 @@ public class Player extends GameObject
 
     public boolean reloadThread = false;
 
+    private Vector2 lastpos;
 
     public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape)
     {
@@ -69,25 +71,13 @@ public class Player extends GameObject
         super();
         //640,480
         position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
+        lastpos = position;
         speed = 125.1248f;
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("cz-75", 2000, 1, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
+        this.gunEquipped = new Gun("cz-75", 2000, 20, 0, 10, 5000, Gun.gunType.Automatic, true, 670, 10, this);
         Gdx.input.setInputProcessor(ic);
 
-        Vector2 v1 = new Vector2(-width/2, width);
-        Vector2 v2 = new Vector2(width/2, width);
-        Vector2 v3 = new Vector2(width, width/2);
-        Vector2 v4 = new Vector2(width, -width/2);
-
-        Vector2 v5 = new Vector2(width/2, -width);
-        Vector2 v6 = new Vector2(-width/2, -width);
-        Vector2 v7 = new Vector2(-width, -width/2);
-        Vector2 v8 = new Vector2(-width, width/2);
-
-        Vector2[] hb = {v1, v2, v3, v4, v5, v6, v7 ,v8};
-
-        setHitbox(hb);
-        //setOrigin(new Vector2(position.x - width/2,position.y + width/2 ));
+        setHitbox(CIRCLEHITBOX(halfWidth, 8));
     }
 
     public void Walk(walkDir dir, boolean setWalking)
@@ -146,10 +136,10 @@ public class Player extends GameObject
         sr.setColor(color);
         //shapeRenderer.line(position.x, position.y, mous
         // e.x, mouse.y);
-        sr.circle(position.x, position.y, width);
+        sr.circle(position.x, position.y, halfWidth);
 
         float rad = MathUtils.degreesToRadians * (rotation - 90);
-        Vector2 rot = new Vector2(width * MathUtils.sin(rad), width * MathUtils.cos(rad));
+        Vector2 rot = new Vector2(halfWidth * MathUtils.sin(rad), halfWidth * MathUtils.cos(rad));
         sr.setColor(Color.RED);
         sr.line(position.x, position.y, position.x + rot.x, position.y + rot.y);
 
@@ -175,6 +165,7 @@ public class Player extends GameObject
     @Override
     public void Update()
     {
+        lastpos = position;
         Vector2 pos = new Vector2();
         //System.out.println("Update");
         if (ic.GetKey(Input.Keys.W))
@@ -220,17 +211,18 @@ public class Player extends GameObject
     {
         if (other instanceof Player)
         {
+
             Vector2 playerpos = new Vector2(position);
             Vector2 otherpos = ((Player)other).position;
 
             Vector2 diff = playerpos.sub(otherpos).setLength(200 * Gdx.graphics.getDeltaTime());
             position.add(diff);
 
-
             //System.out.println(((Player)other).position);
         }
         else if (other instanceof LevelBlock)
         {
+
             Vector2 playerpos = new Vector2(position);
             Vector2 otherpos = ((LevelBlock)other).position;
             LevelBlock lb = (LevelBlock)other;

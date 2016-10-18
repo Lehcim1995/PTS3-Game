@@ -3,11 +3,6 @@ package Classes;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.bullet.Bullet;
-
 /**
  * Created by Nick on 11-10-2016.
  */
@@ -32,13 +27,11 @@ public class GameManager
         killLogs = new ArrayList<KillLog>();
         chats = new ArrayList<Chat>();
         objects =  new ArrayList<GameObject>();
-
     }
 
     public static GameManager getInstance()
     {
-        if (instance == null) return instance = new GameManager();
-        else return instance;
+        return instance == null ? (instance = new GameManager()) : instance;
     }
 
     public void Update()
@@ -77,30 +70,6 @@ public class GameManager
         {
             golist[0].OnCollisionEnter(golist[1]);
         }
-    }
-
-
-    //TODO CheckHit registratie
-    public void CheckHit(Projectile projectile)
-    {
-
-        for (Player p: playerList)
-        {
-            for (Projectile b : bullets)
-            {
-                if (p.isHit(b))
-                {
-                    System.out.println("HIT");
-                }
-            }
-        }
-        /*Vector2 playerPosition;
-        Vector2 projectilePosition = projectile.GetPosition();
-        for (Player p: playerList)
-        {
-            playerPosition = p.GetPosition();
-
-        }*/
     }
 
     public void SpawnPlayer(Player player)

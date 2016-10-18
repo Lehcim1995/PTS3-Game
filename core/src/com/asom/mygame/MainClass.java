@@ -20,8 +20,6 @@ public class MainClass extends ApplicationAdapter
 {
     SpriteBatch batch;
     Texture img;
-    Vector2 position;
-    Vector2 mouse;
     private Camera camera;
     private ShapeRenderer shapeRenderer;
     private Player player;
@@ -32,12 +30,15 @@ public class MainClass extends ApplicationAdapter
     {
         batch = new SpriteBatch();
         img = new Texture(Gdx.files.internal("core\\assets\\badlogic.jpg"));
-        position = new Vector2(0, 0);
-        mouse = new Vector2(0, 0);
-        camera = new OrthographicCamera();
+
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+
+        camera = new OrthographicCamera(w,h);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 1);
+        camera.update();
+
         shapeRenderer = new ShapeRenderer();
-        //Shape s = new CircleShape();
-        //player = new Player(img, position, 0, s);
         player = new Player();
         enemy = new Player();
         GameManager.getInstance().addGameObject(player);
@@ -48,15 +49,16 @@ public class MainClass extends ApplicationAdapter
     public void render()
     {
         update();
+        camera.update();
+
 
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
+        //batch.setProjectionMatrix(camera.combined);
+        //batch.begin();
         //batch.draw(img, position.x, position.y);s
-        batch.end();
-
-        //camera.update();
-        //shapeRenderer.setProjectionMatrix(camera.combined);
+        //batch.end();
+        shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Iterator<GameObject> iterator = GameManager.getInstance().getObjects().iterator(); iterator.hasNext(); )
@@ -81,28 +83,6 @@ public class MainClass extends ApplicationAdapter
         GameManager.getInstance().Update();
     }
 
-    private void inputhandler()
-    {
-        mouse.set(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-
-        if (Gdx.input.isKeyPressed(Input.Keys.D))
-        {
-            position.x += 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
-        {
-            position.x -= 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W))
-        {
-            position.y += 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S))
-        {
-            position.y -= 1;
-        }
-
-    }
 
     @Override
     public void dispose()

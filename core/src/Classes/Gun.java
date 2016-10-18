@@ -1,10 +1,12 @@
 package Classes;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import java.util.Random;
 import java.util.Timer;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
@@ -138,7 +140,11 @@ public class Gun
     {
         if (millis() - lastShot > 500 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
-            Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x, owner.GetPosition().y), owner.GetRotation());
+            Random r = new Random();
+            float rot = owner.GetRotation();
+            rot += (r.nextFloat() * spread)/2;
+
+            Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x, owner.GetPosition().y), rot);
 
             GameManager.getInstance().AddProjectile(projectile);
             currentBullets--;
