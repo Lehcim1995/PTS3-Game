@@ -18,7 +18,6 @@ import com.badlogic.gdx.input.*;
  */
 public class Player extends GameObject
 {
-    public boolean reloadThread;
     //Normal vars
     private String name;
     private float health;
