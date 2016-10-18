@@ -82,6 +82,7 @@ public class GameObject implements IGameObject
         Vector2 v2 = new Vector2(-x,y);
         Vector2 v3 = new Vector2(x,-y);
         Vector2 v4 = new Vector2(-x,-y);
+
         Vector2[] v5 = {v1,v2,v4,v3};
 
         return v5;

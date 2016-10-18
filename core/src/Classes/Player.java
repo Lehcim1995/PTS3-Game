@@ -74,13 +74,19 @@ public class Player extends GameObject
         this.gunEquipped = new Gun("cz-75", 2000, 1, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
         Gdx.input.setInputProcessor(ic);
 
-        Vector2 v1 = new Vector2(width, width);
-        Vector2 v2 = new Vector2(-width, width);
-        Vector2 v3 = new Vector2(width, -width);
-        Vector2 v4 = new Vector2(-width, -width);
-        Vector2[] v5 = {v1, v2, v4, v3};
+        Vector2 v1 = new Vector2(-width/2, width);
+        Vector2 v2 = new Vector2(width/2, width);
+        Vector2 v3 = new Vector2(width, width/2);
+        Vector2 v4 = new Vector2(width, -width/2);
 
-        setHitbox(v5);
+        Vector2 v5 = new Vector2(width/2, -width);
+        Vector2 v6 = new Vector2(-width/2, -width);
+        Vector2 v7 = new Vector2(-width, -width/2);
+        Vector2 v8 = new Vector2(-width, width/2);
+
+        Vector2[] hb = {v1, v2, v3, v4, v5, v6, v7 ,v8};
+
+        setHitbox(hb);
         //setOrigin(new Vector2(position.x - width/2,position.y + width/2 ));
     }
 
@@ -214,7 +220,26 @@ public class Player extends GameObject
     {
         if (other instanceof Player)
         {
-            System.out.println("Collision");
+            Vector2 playerpos = new Vector2(position);
+            Vector2 otherpos = ((Player)other).position;
+
+            Vector2 diff = playerpos.sub(otherpos).setLength(200 * Gdx.graphics.getDeltaTime());
+            position.add(diff);
+
+
+            //System.out.println(((Player)other).position);
+        }
+        else if (other instanceof LevelBlock)
+        {
+            Vector2 playerpos = new Vector2(position);
+            Vector2 otherpos = ((LevelBlock)other).position;
+            LevelBlock lb = (LevelBlock)other;
+
+            Vector2 diff = playerpos.sub(otherpos).setLength(200 * Gdx.graphics.getDeltaTime());
+            position.add(diff);
+
+
+            //System.out.println(((Player)other).position);
         }
     }
 
