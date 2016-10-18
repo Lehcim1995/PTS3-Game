@@ -12,6 +12,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.input.*;
+import javafx.application.Platform;
+
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by michel on 27-9-2016.
@@ -27,6 +31,7 @@ public class Player extends GameObject
     private float acceleration;
     private float deAcceleration;
     private Gun gunEquipped;
+    private Random r = new Random();
     //Game vars
     private int kills;
     private int deaths;
@@ -61,7 +66,8 @@ public class Player extends GameObject
     public Player()
     {
         super();
-        position = new Vector2(50, 50);
+        //640,480
+        position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
         speed = 125.1248f;
         ic = new InputClass(this);
         this.gunEquipped = new Gun("kankergun", 0, 10, 0, 10, 10, "kut", true, 25, 10, this);
@@ -111,12 +117,14 @@ public class Player extends GameObject
 
     public void Spawn()
     {
-
+        position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
     }
 
     public void Die()
     {
-
+        health = 0;
+        deaths ++;
+        GameManager.getInstance().SpawnPlayer(this);
     }
 
     public void Hit()
@@ -166,6 +174,10 @@ public class Player extends GameObject
         if (ic.GetKey(Input.Keys.R))
         {
             Reload();
+        }
+        if (ic.GetKey(Input.Keys.P))
+        {
+            Spawn();
         }
 
         position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));
