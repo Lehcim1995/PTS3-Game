@@ -42,7 +42,7 @@ public class Player extends GameObject
     private boolean walkingDown;
     private boolean walkingLeft;
     private boolean walkingRight;
-    //Apperence
+    //Appearance
     private float width = 17;
     private Color color = Color.BLACK;
     //
@@ -118,7 +118,7 @@ public class Player extends GameObject
 
     public void Spawn()
     {
-        position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
+        position = new Vector2(r.nextInt(610) + 17, r.nextInt(450) + 17);
     }
 
     public void Die()
@@ -207,6 +207,15 @@ public class Player extends GameObject
             Shoot();
         }
 
+    }
+
+    @Override
+    public void OnCollisionEnter(IGameObject other)
+    {
+        if (other instanceof Player)
+        {
+            System.out.println("Collision");
+        }
     }
 
     public String GetName()
