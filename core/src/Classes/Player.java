@@ -74,7 +74,7 @@ public class Player extends GameObject
         lastpos = position;
         speed = 125.1248f;
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("cz-75", 2000, 20, 0, 10, 5000, Gun.gunType.Automatic, true, 670, 10, this);
+        this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 5000, Gun.gunType.Automatic, true, 670, 10, this);
         Gdx.input.setInputProcessor(ic);
 
         setHitbox(CIRCLEHITBOX(halfWidth, 8));

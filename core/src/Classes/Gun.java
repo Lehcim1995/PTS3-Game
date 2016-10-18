@@ -138,7 +138,7 @@ public class Gun
 
     public void Shoot()
     {
-        if (millis() - lastShot > 500 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
+        if (millis() - lastShot > 1000 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
             Random r = new Random();
             float rot = owner.GetRotation();
