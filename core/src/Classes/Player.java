@@ -46,7 +46,7 @@ public class Player extends GameObject
 
     //
     private InputClass ic;
-    public boolean reloadThread;
+    public boolean reloadThread = false;
 
     enum walkDir
     {

@@ -25,7 +25,7 @@ public class Gun
     private float bulletSpeed;
     private int projectileDamage;
 
-    private Thread reloadThread;
+    private Thread reloadThread = null;
 
     //<editor-fold desc="Getters & Setters">
     public float getReloadTime()
@@ -105,8 +105,9 @@ public class Gun
     public void Shoot()
     {
         Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x , owner.GetPosition().y), owner.GetRotation());
-        GameManager.getInstance().AddProjectile(projectile);
+            GameManager.getInstance().AddProjectile(projectile);
         currentBullets--;
+
         if(currentBullets <= 0)
         {
             Reload();
@@ -117,13 +118,14 @@ public class Gun
     {
         if(!owner.reloadThread)
         {
-            if (!reloadThread.isAlive())
+            if (reloadThread == null || !reloadThread.isAlive())
             {
                 owner.reloadThread = true;
                 reloadThread = new Thread(new Runnable(){
                     @Override
                     public void run(){
                         if (currentBullets != maxBullets) {
+                            System.out.println("Reloading");
                             if (currentBullets > 0) {
                                 totalBullets += currentBullets;
                             }
@@ -155,6 +157,7 @@ public class Gun
                         owner.reloadThread = false;
                     }
                 });
+                reloadThread.start();
             }
         }
     }
