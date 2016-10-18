@@ -18,11 +18,15 @@ public class Gun
     private float spread;
     private int currentBullets;
     private int maxBullets;
+    private int totalBullets;
     private String shootType;
     private boolean hasInfinit;
     private Player owner;
     private float bulletSpeed;
     private int projectileDamage;
+
+    private Thread reloadThread;
+
     //<editor-fold desc="Getters & Setters">
     public float getReloadTime()
     {
@@ -78,6 +82,7 @@ public class Gun
     {
         return projectileDamage;
     }
+
     //</editor-fold>
     public Gun(String name, float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, String shootType, boolean hasInfinit, float bulletSpeed, int projectileDamage, Player owner)
     {
@@ -92,6 +97,10 @@ public class Gun
         this.bulletSpeed = bulletSpeed;
         this.projectileDamage = projectileDamage;
         this.owner = owner;
+
+        if (!hasInfinit) {
+            totalBullets = maxBullets * 4;
+        }
     }
     public void Shoot()
     {
@@ -106,18 +115,48 @@ public class Gun
 
     public void Reload()
     {
-        currentBullets = 0;
+        if(!owner.reloadThread)
+        {
+            if (!reloadThread.isAlive())
+            {
+                owner.reloadThread = true;
+                reloadThread = new Thread(new Runnable(){
+                    @Override
+                    public void run(){
+                        if (currentBullets != maxBullets) {
+                            if (currentBullets > 0) {
+                                totalBullets += currentBullets;
+                            }
+                            currentBullets = 0;
+                            try
+                            {
+                                Thread.sleep((long) reloadTime);
+                            }
+                            catch (InterruptedException e)
+                            {
+                                e.printStackTrace();
+                            }
 
-        //TODO: reloadtimer in reload methode
-        try
-        {
-            Thread.sleep((long) reloadTime);
+                            if (!hasInfinit) {
+                                if (totalBullets >= maxBullets) {
+                                    currentBullets = maxBullets;
+                                    totalBullets -= maxBullets;
+                                }
+                                else
+                                {
+                                    currentBullets = totalBullets;
+                                    totalBullets = 0;
+                                }
+                            }
+                            else {
+                                currentBullets = maxBullets;
+                            }
+                        }
+                        owner.reloadThread = false;
+                    }
+                });
+            }
         }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        currentBullets = maxBullets;
     }
 
     public String ToString()

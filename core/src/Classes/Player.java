@@ -44,6 +44,7 @@ public class Player extends GameObject
 
     //
     private InputClass ic;
+    public boolean reloadThread;
 
     enum walkDir
     {
@@ -101,6 +102,12 @@ public class Player extends GameObject
     public void Shoot()
     {
         this.gunEquipped.Shoot();
+    }
+
+    public void reload()
+    {
+        gunEquipped.Reload();
+
     }
 
     public void Spawn()
