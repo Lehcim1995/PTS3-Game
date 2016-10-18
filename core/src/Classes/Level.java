@@ -4,6 +4,8 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
@@ -57,31 +59,35 @@ public class Level
         Random random = new Random();
         return random.nextLong();
     }
+
     private ArrayList<LevelBlock> GenerateLevelBlocks()
     {
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
         Random random = new Random(seed);
         for(int i = 0; i < (levelSize * levelSize); i++)
         {
-            LevelBlock levelBlock = blockModule.get(random.nextInt(blockModule.size()));
-            levelBlock.SetPosition(GetNewBlockLocation(i));
+            Vector2[] hithoxVectorList = GameObject.DEFAULTHITBOX(13);
+            LevelBlock levelBlock = new LevelBlock(new Vector2(0,0),0,hithoxVectorList); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
+            //GetNewBlockLocation(i)
+            levelBlock.SetPosition(new Vector2(random.nextInt(Gdx.graphics.getWidth()), random.nextInt(Gdx.graphics.getHeight())));
             newLevelBlockList.add(levelBlock);
-            //GameManager.getInstance().addGameObject(levelBlock);
+
+            GameManager.getInstance().addGameObject(levelBlock);
         }
         return newLevelBlockList;
     }
     private ArrayList<LevelBlock> CreateModules()
     {
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
-        Vector2[] hithoxVectorList = {new Vector2(50,50),new Vector2(0,50),new Vector2(50,0),new Vector2(0,0)};
-        newLevelBlockList.add(new LevelBlock(new Vector2(),0,hithoxVectorList));
+        Vector2[] hithoxVectorList = GameObject.DEFAULTHITBOX(13); //{new Vector2(50,50),new Vector2(0,50),new Vector2(50,0),new Vector2(0,0)};
+        newLevelBlockList.add(new LevelBlock(new Vector2(0,0),0,hithoxVectorList));
         return newLevelBlockList;
     }
     private Vector2 GetNewBlockLocation(int blockNumber){
         if(blockNumber == 0)
         {
             block++;
-            return new Vector2(0,0);
+            return new Vector2(100,100);
         }
         else
         {

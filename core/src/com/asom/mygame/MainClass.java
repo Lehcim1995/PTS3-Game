@@ -66,14 +66,14 @@ public class MainClass extends ApplicationAdapter
         }
 
         shapeRenderer.end();
-/*
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
         for(Classes.GameObject go :  GameManager.getInstance().getObjects())
         {
-            //shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
+            shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
         }
-        shapeRenderer.end();*/
+        shapeRenderer.end();
     }
 
     public void update()

@@ -14,23 +14,23 @@ import com.badlogic.gdx.physics.box2d.Shape;
  */
 public class LevelBlock extends GameObject
 {
-    Vector2[] vectorHitbox;
+
     private Color color = Color.BLACK;
     public LevelBlock(Vector2 position, float rotation, Vector2[] hitbox) {
         super (position, rotation);
         this.setHitbox(hitbox);
-        this.vectorHitbox = hitbox;
     }
-//    @Override
-//    public void Draw(ShapeRenderer sr)
-//    {
-//        sr.setColor(color);
-//        sr.
-//
-//        float rad = MathUtils.degreesToRadians * (rotation - 90);
-//        Vector2 rot = new Vector2(width * MathUtils.sin(rad), width * MathUtils.cos(rad));
-//        sr.setColor(Color.RED);
-//        sr.line(position.x, position.y, position.x + rot.x, position.y + rot.y);
-//    }
+    @Override
+    public void Draw(ShapeRenderer sr)
+    {
+        sr.setColor(Color.BROWN);
+        sr.rect(position.x - 13, position.y - 13, 13 * 2, 13 * 2);
+    }
 
+    @Override
+    public void Update()
+    {
+        hitbox.setPosition(position.x, position.y);
+        hitbox.setRotation(-rotation);
+    }
 }

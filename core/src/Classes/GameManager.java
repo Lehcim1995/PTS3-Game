@@ -15,13 +15,14 @@ public class GameManager
 {
     private static GameManager instance;
     private String name;
-    public Level level;
+    private Level level;
     private ArrayList<Spectator> spectators;
     private ArrayList<Projectile> bullets;
     private ArrayList<KillLog> killLogs;
     private ArrayList<Player> playerList;
     private ArrayList<Chat> chats;
     private ArrayList<GameObject> objects;
+    private boolean gen = false;
 
     private GameManager()
     {
@@ -31,16 +32,22 @@ public class GameManager
         killLogs = new ArrayList<KillLog>();
         chats = new ArrayList<Chat>();
         objects =  new ArrayList<GameObject>();
-        level = new Level();
+
     }
 
     public static GameManager getInstance()
     {
-        return instance == null ? instance = new GameManager() : instance;
+        if (instance == null) return instance = new GameManager();
+        else return instance;
     }
 
     public void Update()
     {
+        if (!gen)
+        {
+            StartMatch();
+        }
+
         ArrayList<GameObject> g = (ArrayList<GameObject>) objects.clone();
         Iterator iterator = g.iterator();
         while (iterator.hasNext())
@@ -58,7 +65,7 @@ public class GameManager
                 {
                     if (go1.isHit(go2))
                     {
-                        System.out.println(go1.getClass().toString());
+                        //System.out.println(go1.getClass().toString());
                         //go1.OnCollisionEnter(go2);
                         hitlist.add(new GameObject[]{go1, go2});
                     }
@@ -104,7 +111,8 @@ public class GameManager
     //TODO start a match
     public void StartMatch()
     {
-        //level = new Level();
+        level = new Level();
+        gen = true;
     }
 
     public void EndMatch()
