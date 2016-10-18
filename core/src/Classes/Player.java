@@ -104,7 +104,7 @@ public class Player extends GameObject
         this.gunEquipped.Shoot();
     }
 
-    public void reload()
+    public void Reload()
     {
         gunEquipped.Reload();
 
@@ -149,6 +149,7 @@ public class Player extends GameObject
         if (ic.GetKey(Input.Keys.S)){ pos.y -= 1;}
         if (ic.GetKey(Input.Keys.A)){ pos.x -= 1;}
         if (ic.GetKey(Input.Keys.D)){ pos.x += 1;}
+        if (ic.GetKey(Input.Keys.R)){ Reload(); }
 
         position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));
     }
@@ -157,6 +158,4 @@ public class Player extends GameObject
     {
         return this.name;
     }
-
-
 }
