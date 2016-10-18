@@ -21,9 +21,11 @@ public interface IGameObject
     Shape GetBoundingShape();
     void SetBoundingShape(Shape shape);
 
-    void OnCollisionEnter();
-    void OnCollisionExit();
-    void OnCollisionStay();
+    void OnCollisionEnter(IGameObject Other);
+    void OnCollisionExit(IGameObject Other);
+    void OnCollisionStay(IGameObject Other);
 
     void Update();
+
+    void Draw();
 }

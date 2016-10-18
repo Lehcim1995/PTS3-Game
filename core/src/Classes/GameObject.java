@@ -4,6 +4,7 @@ import Interfaces.IGameObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 
@@ -15,9 +16,12 @@ abstract class GameObject implements IGameObject
 
     protected Texture texture;
     protected Sprite sprite;
+
     protected Vector2 position;
     protected float rotation;
     protected Shape boundingShape;
+
+    private Polygon hitbox;
 
     protected GameObject ()
     {
@@ -42,6 +46,11 @@ abstract class GameObject implements IGameObject
     {
         this.position = position;
         this.rotation = rotation;
+    }
+
+    public Shape getBoundingShape()
+    {
+        return boundingShape;
     }
 
     @Override
@@ -95,24 +104,29 @@ abstract class GameObject implements IGameObject
     }
 
     @Override
-    public void OnCollisionEnter()
+    public void OnCollisionEnter(IGameObject other)
     {
 
     }
 
     @Override
-    public void OnCollisionExit()
+    public void OnCollisionExit(IGameObject other)
     {
 
     }
 
     @Override
-    public void OnCollisionStay()
+    public void OnCollisionStay(IGameObject other)
     {
 
     }
 
     public void Update()
+    {
+
+    }
+
+    public void Draw()
     {
 
     }

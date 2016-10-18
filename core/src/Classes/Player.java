@@ -68,9 +68,11 @@ public class Player extends GameObject
     public Player()
     {
         super();
-        position = new Vector2(0, 0);
+        position = new Vector2(50, 50);
         speed = 125.1248f;
         ic = new InputClass(this);
+        this.gunEquipped = new Gun("kanbkergun",0,10,0,10,10,"kut",true,100,10,this);
+        Gdx.input.setInputProcessor(ic);
     }
 
 
