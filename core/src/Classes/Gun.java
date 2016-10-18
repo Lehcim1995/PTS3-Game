@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import java.util.Timer;
+
 /**
  * Created by myron on 11-10-16.
  */
@@ -76,7 +78,6 @@ public class Gun
     {
         return projectileDamage;
     }
-
     //</editor-fold>
     public Gun(String name, float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, String shootType, boolean hasInfinit, float bulletSpeed, int projectileDamage, Player owner)
     {
@@ -105,8 +106,18 @@ public class Gun
 
     public void Reload()
     {
-        currentBullets = maxBullets;
+        currentBullets = 0;
+
         //TODO: reloadtimer in reload methode
+        try
+        {
+            Thread.sleep((long) reloadTime);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        currentBullets = maxBullets;
     }
 
     public String ToString()
