@@ -29,7 +29,12 @@ public class GameObject implements IGameObject
     {
 
     }
-
+    protected GameObject(Vector2 position, float rotation, Polygon hitbox)
+    {
+        this.position = position;
+        this.rotation = rotation;
+        this.hitbox = hitbox;
+    }
     protected GameObject(Texture texture, Vector2 position, float rotation, Shape boundingShape)
     {
         this.texture = texture;

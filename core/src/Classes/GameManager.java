@@ -15,7 +15,7 @@ public class GameManager
 {
     private static GameManager instance;
     private String name;
-    private Level level;
+    public Level level;
     private ArrayList<Spectator> spectators;
     private ArrayList<Projectile> bullets;
     private ArrayList<KillLog> killLogs;
@@ -31,6 +31,7 @@ public class GameManager
         killLogs = new ArrayList<KillLog>();
         chats = new ArrayList<Chat>();
         objects =  new ArrayList<GameObject>();
+        level = new Level();
     }
 
     public static GameManager getInstance()
@@ -103,7 +104,7 @@ public class GameManager
     //TODO start a match
     public void StartMatch()
     {
-        level = new Level();
+        //level = new Level();
     }
 
     public void EndMatch()

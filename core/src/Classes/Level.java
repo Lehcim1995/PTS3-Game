@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Vector;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -21,7 +22,7 @@ public class Level
     private int levelSize = 4;
     private int row = 1;
     private int block = 1;
-    private int blockSize = 5;
+    private int blockSize = 1;
     //<editor-fold desc="Getters & Setters">
 
     public ArrayList<LevelBlock> getLevelBlocks()
@@ -53,7 +54,7 @@ public class Level
     }
     private long GenerateSeed()
     {
-        Random random = new SecureRandom();
+        Random random = new Random();
         return random.nextLong();
     }
     private ArrayList<LevelBlock> GenerateLevelBlocks()
@@ -65,13 +66,15 @@ public class Level
             LevelBlock levelBlock = blockModule.get(random.nextInt(blockModule.size()));
             levelBlock.SetPosition(GetNewBlockLocation(i));
             newLevelBlockList.add(levelBlock);
+            //GameManager.getInstance().addGameObject(levelBlock);
         }
         return newLevelBlockList;
     }
     private ArrayList<LevelBlock> CreateModules()
     {
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
-        //newLevelBlockList.add(new LevelBlock(null, new Vector2(),0,new Rectangle(0f,0f,50f,100f)));
+        Vector2[] hithoxVectorList = {new Vector2(50,50),new Vector2(0,50),new Vector2(50,0),new Vector2(0,0)};
+        newLevelBlockList.add(new LevelBlock(new Vector2(),0,hithoxVectorList));
         return newLevelBlockList;
     }
     private Vector2 GetNewBlockLocation(int blockNumber){
