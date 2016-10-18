@@ -135,7 +135,7 @@ public class Gun
 
         System.out.println("pew");
 
-        if (millis() - lastShot > 1000 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
+        if (millis() - lastShot > 500 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
             System.out.println("    pew");
             Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x, owner.GetPosition().y), owner.GetRotation());

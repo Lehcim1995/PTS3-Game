@@ -71,7 +71,7 @@ public class Player extends GameObject
         position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
         speed = 125.1248f;
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("kankergun", 0, 1, 0, 10, 5, "kut", true, 25, 10, this);
+        this.gunEquipped = new Gun("kankergun", 2, 1, 0, 10, 7, "kut", true, 670, 10, this);
         Gdx.input.setInputProcessor(ic);
 
         Vector2 v1 = new Vector2(width, width);
