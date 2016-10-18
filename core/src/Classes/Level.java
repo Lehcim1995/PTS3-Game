@@ -19,6 +19,9 @@ public class Level
     private ArrayList<LevelBlock> levelBlocks;
     private ArrayList<LevelBlock> blockModule;
     private int levelSize = 4;
+    private int row = 1;
+    private int block = 1;
+    private int blockSize = 5;
     //<editor-fold desc="Getters & Setters">
 
     public ArrayList<LevelBlock> getLevelBlocks()
@@ -59,7 +62,9 @@ public class Level
         Random random = new Random(seed);
         for(int i = 0; i < (levelSize * levelSize); i++)
         {
-            newLevelBlockList.add(blockModule.get(random.nextInt(blockModule.size())));
+            LevelBlock levelBlock = blockModule.get(random.nextInt(blockModule.size()));
+            levelBlock.SetPosition(GetNewBlockLocation(i));
+            newLevelBlockList.add(levelBlock);
         }
         return newLevelBlockList;
     }
@@ -68,5 +73,23 @@ public class Level
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
         //newLevelBlockList.add(new LevelBlock(null, new Vector2(),0,new Rectangle(0f,0f,50f,100f)));
         return newLevelBlockList;
+    }
+    private Vector2 GetNewBlockLocation(int blockNumber){
+        if(blockNumber == 0)
+        {
+            block++;
+            return new Vector2(0,0);
+        }
+        else
+        {
+            if(block > levelSize)
+            {
+                block = 0;
+                row++;
+            }
+            Vector2 newLocation = new Vector2(block*blockSize,row*blockSize);
+            block++;
+            return newLocation;
+        }
     }
 }
