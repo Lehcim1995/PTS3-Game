@@ -44,6 +44,9 @@ public class Player extends GameObject
     //
     private InputClass ic;
 
+    public boolean reloadThread = false;
+
+
     public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape)
     {
         super(texture, position, rotation, boundingShape);
