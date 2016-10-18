@@ -98,7 +98,7 @@ public class Gun
     }
 
     //</editor-fold>
-    public Gun(String name, float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, String shootType, boolean hasInfinit, float bulletSpeed, int projectileDamage, Player owner)
+    public Gun(String name, float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, gunType gunMode, boolean hasInfinit, float bulletSpeed, int projectileDamage, Player owner)
     {
         this.name = name;
         this.reloadTime = reloadTime;
@@ -109,7 +109,7 @@ public class Gun
             this.currentBullets = maxBullets;
         }
         this.maxBullets = maxBullets;
-        this.shootType = shootType;
+        GunMode = gunMode;
         this.hasInfinit = hasInfinit;
         this.bulletSpeed = bulletSpeed;
         this.projectileDamage = projectileDamage;
@@ -132,12 +132,8 @@ public class Gun
 
     public void Shoot()
     {
-
-        System.out.println("pew");
-
         if (millis() - lastShot > 500 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
-            System.out.println("    pew");
             Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x, owner.GetPosition().y), owner.GetRotation());
 
             GameManager.getInstance().AddProjectile(projectile);
