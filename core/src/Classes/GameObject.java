@@ -56,6 +56,31 @@ abstract class GameObject implements IGameObject
         return hitbox;
     }
 
+    public final static Vector2[] DEFAULTHITBOX(float size)
+    {
+        Vector2 v1 = new Vector2(size,size);
+        Vector2 v2 = new Vector2(-size,size);
+        Vector2 v3 = new Vector2(size,-size);
+        Vector2 v4 = new Vector2(-size,-size);
+        Vector2[] v5 = {v1,v2,v4,v3};
+
+        return v5;
+    }
+
+    public final static Vector2[] DEFAULTHITBOX(float height, float width)
+    {
+        float y = height/2;
+        float x = width/2;
+
+        Vector2 v1 = new Vector2(x,y);
+        Vector2 v2 = new Vector2(-x,y);
+        Vector2 v3 = new Vector2(x,-y);
+        Vector2 v4 = new Vector2(-x,-y);
+        Vector2[] v5 = {v1,v2,v4,v3};
+
+        return v5;
+    }
+
     public void setHitbox(Vector2[] verticis)
     {
         if (verticis.length < 3)
