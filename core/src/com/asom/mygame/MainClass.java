@@ -23,6 +23,7 @@ public class MainClass extends ApplicationAdapter
     private Camera camera;
     private ShapeRenderer shapeRenderer;
     private Player player;
+    private Player enemy;
 
     @Override
     public void create()
@@ -36,7 +37,9 @@ public class MainClass extends ApplicationAdapter
         //Shape s = new CircleShape();
         //player = new Player(img, position, 0, s);
         player = new Player();
+        enemy = new Player();
         GameManager.getInstance().addGameObject(player);
+        GameManager.getInstance().addGameObject(enemy);
     }
 
     @Override
