@@ -8,10 +8,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -66,6 +63,15 @@ public class MainClass extends ApplicationAdapter
         }
 
         shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.polygon(player.getHitbox().getTransformedVertices());
+        for(IGameObject go :  GameManager.getInstance().GetProjectile())
+        {
+            shapeRenderer.polygon(((Projectile)go).getHitbox().getTransformedVertices());
+        }
+        shapeRenderer.end();
     }
 
     public void update()
@@ -76,6 +82,7 @@ public class MainClass extends ApplicationAdapter
         {
             go.Update();
         }
+        GameManager.getInstance().Update();
     }
 
     private void inputhandler()

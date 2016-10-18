@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import java.util.ArrayList;
+
 /**
  * Created by michel on 27-9-2016.
  */
@@ -20,10 +22,9 @@ abstract class GameObject implements IGameObject
     protected Vector2 position;
     protected float rotation;
     protected Shape boundingShape;
+    protected Polygon hitbox;
 
-    private Polygon hitbox;
-
-    protected GameObject ()
+    protected GameObject()
     {
 
     }
@@ -35,6 +36,7 @@ abstract class GameObject implements IGameObject
         this.rotation = rotation;
         this.boundingShape = boundingShape;
     }
+
     protected GameObject(Vector2 position, float rotation, Shape boundingShape)
     {
         this.position = position;
@@ -46,11 +48,109 @@ abstract class GameObject implements IGameObject
     {
         this.position = position;
         this.rotation = rotation;
+        hitbox = new Polygon();
+    }
+
+    public Polygon getHitbox()
+    {
+        return hitbox;
+    }
+
+    public void setHitbox(Vector2[] verticis)
+    {
+        if (verticis.length < 3)
+        {
+            throw new IllegalArgumentException("Need atleast 3 or more verticies");
+        }
+
+        hitbox = new Polygon();
+
+        float[] verticisList = new float[verticis.length * 2];
+
+        for (int i = 0, j = 0; i < verticis.length; i++, j += 2)
+        {
+            verticisList[j] = verticis[i].x;
+            verticisList[j + 1] = verticis[i].y;
+        }
+
+        hitbox.setOrigin(0, 0);
+        hitbox.setVertices(verticisList);
+    }
+
+    public void setHitbox(Polygon hitbox)
+    {
+        this.hitbox = hitbox;
+    }
+
+    public void setOrigin(Vector2 origin)
+    {
+        hitbox.setOrigin(origin.x, origin.y);
     }
 
     public Shape getBoundingShape()
     {
         return boundingShape;
+    }
+
+    public boolean isHit(GameObject go)
+    {
+        return isOverlap(hitbox, go.getHitbox());
+    }
+
+    //Static Methode to check if 2 polygons are intersecting
+    public boolean isOverlap(Polygon A, Polygon B)
+    {
+        float[] VerticesA = A.getTransformedVertices();
+        float[] VerticesB = B.getTransformedVertices();
+
+        for (int i = 0; i < VerticesB.length; i += 2)
+        {
+            float x = VerticesB[i];
+            float y = VerticesB[i + 1];
+
+            if (isInside(x, y, A)) return true;
+        }
+
+        for (int i = 0; i < VerticesA.length; i += 2)
+        {
+            float x = VerticesA[i];
+            float y = VerticesA[i + 1];
+
+            if (isInside(x, y, B)) return true;
+        }
+        return false;
+    }
+
+    private boolean isInside(float x, float y, Polygon p)
+    {
+        //you can choose either Crossing Number or Winding Numer, you can google implementation
+        //return p.contains(x,y);
+
+        int i, j;
+        boolean c = false;
+
+        ArrayList<Vector2> verList = new ArrayList<Vector2>();
+
+        for (int ver = 0; ver < p.getTransformedVertices().length; ver += 2)
+        {
+            Vector2 v = new Vector2();
+            v.x = p.getTransformedVertices()[ver];
+            v.y = p.getTransformedVertices()[ver + 1];
+
+            verList.add(v);
+        }
+
+        int verCount = verList.size();
+
+        for (i = 0, j = verCount - 1; i < verCount; j = i++)
+        {
+            if ((((verList.get(i).y <= y) && (y < verList.get(j).y))
+                    || ((verList.get(j).y <= y) && (y < verList.get(i).y)))
+                    && (x < (verList.get(j).x - verList.get(i).x) * (y - verList.get(i).y) / (verList.get(j).y - verList.get(i).y) + verList.get(i).x))
+
+                c = !c;
+        }
+        return c;
     }
 
     @Override
@@ -71,7 +171,10 @@ abstract class GameObject implements IGameObject
         return position;
     }
 
-    public Vector2 GetScreenPosition() { return new Vector2(position.x, Gdx.app.getGraphics().getHeight() - position.y ); }
+    public Vector2 GetScreenPosition()
+    {
+        return new Vector2(position.x, Gdx.app.getGraphics().getHeight() - position.y);
+    }
 
     @Override
     public void SetPosition(Vector2 pos)

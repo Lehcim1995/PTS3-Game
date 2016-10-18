@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.input.*;
 
@@ -72,8 +74,17 @@ public class Player extends GameObject
         position = new Vector2(50, 50);
         speed = 125.1248f;
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("kanbkergun",0,10,0,10,10,"kut",true,100,10,this);
+        this.gunEquipped = new Gun("kankergun",0,10,0,10,10,"kut",true,25,10,this);
         Gdx.input.setInputProcessor(ic);
+
+        Vector2 v1 = new Vector2(width,width);
+        Vector2 v2 = new Vector2(-width,width);
+        Vector2 v3 = new Vector2(width,-width);
+        Vector2 v4 = new Vector2(-width,-width);
+        Vector2[] v5 = {v1,v2,v4,v3};
+
+        setHitbox(v5);
+        //setOrigin(new Vector2(position.x - width/2,position.y + width/2 ));
     }
 
 
@@ -137,6 +148,8 @@ public class Player extends GameObject
         Vector2 rot = new Vector2(width * MathUtils.sin(rad),width * MathUtils.cos(rad));
         sr.setColor(Color.RED);
         sr.line(position.x, position.y, position.x + rot.x, position.y + rot.y);
+
+
         //sr.dispose();
     }
 
@@ -152,6 +165,17 @@ public class Player extends GameObject
         if (ic.GetKey(Input.Keys.R)){ Reload(); }
 
         position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));
+        hitbox.setPosition(position.x, position.y);
+        hitbox.setRotation(-rotation);
+
+
+        for (Projectile b : GameManager.getInstance().GetProjectile())
+        {
+            if (isOverlap(hitbox, b.getHitbox()))
+            {
+                System.out.println("Hit ");
+            }
+        }
     }
 
     public String GetName()

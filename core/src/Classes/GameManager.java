@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.bullet.Bullet;
 
 /**
  * Created by Nick on 11-10-2016.
@@ -36,35 +37,18 @@ public class GameManager
 
     public void Update()
     {
-
-    }
-    /*
-    boolean isOverlap(Polygon A, Polygon B){
-        A.getTransformedVertices();
-        float[] transformedVertices = A.getTransformedVertices();
-        for (int i = 0; i < transformedVertices.length; i++)
+        for (Player p: playerList)
         {
-            float v = transformedVertices[i];
-
-            if (isInside(v, B)) return true;
+            for (Projectile b : bullets)
+            {
+                if (p.isHit(b))
+                {
+                    System.out.println("HIT");
+                }
+            }
         }
-
-        float[] transformedVertices1 = B.getTransformedVertices();
-        for (int i = 0; i < transformedVertices1.length; i++)
-        {
-            float v = transformedVertices1[i];
-
-            if (isInside(v, A)) return true;
-        }
-        return false;
     }
 
-    boolean isInside(float[] v , Polygon p)
-    {
-        //you can choose either Crossing Number or Winding Numer, you can google implementation
-
-        return false;
-    }*/
 
     //TODO CheckHit registratie
     public void CheckHit(Projectile projectile)
@@ -72,7 +56,13 @@ public class GameManager
 
         for (Player p: playerList)
         {
-
+            for (Projectile b : bullets)
+            {
+                if (p.isHit(b))
+                {
+                    System.out.println("HIT");
+                }
+            }
         }
         /*Vector2 playerPosition;
         Vector2 projectilePosition = projectile.GetPosition();
