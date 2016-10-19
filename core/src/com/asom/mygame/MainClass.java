@@ -19,7 +19,7 @@ import java.util.Iterator;
 public class MainClass extends ApplicationAdapter
 {
     SpriteBatch batch;
-    Texture img;
+    //Texture img;
     private Camera camera;
     private ShapeRenderer shapeRenderer;
     private Player player;
@@ -29,18 +29,18 @@ public class MainClass extends ApplicationAdapter
     public void create()
     {
         batch = new SpriteBatch();
-        img = new Texture(Gdx.files.internal("core\\assets\\badlogic.jpg"));
+        //img = new Texture(Gdx.files.internal("core\\assets\\badlogic.jpg"));
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera(w,h);
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 1);
+        //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 1);
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
-        player = new Player();
         enemy = new Player();
+        player = new Player();
         GameManager.getInstance().addGameObject(player);
         GameManager.getInstance().addGameObject(enemy);
     }
@@ -49,6 +49,7 @@ public class MainClass extends ApplicationAdapter
     public void render()
     {
         update();
+        camera.position.set(player.GetPosition().x, player.GetPosition().y, 1);
         camera.update();
 
 
@@ -83,14 +84,12 @@ public class MainClass extends ApplicationAdapter
         GameManager.getInstance().Update();
     }
 
-
     @Override
     public void dispose()
     {
         batch.dispose();
-        img.dispose();
+        //img.dispose();
         shapeRenderer.dispose();
-
     }
 
 }

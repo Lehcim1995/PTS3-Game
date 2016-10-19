@@ -84,13 +84,13 @@ public class GameObject implements IGameObject
     public final static Vector2[] CIRCLEHITBOX(float size, int vertices)
     {
         Vector2[] vList = new Vector2[vertices];
-        double rad = Math.toRadians(360 / vertices );
+        double rad = Math.toRadians(360 / vertices);
 
-        for(int i = 0; i < vertices; i++)
+        for (int i = 0; i < vertices; i++)
         {
-            float x = MathUtils.sin((float)(rad * i));
-            float y = MathUtils.cos((float)(rad * i));
-            Vector2 v = new Vector2(x,y);
+            float x = MathUtils.sin((float) (rad * i));
+            float y = MathUtils.cos((float) (rad * i));
+            Vector2 v = new Vector2(x, y);
             v = v.scl(size);
             vList[i] = v;
         }
@@ -230,7 +230,7 @@ public class GameObject implements IGameObject
 
     public Vector2 GetScreenPosition()
     {
-        return new Vector2(position.x, Gdx.app.getGraphics().getHeight() - position.y);
+        return new Vector2(/*position.x*/ Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2/* - position.y*/);
     }
 
     @Override

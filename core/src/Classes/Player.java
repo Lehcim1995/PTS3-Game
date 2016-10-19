@@ -77,7 +77,7 @@ public class Player extends GameObject
         this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 5000, Gun.gunType.Automatic, true, 670, 10, this);
         Gdx.input.setInputProcessor(ic);
 
-        setHitbox(CIRCLEHITBOX(halfWidth, 8));
+        setHitbox(CIRCLEHITBOX(halfWidth));
     }
 
     public void Walk(walkDir dir, boolean setWalking)
