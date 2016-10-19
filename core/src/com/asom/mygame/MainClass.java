@@ -24,6 +24,7 @@ public class MainClass extends ApplicationAdapter
     private ShapeRenderer shapeRenderer;
     private Player player;
     private Player enemy;
+    private float zoom = 1;
 
     @Override
     public void create()
@@ -34,8 +35,9 @@ public class MainClass extends ApplicationAdapter
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        camera = new OrthographicCamera(w,h);
-        //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 1);
+
+        camera = new OrthographicCamera(w*zoom,h*zoom);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 1);
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
@@ -50,10 +52,10 @@ public class MainClass extends ApplicationAdapter
     {
         update();
         camera.position.set(player.GetPosition().x, player.GetPosition().y, 1);
+        //camera.rotate(camera. , 0, 0, 1);
         camera.update();
 
-
-        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //batch.setProjectionMatrix(camera.combined);
         //batch.begin();
@@ -70,13 +72,14 @@ public class MainClass extends ApplicationAdapter
 
         shapeRenderer.end();
 
+        /*
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
         for(Classes.GameObject go :  GameManager.getInstance().getObjects())
         {
             shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
         }
-        shapeRenderer.end();
+        shapeRenderer.end();*/
     }
 
     public void update()
@@ -90,6 +93,12 @@ public class MainClass extends ApplicationAdapter
         batch.dispose();
         //img.dispose();
         shapeRenderer.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        camera.viewportHeight = height * zoom;
+        camera.viewportWidth = width * zoom;
     }
 
 }

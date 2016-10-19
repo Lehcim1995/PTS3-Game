@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import static com.badlogic.gdx.utils.TimeUtils.millis;
+
 /**
  * Created by Nick on 11-10-2016.
  */
@@ -19,6 +21,8 @@ public class Projectile extends GameObject
     private float bulletSpeed;
     private int damage;
     private Gun gun;
+    private long lifeTime = 10000; // in millisec
+    private long born; //in millisec
 
     public Projectile(Gun gun, Texture texture, Vector2 position, float rotation, Shape boundingShape)
     {
@@ -52,6 +56,7 @@ public class Projectile extends GameObject
         Vector2[] v5 = {v1,v2,v4,v3};
 
         setHitbox(v5);
+        born = millis();
 
     }
 
@@ -63,7 +68,7 @@ public class Projectile extends GameObject
     @Override
     public void Draw(ShapeRenderer sr)
     {
-        sr.setColor(Color.GREEN);
+        sr.setColor(Color.RED);
         sr.circle(position.x, position.y, 5);
     }
 
@@ -76,6 +81,11 @@ public class Projectile extends GameObject
 
         hitbox.setPosition(position.x, position.y);
         hitbox.setRotation(-rotation);
+
+        if (millis() - born > lifeTime)
+        {
+            GameManager.getInstance().ClearProjectile(this);
+        }
 
     }
 

@@ -21,10 +21,14 @@ public class Level
     private long seed;
     private ArrayList<LevelBlock> levelBlocks;
     private ArrayList<LevelBlock> blockModule;
-    private int levelSize = 8;
+    private int levelSize = 32;
     private int row = 1;
     private int block = 1;
     private int blockSize = 1;
+
+    public static float LevelSizeX = 2000;
+    public static float LevelSizeY = 2000;
+
     //<editor-fold desc="Getters & Setters">
 
     public ArrayList<LevelBlock> getLevelBlocks()
@@ -69,7 +73,7 @@ public class Level
             Vector2[] hithoxVectorList = GameObject.DEFAULTHITBOX(13);
             LevelBlock levelBlock = new LevelBlock(new Vector2(0,0),0,hithoxVectorList); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
             //GetNewBlockLocation(i)
-            levelBlock.SetPosition(new Vector2(random.nextInt(Gdx.graphics.getWidth()), random.nextInt(Gdx.graphics.getHeight())));
+            levelBlock.SetPosition(new Vector2(random.nextInt((int)LevelSizeX), random.nextInt((int)LevelSizeY)));
             newLevelBlockList.add(levelBlock);
 
             GameManager.getInstance().addGameObject(levelBlock);

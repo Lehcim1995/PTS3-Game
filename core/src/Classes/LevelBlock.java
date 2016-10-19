@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 public class LevelBlock extends GameObject
 {
 
-    private Color color = Color.BLACK;
+    private Color color = Color.LIGHT_GRAY;
     private float size = 26;
     private float halfSize = size/2;
 
@@ -26,7 +26,7 @@ public class LevelBlock extends GameObject
     @Override
     public void Draw(ShapeRenderer sr)
     {
-        sr.setColor(Color.BROWN);
+        sr.setColor(color);
 
         sr.rect(position.x - halfSize, position.y - halfSize, size, size);
     }

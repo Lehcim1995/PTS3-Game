@@ -45,7 +45,8 @@ public class Player extends GameObject
     //Appearance
     private float width = 34;
     private float halfWidth = width/2;
-    private Color color = Color.BLACK;
+    private float quaterWidth = halfWidth / 2;
+    private Color color = Color.DARK_GRAY;
     //
     private InputClass ic;
     private boolean shooting = false;
@@ -132,19 +133,15 @@ public class Player extends GameObject
     @Override
     public void Draw(ShapeRenderer sr)
     {
+        float rad = MathUtils.degreesToRadians * (rotation - 90);
+        Vector2 rot = new Vector2((halfWidth + quaterWidth) * MathUtils.sin(rad), (halfWidth + quaterWidth) * MathUtils.cos(rad));
+        //Vector2 rot2 = new Vector2((halfWidth - 1) * MathUtils.sin(rad), (halfWidth - 1) * MathUtils.cos(rad));
+        sr.setColor(Color.RED);
+        sr.rectLine(position.x, position.y, position.x + rot.x, position.y + rot.y, 8);
 
         sr.setColor(color);
-        //shapeRenderer.line(position.x, position.y, mous
-        // e.x, mouse.y);
         sr.circle(position.x, position.y, halfWidth);
 
-        float rad = MathUtils.degreesToRadians * (rotation - 90);
-        Vector2 rot = new Vector2(halfWidth * MathUtils.sin(rad), halfWidth * MathUtils.cos(rad));
-        sr.setColor(Color.RED);
-        sr.line(position.x, position.y, position.x + rot.x, position.y + rot.y);
-
-
-        //sr.dispose();
     }
 
     public Gun getGunEquipped()
@@ -193,11 +190,29 @@ public class Player extends GameObject
             Spawn();
         }
 
-
-
         position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));
         hitbox.setPosition(position.x, position.y);
         hitbox.setRotation(-rotation);
+
+        if (position.x < 0)
+        {
+            position.x = 0;
+        }
+
+        if (position.y < 0)
+        {
+            position.y = 0;
+        }
+
+        if (position.x > Level.LevelSizeX)
+        {
+            position.x = Level.LevelSizeX;
+        }
+
+        if (position.y > Level.LevelSizeY)
+        {
+            position.y = Level.LevelSizeY;
+        }
 
         if (shooting)
         {

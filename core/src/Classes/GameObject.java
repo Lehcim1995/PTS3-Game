@@ -151,6 +151,13 @@ public class GameObject implements IGameObject
 
     public boolean isHit(GameObject go)
     {
+        Vector2 other = new Vector2();
+        other.x = go.hitbox.getX();
+        other.y = go.hitbox.getY();
+
+        float dis = position.dst(other);
+
+        if (dis > 100) return false;
         return isOverlap(hitbox, go.getHitbox());
     }
 
