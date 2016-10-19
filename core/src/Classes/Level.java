@@ -21,7 +21,7 @@ public class Level
     private long seed;
     private ArrayList<LevelBlock> levelBlocks;
     private ArrayList<LevelBlock> blockModule;
-    private int levelSize = 32;
+    private int levelSize = 16;
     private int row = 1;
     private int block = 1;
     private int blockSize = 1;
@@ -104,5 +104,25 @@ public class Level
             block++;
             return newLocation;
         }
+
+
+    }
+
+    class Module
+    {
+        public boolean[][] Module1 = new boolean[][]
+        {
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true},
+                {true,true,true,true,true,true,true,true}
+        };
     }
 }

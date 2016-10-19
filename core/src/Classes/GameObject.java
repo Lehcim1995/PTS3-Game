@@ -187,9 +187,6 @@ public class GameObject implements IGameObject
 
     private boolean isInside(float x, float y, Polygon p)
     {
-        //you can choose either Crossing Number or Winding Numer, you can google implementation
-        //return p.contains(x,y);
-
         int i, j;
         boolean c = false;
 
