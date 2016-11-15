@@ -57,8 +57,8 @@ public class MainClass extends ApplicationAdapter
         {
             e.printStackTrace();
         }
-        GameManager.getInstance().addGameObject(player);
-        GameManager.getInstance().addGameObject(enemy);
+        GameManager.getInstance().addPlayer(player);
+        GameManager.getInstance().addPlayer(enemy);
     }
 
     @Override

@@ -2,9 +2,18 @@ package Classes;
 
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
+import com.badlogic.gdx.graphics.Color;
+import fontyspublisher.IRemotePropertyListener;
 import fontyspublisher.IRemotePublisherForDomain;
+import fontyspublisher.IRemotePublisherForListener;
 import fontyspublisher.RemotePublisher;
+import sun.security.x509.IPAddressName;
 
+import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -13,7 +22,7 @@ import java.util.*;
 /**
  * Created by Nick on 11-10-2016.
  */
-public class GameManager implements IGameManager
+public class GameManager implements IGameManager, IRemotePropertyListener
 {
     private static GameManager instance;
     private String name;
@@ -26,13 +35,10 @@ public class GameManager implements IGameManager
     private ArrayList<GameObject> objects;
     private boolean gen = false;
 
-    private IRemotePublisherForDomain remotePublisherForDomain;
+    private IRemotePublisherForListener remotePublisherForListener;
     private Registry registry;
-    private static final String bindingName = "GameObjectsServer";
-    private static final  int portNumber = 1099;
     private Timer GameTicks;
     private TimerTask GameTickTask;
-    private static final float TICKLENGTH = 1000/30; // in milli
 
     private GameManager()
     {
@@ -43,21 +49,44 @@ public class GameManager implements IGameManager
         chats = new ArrayList<Chat>();
         objects =  new ArrayList<GameObject>();
 
+        InetAddress localhost = null;
         try
         {
-            remotePublisherForDomain = new RemotePublisher();
-            remotePublisherForDomain.registerProperty("objects");
-            registry = LocateRegistry.createRegistry(portNumber);
-            registry.rebind(bindingName, remotePublisherForDomain);
+            localhost = InetAddress.getLocalHost();
+        }
+        catch (UnknownHostException e)
+        {
+            System.out.println("Client: UnknownHostException: " + e.getMessage());
+        }
+        String ip = localhost.getHostAddress();
 
+
+        try
+        {
+            registry = LocateRegistry.getRegistry(ip,portNumber);
+
+            remotePublisherForListener = (IRemotePublisherForListener) registry.lookup(bindingName);
+            remotePublisherForListener.subscribeRemoteListener(this, propertyName);
         }
         catch (RemoteException ex)
         {
-            System.out.println("Server: RemoteExeption " + ex.getMessage());
+            System.out.println("Client: RemoteExeption " + ex.getMessage());
+        }
+        catch (NotBoundException e)
+        {
+            System.out.println("Client: NotBoundException " + e.getMessage());
         }
 
         GameTicks = new Timer();
-        //GameTicks.scheduleAtFixedRate(GameTickTask, 0, (int)TICKLENGTH);
+        GameTickTask = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                System.out.println(playerList.size());
+            }
+        };
+        GameTicks.scheduleAtFixedRate(GameTickTask, 0, 2000);
     }
 
     public static GameManager getInstance()
@@ -149,7 +178,7 @@ public class GameManager implements IGameManager
     public void AddProjectile(Projectile projectile)
     {
         bullets.add(projectile);
-        objects.add(projectile);
+        addGameObject(projectile);
     }
 
     public void ClearProjectiles()
@@ -172,6 +201,13 @@ public class GameManager implements IGameManager
     public void addGameObject(GameObject go)
     {
         objects.add(go);
+        System.out.println("Client new " + go.getClass().getName());
+    }
+
+    public void addPlayer(Player pl)
+    {
+        playerList.add(pl);
+        addGameObject(pl);
     }
 
     public ArrayList<GameObject> getObjects()
@@ -189,5 +225,23 @@ public class GameManager implements IGameManager
     public void SetTick(IGameObject object)
     {
 
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException
+    {
+        //System.out.println("List lenght " + ((ArrayList<IGameObject>)propertyChangeEvent.getNewValue()).size());
+
+        Color color = (Color)propertyChangeEvent.getNewValue();
+
+        if (playerList != null && playerList.size() > 0)
+        {
+            playerList.get(0).SetColor(color);
+        }
+
+//        for(IGameObject go : (ArrayList<IGameObject>)propertyChangeEvent.getNewValue())
+//        {
+//            addGameObject((GameObject) go);
+//        }
     }
 }

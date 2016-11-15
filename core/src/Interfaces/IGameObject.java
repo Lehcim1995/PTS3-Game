@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 /**
  * Created by michel on 27-9-2016.
  */
-public interface IGameObject
+public interface IGameObject extends Serializable
 {
     Texture GetTexture();
     void SetTexture(Texture tex);

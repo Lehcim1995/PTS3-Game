@@ -256,6 +256,11 @@ public class Player extends GameObject
         return this.name;
     }
 
+    public void SetColor(Color color)
+    {
+        this.color = color;
+    }
+
     enum walkDir
     {
         Up,

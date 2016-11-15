@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by michel on 27-9-2016.
  */
-public class GameObject extends UnicastRemoteObject implements IGameObject, fontyspublisher.IRemotePropertyListener
+public class GameObject extends UnicastRemoteObject implements IGameObject
 {
 
     protected Texture texture;
@@ -304,12 +305,6 @@ public class GameObject extends UnicastRemoteObject implements IGameObject, font
     }
 
     public void Draw(ShapeRenderer sr)
-    {
-
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException
     {
 
     }
