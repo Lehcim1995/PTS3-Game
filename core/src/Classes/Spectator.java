@@ -1,5 +1,7 @@
 package Classes;
 
+import java.rmi.RemoteException;
+
 /**
  * Created by Jasper on 11-10-2016.
  */
@@ -10,7 +12,8 @@ public class Spectator extends GameObject
     private int playerFromList;
     private Player player;
 
-    public Spectator(String name, GameManager gameManager) {
+    public Spectator(String name, GameManager gameManager) throws RemoteException
+    {
         this.name = name;
         this.gm = gameManager;
         this.playerFromList = 0;

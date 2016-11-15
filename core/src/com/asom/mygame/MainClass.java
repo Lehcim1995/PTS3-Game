@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
+import java.rmi.RemoteException;
 import java.util.Iterator;
 
 public class MainClass extends ApplicationAdapter
@@ -35,14 +36,27 @@ public class MainClass extends ApplicationAdapter
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-
         camera = new OrthographicCamera(w*zoom,h*zoom);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 1);
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
-        enemy = new Player();
-        player = new Player();
+        try
+        {
+            enemy = new Player();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            player = new Player();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
         GameManager.getInstance().addGameObject(player);
         GameManager.getInstance().addGameObject(enemy);
     }
@@ -50,7 +64,14 @@ public class MainClass extends ApplicationAdapter
     @Override
     public void render()
     {
-        update();
+        try
+        {
+            update();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
         camera.position.set(player.GetPosition().x, player.GetPosition().y, 1);
         //camera.rotate(camera. , 0, 0, 1);
         camera.update();
@@ -82,7 +103,7 @@ public class MainClass extends ApplicationAdapter
         shapeRenderer.end();*/
     }
 
-    public void update()
+    public void update() throws RemoteException
     {
         GameManager.getInstance().Update();
     }

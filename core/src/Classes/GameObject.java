@@ -10,12 +10,16 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import java.beans.PropertyChangeEvent;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+
 
 /**
  * Created by michel on 27-9-2016.
  */
-public class GameObject implements IGameObject
+public class GameObject extends UnicastRemoteObject implements IGameObject, fontyspublisher.IRemotePropertyListener
 {
 
     protected Texture texture;
@@ -26,35 +30,39 @@ public class GameObject implements IGameObject
     protected Shape boundingShape;
     protected Polygon hitbox;
 
-    protected GameObject()
+    protected GameObject() throws RemoteException
     {
 
     }
 
-    protected GameObject(Vector2 position, float rotation, Polygon hitbox)
+    protected GameObject(Vector2 position, float rotation, Polygon hitbox) throws RemoteException
     {
+        super();
         this.position = position;
         this.rotation = rotation;
         this.hitbox = hitbox;
     }
 
-    protected GameObject(Texture texture, Vector2 position, float rotation, Shape boundingShape)
+    protected GameObject(Texture texture, Vector2 position, float rotation, Shape boundingShape) throws RemoteException
     {
+        super();
         this.texture = texture;
         this.position = position;
         this.rotation = rotation;
         this.boundingShape = boundingShape;
     }
 
-    protected GameObject(Vector2 position, float rotation, Shape boundingShape)
+    protected GameObject(Vector2 position, float rotation, Shape boundingShape) throws RemoteException
     {
+        super();
         this.position = position;
         this.rotation = rotation;
         this.boundingShape = boundingShape;
     }
 
-    public GameObject(Vector2 position, float rotation)
+    public GameObject(Vector2 position, float rotation) throws RemoteException
     {
+        super();
         this.position = position;
         this.rotation = rotation;
         hitbox = new Polygon();
@@ -285,7 +293,7 @@ public class GameObject implements IGameObject
 
     }
 
-    public void Update()
+    public void Update() throws RemoteException
     {
 
     }
@@ -296,6 +304,12 @@ public class GameObject implements IGameObject
     }
 
     public void Draw(ShapeRenderer sr)
+    {
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException
     {
 
     }

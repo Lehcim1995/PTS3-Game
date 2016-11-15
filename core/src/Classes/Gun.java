@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import java.rmi.RemoteException;
 import java.util.Random;
 import java.util.Timer;
 
@@ -136,7 +137,7 @@ public class Gun
         return hasShot;
     }
 
-    public void Shoot()
+    public void Shoot() throws RemoteException
     {
         if (millis() - lastShot > 1000 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {

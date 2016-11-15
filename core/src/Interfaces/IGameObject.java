@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 /**
  * Created by michel on 27-9-2016.
  */
@@ -25,7 +29,7 @@ public interface IGameObject
     void OnCollisionExit(IGameObject Other);
     void OnCollisionStay(IGameObject Other);
 
-    void Update();
+    void Update() throws RemoteException;
 
     void Draw();
 }

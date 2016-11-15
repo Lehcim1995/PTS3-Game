@@ -1,12 +1,19 @@
 package Classes;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import Interfaces.IGameManager;
+import Interfaces.IGameObject;
+import fontyspublisher.IRemotePublisherForDomain;
+import fontyspublisher.RemotePublisher;
+
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.*;
 
 /**
  * Created by Nick on 11-10-2016.
  */
-public class GameManager
+public class GameManager implements IGameManager
 {
     private static GameManager instance;
     private String name;
@@ -19,6 +26,14 @@ public class GameManager
     private ArrayList<GameObject> objects;
     private boolean gen = false;
 
+    private IRemotePublisherForDomain remotePublisherForDomain;
+    private Registry registry;
+    private static final String bindingName = "GameObjectsServer";
+    private static final  int portNumber = 1099;
+    private Timer GameTicks;
+    private TimerTask GameTickTask;
+    private static final float TICKLENGTH = 1000/30; // in milli
+
     private GameManager()
     {
         playerList = new ArrayList<Player>();
@@ -27,6 +42,22 @@ public class GameManager
         killLogs = new ArrayList<KillLog>();
         chats = new ArrayList<Chat>();
         objects =  new ArrayList<GameObject>();
+
+        try
+        {
+            remotePublisherForDomain = new RemotePublisher();
+            remotePublisherForDomain.registerProperty("objects");
+            registry = LocateRegistry.createRegistry(portNumber);
+            registry.rebind(bindingName, remotePublisherForDomain);
+
+        }
+        catch (RemoteException ex)
+        {
+            System.out.println("Server: RemoteExeption " + ex.getMessage());
+        }
+
+        GameTicks = new Timer();
+        //GameTicks.scheduleAtFixedRate(GameTickTask, 0, (int)TICKLENGTH);
     }
 
     public static GameManager getInstance()
@@ -34,7 +65,7 @@ public class GameManager
         return instance == null ? (instance = new GameManager()) : instance;
     }
 
-    public void Update()
+    public void Update() throws RemoteException
     {
         if (!gen)
         {
@@ -78,7 +109,7 @@ public class GameManager
     }
 
     //TODO start a match
-    public void StartMatch()
+    public void StartMatch() throws RemoteException
     {
         level = new Level();
         gen = true;
@@ -146,5 +177,17 @@ public class GameManager
     public ArrayList<GameObject> getObjects()
     {
         return objects;
+    }
+
+    @Override
+    public List<IGameObject> GetTick()
+    {
+        return null;
+    }
+
+    @Override
+    public void SetTick(IGameObject object)
+    {
+
     }
 }

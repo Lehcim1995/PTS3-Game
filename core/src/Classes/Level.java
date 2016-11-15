@@ -1,5 +1,6 @@
 package Classes;
 
+import java.rmi.RemoteException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Random;
@@ -46,13 +47,13 @@ public class Level
         return seed;
     }
     //</editor-fold>
-    public Level()
+    public Level() throws RemoteException
     {
         this.seed = GenerateSeed();
         this.blockModule = CreateModules();
         this.levelBlocks = GenerateLevelBlocks();
     }
-    public Level(long seed)
+    public Level(long seed) throws RemoteException
     {
         this.seed = seed;
         this.blockModule = CreateModules();
@@ -64,7 +65,7 @@ public class Level
         return random.nextLong();
     }
 
-    private ArrayList<LevelBlock> GenerateLevelBlocks()
+    private ArrayList<LevelBlock> GenerateLevelBlocks() throws RemoteException
     {
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
         Random random = new Random(seed);
@@ -80,7 +81,7 @@ public class Level
         }
         return newLevelBlockList;
     }
-    private ArrayList<LevelBlock> CreateModules()
+    private ArrayList<LevelBlock> CreateModules() throws RemoteException
     {
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
         Vector2[] hithoxVectorList = GameObject.DEFAULTHITBOX(13); //{new Vector2(50,50),new Vector2(0,50),new Vector2(50,0),new Vector2(0,0)};

@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.input.*;
 import javafx.application.Platform;
 
+import java.rmi.RemoteException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -55,19 +56,19 @@ public class Player extends GameObject
 
     private Vector2 lastpos;
 
-    public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape)
+    public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape) throws RemoteException
     {
         super(texture, position, rotation, boundingShape);
     }
 
-    public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape, String name, Gun gunEquipped)
+    public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape, String name, Gun gunEquipped) throws RemoteException
     {
         super(texture, position, rotation, boundingShape);
         this.name = name;
         this.gunEquipped = gunEquipped;
     }
 
-    public Player()
+    public Player() throws RemoteException
     {
         super();
         //640,480
@@ -102,7 +103,7 @@ public class Player extends GameObject
         }
     }
 
-    public void Shoot()
+    public void Shoot() throws RemoteException
     {
         this.gunEquipped.Shoot();
     }
@@ -160,7 +161,7 @@ public class Player extends GameObject
     }
 
     @Override
-    public void Update()
+    public void Update() throws RemoteException
     {
         lastpos = position;
         Vector2 pos = new Vector2();
