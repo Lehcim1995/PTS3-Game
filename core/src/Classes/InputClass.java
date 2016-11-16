@@ -9,6 +9,7 @@ import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 import sun.util.resources.cldr.aa.CalendarData_aa_ER;
 
+import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;

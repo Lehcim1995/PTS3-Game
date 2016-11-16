@@ -3,6 +3,8 @@ package Classes;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import fontyspublisher.IRemotePublisherForDomain;
 import fontyspublisher.RemotePublisher;
@@ -57,7 +59,13 @@ public class ServerGameManger implements IGameManager
             {
                 try
                 {
-                    remotePublisherForDomain.inform(propertyName , null, color);
+                    float r = MathUtils.random();
+                    float g = MathUtils.random();
+                    float b = MathUtils.random();
+                    float a = MathUtils.random();
+
+                    color = new Color(r,g,b,a);
+                    remotePublisherForDomain.inform(propertyName , null, color.toIntBits());
                 }
                 catch (RemoteException e)
                 {

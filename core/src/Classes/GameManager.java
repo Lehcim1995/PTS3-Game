@@ -17,12 +17,13 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 /**
  * Created by Nick on 11-10-2016.
  */
-public class GameManager implements IGameManager, IRemotePropertyListener
+public class GameManager extends UnicastRemoteObject implements IGameManager, IRemotePropertyListener
 {
     private static GameManager instance;
     private String name;
@@ -40,7 +41,7 @@ public class GameManager implements IGameManager, IRemotePropertyListener
     private Timer GameTicks;
     private TimerTask GameTickTask;
 
-    private GameManager()
+    private GameManager() throws RemoteException
     {
         playerList = new ArrayList<Player>();
         spectators = new ArrayList<Spectator>();
@@ -91,7 +92,15 @@ public class GameManager implements IGameManager, IRemotePropertyListener
 
     public static GameManager getInstance()
     {
-        return instance == null ? (instance = new GameManager()) : instance;
+        try
+        {
+            return instance == null ? (instance = new GameManager()) : instance;
+        }
+        catch (RemoteException ex )
+        {
+            System.out.println("Client Remote error " + ex.getMessage());
+        }
+        return instance;
     }
 
     public void Update() throws RemoteException
@@ -231,11 +240,12 @@ public class GameManager implements IGameManager, IRemotePropertyListener
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException
     {
         //System.out.println("List lenght " + ((ArrayList<IGameObject>)propertyChangeEvent.getNewValue()).size());
-
-        Color color = (Color)propertyChangeEvent.getNewValue();
+        int colorint = (Integer) propertyChangeEvent.getNewValue();
+        Color color = new Color(colorint);
 
         if (playerList != null && playerList.size() > 0)
         {
+
             playerList.get(0).SetColor(color);
         }
 
