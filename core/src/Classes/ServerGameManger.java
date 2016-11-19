@@ -3,13 +3,14 @@ package Classes;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
+import fontyspublisher.IRemotePropertyListener;
 import fontyspublisher.IRemotePublisherForDomain;
+import fontyspublisher.IRemotePublisherForListener;
 import fontyspublisher.RemotePublisher;
-import sun.applet.Main;
 
+import java.beans.PropertyChangeEvent;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -21,13 +22,14 @@ import java.util.TimerTask;
 /**
  * Created by michel on 15-11-2016.
  */
-public class ServerGameManger implements IGameManager
+public class ServerGameManger implements IGameManager, IRemotePropertyListener
 {
 
     private IRemotePublisherForDomain remotePublisherForDomain;
+    private IRemotePublisherForListener remotePublisherForListener;
     private Registry registry;
-    private Timer GameTicks;
-    private TimerTask GameTickTask;
+    private transient Timer GameTicks;
+    private transient TimerTask GameTickTask;
 
     private List<IGameObject> mygameObjects;
     private Color color;
@@ -38,11 +40,14 @@ public class ServerGameManger implements IGameManager
 
         try
         {
-            color = Color.RED;
+            color = SerializableColor.RED;
             remotePublisherForDomain = new RemotePublisher();
             remotePublisherForDomain.registerProperty(propertyName);
+            remotePublisherForDomain.registerProperty(remoteGameManger);
             registry = LocateRegistry.createRegistry(portNumber);
-            registry.rebind(bindingName, remotePublisherForDomain);
+            registry.rebind(testBindingName, remotePublisherForDomain);
+            remotePublisherForListener = (IRemotePublisherForListener) remotePublisherForDomain;
+            remotePublisherForListener.subscribeRemoteListener(this, remoteGameManger);
             //TODO fix dat de remote shit niet op de server wordt aangeroepen
 
         }
@@ -64,8 +69,8 @@ public class ServerGameManger implements IGameManager
                     float b = MathUtils.random();
                     float a = MathUtils.random();
 
-                    color = new Color(r,g,b,a);
-                    remotePublisherForDomain.inform(propertyName , null, color.toIntBits());
+                    color = new SerializableColor(r,g,b,a);
+                    remotePublisherForDomain.inform(propertyName , null, color);
                 }
                 catch (RemoteException e)
                 {
@@ -84,12 +89,22 @@ public class ServerGameManger implements IGameManager
     @Override
     public List<IGameObject> GetTick()
     {
+
+        System.out.println("GetTick");
         return null;
     }
 
     @Override
     public void SetTick(IGameObject object)
     {
+        System.out.println("SetTick");
+    }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException
+    {
+        String s = (String) propertyChangeEvent.getNewValue();
+
+        System.out.println("Server " + s);
     }
 }

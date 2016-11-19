@@ -2,15 +2,11 @@ package Classes;
 
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
-import com.badlogic.gdx.graphics.Color;
 import fontyspublisher.IRemotePropertyListener;
 import fontyspublisher.IRemotePublisherForDomain;
 import fontyspublisher.IRemotePublisherForListener;
-import fontyspublisher.RemotePublisher;
-import sun.security.x509.IPAddressName;
 
 import java.beans.PropertyChangeEvent;
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
@@ -37,6 +33,8 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
     private boolean gen = false;
 
     private IRemotePublisherForListener remotePublisherForListener;
+    private IRemotePublisherForDomain remotePublisherForDomain;
+    private IGameManager sgm;
     private Registry registry;
     private Timer GameTicks;
     private TimerTask GameTickTask;
@@ -61,12 +59,14 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
         }
         String ip = localhost.getHostAddress();
 
-
         try
         {
             registry = LocateRegistry.getRegistry(ip,portNumber);
 
-            remotePublisherForListener = (IRemotePublisherForListener) registry.lookup(bindingName);
+            remotePublisherForListener = (IRemotePublisherForListener) registry.lookup(testBindingName);
+            remotePublisherForDomain = (IRemotePublisherForDomain) registry.lookup(testBindingName);
+
+
             remotePublisherForListener.subscribeRemoteListener(this, propertyName);
         }
         catch (RemoteException ex)
@@ -84,7 +84,15 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
             @Override
             public void run()
             {
-                System.out.println(playerList.size());
+                System.out.println("GameTick");
+                try
+                {
+                    remotePublisherForDomain.inform(remoteGameManger, null, "Test");
+                }
+                catch (RemoteException e)
+                {
+                    e.printStackTrace();
+                }
             }
         };
         GameTicks.scheduleAtFixedRate(GameTickTask, 0, 2000);
@@ -210,7 +218,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
     public void addGameObject(GameObject go)
     {
         objects.add(go);
-        System.out.println("Client new " + go.getClass().getName());
+        //System.out.println("Client new " + go.getClass().getName());
     }
 
     public void addPlayer(Player pl)
@@ -240,18 +248,15 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException
     {
         //System.out.println("List lenght " + ((ArrayList<IGameObject>)propertyChangeEvent.getNewValue()).size());
-        int colorint = (Integer) propertyChangeEvent.getNewValue();
-        Color color = new Color(colorint);
+        //int colorint = (Integer) propertyChangeEvent.getNewValue();
+        System.out.println("Client");
+
+        SerializableColor color = (SerializableColor) propertyChangeEvent.getNewValue();
 
         if (playerList != null && playerList.size() > 0)
         {
 
             playerList.get(0).SetColor(color);
         }
-
-//        for(IGameObject go : (ArrayList<IGameObject>)propertyChangeEvent.getNewValue())
-//        {
-//            addGameObject((GameObject) go);
-//        }
     }
 }
