@@ -11,7 +11,8 @@ import java.util.List;
 public interface IGameManager extends Remote
 {
 
-    String bindingName = "GameObjectsServer";
+    String testBindingName = "GameObjectsServer";
+    String remoteGameManger = "remoteGameManager";
     String propertyName = "gameobjects";
     int portNumber = 1099;
     int fps = 30;
