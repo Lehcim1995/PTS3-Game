@@ -1,14 +1,11 @@
-package Classes;
+package com.asom.mygame;
 
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import fontyspublisher.IRemotePublisherForDomain;
 import fontyspublisher.RemotePublisher;
-import sun.applet.Main;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

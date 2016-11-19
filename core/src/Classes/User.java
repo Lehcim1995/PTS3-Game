@@ -13,8 +13,9 @@ public class User
     private int matchesPlayed;
     private int matchesWon;
     private int matchesLost;
+    private boolean isBanned;
 
-    public User(String name, int kills, int deaths, int shotsHit, int shots, int matchesPlayed, int matchesWon, int matchesLost)
+    public User(String name, int kills, int deaths, int shotsHit, int shots, int matchesPlayed, int matchesWon, int matchesLost, int isBanned)
     {
         this.name = name;
         this.kills = kills;
@@ -24,6 +25,16 @@ public class User
         this.matchesPlayed = matchesPlayed;
         this.matchesWon = matchesWon;
         this.matchesLost = matchesLost;
+
+        if (isBanned != 1)
+        {
+            this.isBanned = false;
+        }
+        else {
+            this.isBanned = true;
+        }
+
+
     }
 
     public void UpdateData(int kills, int deaths, int shotsHit, int shots, boolean matchWon)
