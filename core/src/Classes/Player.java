@@ -165,12 +165,12 @@ public class Player extends GameObject
     public void Reload()
     {
         gunEquipped.Reload();
-
     }
 
     public void Spawn()
     {
         position = new Vector2(r.nextInt(610) + 17, r.nextInt(450) + 17);
+        //position = new Vector2(r.nextInt(2000) + 17, r.nextInt(2000) + 17);
     }
 
     public void Die()
