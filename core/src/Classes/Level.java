@@ -22,13 +22,13 @@ public class Level
     private long seed;
     private ArrayList<LevelBlock> levelBlocks;
     private ArrayList<LevelBlock> blockModule;
-    private int levelSize = 16;
+    private int levelSize = 2;
     private int row = 1;
     private int block = 1;
     private int blockSize = 1;
 
-    public static float LevelSizeX = 2000;
-    public static float LevelSizeY = 2000;
+    public static float LevelSizeX = 500;
+    public static float LevelSizeY = 500;
 
     //<editor-fold desc="Getters & Setters">
 

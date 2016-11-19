@@ -1,6 +1,8 @@
 package Classes;
 
 import Interfaces.IGameObject;
+import LibGDXSerialzableClasses.SerializableColor;
+import LibGDXSerialzableClasses.SerializablePolygon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -31,8 +33,8 @@ public class Player extends GameObject
     private float maxSpeed;
     private float acceleration;
     private float deAcceleration;
-    private Gun gunEquipped;
-    private Random r = new Random();
+    private transient Gun gunEquipped;
+    private transient Random r = new Random();
     //Game vars
     private int kills;
     private int deaths;
@@ -47,23 +49,24 @@ public class Player extends GameObject
     private float width = 34;
     private float halfWidth = width/2;
     private float quaterWidth = halfWidth / 2;
-    private Color color = Color.DARK_GRAY;
+    private SerializableColor color = SerializableColor.DARK_GRAY;
     //
-    private InputClass ic;
+    private transient InputClass ic;
     private boolean shooting = false;
 
     public boolean reloadThread = false;
 
     private Vector2 lastpos;
 
-    public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape) throws RemoteException
+    public Player(Vector2 position, float rotation) throws RemoteException
     {
-        super(texture, position, rotation, boundingShape);
+        super(position, rotation);
+        setHitbox(CIRCLEHITBOX(halfWidth));
     }
 
     public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape, String name, Gun gunEquipped) throws RemoteException
     {
-        super(texture, position, rotation, boundingShape);
+        super(texture, position, rotation);
         this.name = name;
         this.gunEquipped = gunEquipped;
     }
@@ -77,7 +80,58 @@ public class Player extends GameObject
         speed = 125.1248f;
         ic = new InputClass(this);
         this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
+
         Gdx.input.setInputProcessor(ic);
+
+        setHitbox(CIRCLEHITBOX(halfWidth));
+    }
+
+    public Player(Player p) throws RemoteException
+    {
+        super();
+        //640,480
+        position = p.position;
+        lastpos = position;
+        speed = 125.1248f;
+        this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
+
+        setHitbox(CIRCLEHITBOX(halfWidth));
+    }
+
+    public Player(Player p, boolean PlayerInput) throws RemoteException
+    {
+        super();
+        //640,480
+        position = p.position;
+        lastpos = position;
+        speed = 125.1248f;
+        name = p.GetName();
+        color = p.color;
+
+        ic = new InputClass(this);
+        this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
+        if (PlayerInput)
+        {
+            Gdx.input.setInputProcessor(ic);
+        }
+
+        setHitbox(CIRCLEHITBOX(halfWidth));
+    }
+
+    public Player(boolean PlayerInput) throws RemoteException
+    {
+        super();
+        //640,480
+        position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
+        lastpos = position;
+        speed = 125.1248f;
+        ic = new InputClass(this);
+        this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
+
+        if (PlayerInput)
+        {
+            Gdx.input.setInputProcessor(ic);
+        }
 
         setHitbox(CIRCLEHITBOX(halfWidth));
     }
@@ -140,7 +194,7 @@ public class Player extends GameObject
         sr.setColor(Color.RED);
         sr.rectLine(position.x, position.y, position.x + rot.x, position.y + rot.y, 8);
 
-        sr.setColor(color);
+        sr.setColor(color.getLibGDXColor());
         sr.circle(position.x, position.y, halfWidth);
 
     }
@@ -166,29 +220,33 @@ public class Player extends GameObject
         lastpos = position;
         Vector2 pos = new Vector2();
         //System.out.println("Update");
-        if (ic.GetKey(Input.Keys.W))
+
+        if (ic != null)
         {
-            pos.y += 1;
-        }
-        if (ic.GetKey(Input.Keys.S))
-        {
-            pos.y -= 1;
-        }
-        if (ic.GetKey(Input.Keys.A))
-        {
-            pos.x -= 1;
-        }
-        if (ic.GetKey(Input.Keys.D))
-        {
-            pos.x += 1;
-        }
-        if (ic.GetKey(Input.Keys.R))
-        {
-            Reload();
-        }
-        if (ic.GetKey(Input.Keys.P))
-        {
-            Spawn();
+            if (ic.GetKey(Input.Keys.W))
+            {
+                pos.y += 1;
+            }
+            if (ic.GetKey(Input.Keys.S))
+            {
+                pos.y -= 1;
+            }
+            if (ic.GetKey(Input.Keys.A))
+            {
+                pos.x -= 1;
+            }
+            if (ic.GetKey(Input.Keys.D))
+            {
+                pos.x += 1;
+            }
+            if (ic.GetKey(Input.Keys.R))
+            {
+                Reload();
+            }
+            if (ic.GetKey(Input.Keys.P))
+            {
+                Spawn();
+            }
         }
 
         position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));
@@ -256,9 +314,14 @@ public class Player extends GameObject
         return this.name;
     }
 
-    public void SetColor(Color color)
+    public void SetColor(SerializableColor color)
     {
         this.color = color;
+    }
+
+    public void SetName(String name)
+    {
+        this.name = name;
     }
 
     enum walkDir

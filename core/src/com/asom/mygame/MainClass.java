@@ -1,6 +1,7 @@
 package com.asom.mygame;
 
 import Classes.*;
+import Interfaces.IGameObject;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -23,8 +24,6 @@ public class MainClass extends ApplicationAdapter
     //Texture img;
     private Camera camera;
     private ShapeRenderer shapeRenderer;
-    private Player player;
-    private Player enemy;
     private float zoom = 1;
 
     @Override
@@ -37,28 +36,28 @@ public class MainClass extends ApplicationAdapter
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera(w*zoom,h*zoom);
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 1);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, zoom);
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
-        try
-        {
-            enemy = new Player();
-        }
-        catch (RemoteException e)
-        {
-            e.printStackTrace();
-        }
-        try
-        {
-            player = new Player();
-        }
-        catch (RemoteException e)
-        {
-            e.printStackTrace();
-        }
-        GameManager.getInstance().addPlayer(player);
-        GameManager.getInstance().addPlayer(enemy);
+//        try
+//        {
+//            enemy = new Player();
+//        }
+//        catch (RemoteException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        try
+//        {
+//            player = new Player();
+//        }
+//        catch (RemoteException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        GameManager.getInstance().addPlayer(player);
+//        GameManager.getInstance().addPlayer(enemy);
     }
 
     @Override
@@ -72,7 +71,11 @@ public class MainClass extends ApplicationAdapter
         {
             e.printStackTrace();
         }
-        camera.position.set(player.GetPosition().x, player.GetPosition().y, 1);
+
+        if (GameManager.getInstance().GetPlayer() != null)
+        {
+            camera.position.set(GameManager.getInstance().GetPlayer().GetPosition().x, GameManager.getInstance().GetPlayer().GetPosition().y, 1);
+        }
         //camera.rotate(camera. , 0, 0, 1);
         camera.update();
 
@@ -85,9 +88,9 @@ public class MainClass extends ApplicationAdapter
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (Iterator<GameObject> iterator = GameManager.getInstance().getObjects().iterator(); iterator.hasNext(); )
+        for (Iterator<IGameObject> iterator = GameManager.getInstance().getObjects().iterator(); iterator.hasNext(); )
         {
-            GameObject go = iterator.next();
+            IGameObject go = iterator.next();
             go.Draw(shapeRenderer);
         }
 

@@ -28,7 +28,7 @@ public class Projectile extends GameObject
 
     public Projectile(Gun gun, Texture texture, Vector2 position, float rotation, Shape boundingShape) throws RemoteException
     {
-        super (texture, position, rotation, boundingShape);
+        super (texture, position, rotation);
         this.gun = gun;
         bulletSpeed = gun.getBulletSpeed();
         damage = gun.getProjectileDamage();
@@ -36,7 +36,7 @@ public class Projectile extends GameObject
 
     public Projectile(Gun gun, Vector2 position, float rotation, Shape boundingShape) throws RemoteException
     {
-        super (position, rotation, boundingShape);
+        super (position, rotation);
         this.gun = gun;
         bulletSpeed = gun.getBulletSpeed();
         damage = gun.getProjectileDamage();

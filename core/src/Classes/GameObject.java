@@ -1,6 +1,7 @@
 package Classes;
 
 import Interfaces.IGameObject;
+import LibGDXSerialzableClasses.SerializablePolygon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 
-import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by michel on 27-9-2016.
  */
-public class GameObject extends UnicastRemoteObject implements IGameObject
+public class GameObject implements IGameObject, Serializable
 {
 
     protected Texture texture;
@@ -29,14 +29,14 @@ public class GameObject extends UnicastRemoteObject implements IGameObject
     protected Vector2 position;
     protected float rotation;
     protected Shape boundingShape;
-    protected Polygon hitbox;
+    protected SerializablePolygon hitbox;
 
     protected GameObject() throws RemoteException
     {
 
     }
 
-    protected GameObject(Vector2 position, float rotation, Polygon hitbox) throws RemoteException
+    protected GameObject(Vector2 position, float rotation, SerializablePolygon hitbox) throws RemoteException
     {
         super();
         this.position = position;
@@ -44,29 +44,20 @@ public class GameObject extends UnicastRemoteObject implements IGameObject
         this.hitbox = hitbox;
     }
 
-    protected GameObject(Texture texture, Vector2 position, float rotation, Shape boundingShape) throws RemoteException
+    protected GameObject(Texture texture, Vector2 position, float rotation) throws RemoteException
     {
         super();
         this.texture = texture;
         this.position = position;
         this.rotation = rotation;
-        this.boundingShape = boundingShape;
     }
 
-    protected GameObject(Vector2 position, float rotation, Shape boundingShape) throws RemoteException
+    protected GameObject(Vector2 position, float rotation) throws RemoteException
     {
         super();
         this.position = position;
         this.rotation = rotation;
-        this.boundingShape = boundingShape;
-    }
-
-    public GameObject(Vector2 position, float rotation) throws RemoteException
-    {
-        super();
-        this.position = position;
-        this.rotation = rotation;
-        hitbox = new Polygon();
+        hitbox = new SerializablePolygon();
     }
 
     public Polygon getHitbox()
@@ -129,7 +120,7 @@ public class GameObject extends UnicastRemoteObject implements IGameObject
             throw new IllegalArgumentException("Need atleast 3 or more verticies");
         }
 
-        hitbox = new Polygon();
+        hitbox = new SerializablePolygon();
 
         float[] verticisList = new float[verticis.length * 2];
 
@@ -143,7 +134,7 @@ public class GameObject extends UnicastRemoteObject implements IGameObject
         hitbox.setVertices(verticisList);
     }
 
-    public void setHitbox(Polygon hitbox)
+    public void setHitbox(SerializablePolygon hitbox)
     {
         this.hitbox = hitbox;
     }
@@ -158,11 +149,12 @@ public class GameObject extends UnicastRemoteObject implements IGameObject
         return boundingShape;
     }
 
-    public boolean isHit(GameObject go)
+    @Override
+    public boolean isHit(IGameObject go)
     {
         Vector2 other = new Vector2();
-        other.x = go.hitbox.getX();
-        other.y = go.hitbox.getY();
+        other.x = go.getHitbox().getX();
+        other.y = go.getHitbox().getY();
 
         float dis = position.dst(other);
 
@@ -265,18 +257,6 @@ public class GameObject extends UnicastRemoteObject implements IGameObject
     }
 
     @Override
-    public Shape GetBoundingShape()
-    {
-        return boundingShape;
-    }
-
-    @Override
-    public void SetBoundingShape(Shape shape)
-    {
-        boundingShape = shape;
-    }
-
-    @Override
     public void OnCollisionEnter(IGameObject other)
     {
 
@@ -294,17 +274,14 @@ public class GameObject extends UnicastRemoteObject implements IGameObject
 
     }
 
+    @Override
     public void Update() throws RemoteException
     {
 
     }
 
-    public void Draw()
-    {
-
-    }
-
-    public void Draw(ShapeRenderer sr)
+    @Override
+    public void Draw(ShapeRenderer shapeRenderer)
     {
 
     }

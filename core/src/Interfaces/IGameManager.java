@@ -11,11 +11,15 @@ import java.util.List;
 public interface IGameManager extends Remote
 {
 
+    String ClientNewPlayer = "ClientNewPlayer";
+    String ServerNewPlayer = "ServerNewPlayer";
+    String UpdatePlayer = "UpdatePlayer";
+    String GetPlayer = "GetPlayer";
     String testBindingName = "GameObjectsServer";
     String remoteGameManger = "remoteGameManager";
     String propertyName = "gameobjects";
     int portNumber = 1099;
-    int fps = 30;
+    int fps = 10;
     float TICKLENGTH = 1000 / fps; // in milli
 
     List<IGameObject> GetTick() throws RemoteException;
