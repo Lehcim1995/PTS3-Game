@@ -1,0 +1,5 @@
+projectKey=A-S0M_Source_Code
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/A-S0M_Source_Code
+ceTaskId=AViL8UPELLeWq20X65ga
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AViL8UPELLeWq20X65ga
