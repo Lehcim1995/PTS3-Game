@@ -16,6 +16,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 /**
  * Created by Nick on 11-10-2016.
  */
@@ -56,7 +58,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
         }
         catch (UnknownHostException e)
         {
-            System.out.println("Client: UnknownHostException: " + e.getMessage());
+            LOGGER.info("Client: UnknownHostException: " + e.getMessage());
         }
         String ip = localhost.getHostAddress();
 
@@ -73,11 +75,11 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
         }
         catch (RemoteException ex)
         {
-            System.out.println("Client: RemoteExeption " + ex.getMessage());
+            LOGGER.info("Client: RemoteExeption " + ex.getMessage());
         }
         catch (NotBoundException e)
         {
-            System.out.println("Client: NotBoundException " + e.getMessage());
+            LOGGER.info("Client: NotBoundException " + e.getMessage());
         }
 
         SpawnPlayer();
@@ -114,7 +116,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
         }
         catch (RemoteException ex)
         {
-            System.out.println("Client Remote error " + ex.getMessage());
+            LOGGER.info("Client Remote error " + ex.getMessage());
         }
         return instance;
     }
@@ -166,7 +168,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
         }
         catch (RemoteException e)
         {
-            System.out.println("Remote Exception " + e.getMessage());
+            LOGGER.info("Remote Exception " + e.getMessage());
         }
     }
 

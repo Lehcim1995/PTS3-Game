@@ -3,6 +3,8 @@ package Classes;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 /**
  * Created by Jasper on 19-11-2016.
  */
@@ -27,7 +29,7 @@ public class Connection
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
 
             return false;
         }
@@ -60,7 +62,7 @@ public class Connection
                     }
                     catch(Exception ex)
                     {
-                        System.out.println(ex.getMessage());
+                        LOGGER.info(ex.getMessage());
                     }
                     finally
                     {
@@ -70,7 +72,7 @@ public class Connection
             }
             catch(Exception ex)
             {
-                System.out.println(ex.getMessage());
+                LOGGER.info(ex.getMessage());
             }
         }
 
@@ -91,7 +93,7 @@ public class Connection
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
     }
 
@@ -108,7 +110,7 @@ public class Connection
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
     }
 }
