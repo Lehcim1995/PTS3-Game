@@ -12,32 +12,32 @@ public enum ScreenEnum {
     },
     REGISTER {
         public AbstractScreen getScreen(Object... params) {
-            return new LoginScreen();
+            return new RegisterScreen();
         }
     },
     LOBBYLIST {
         public AbstractScreen getScreen(Object... params) {
-            return new LoginScreen();
+            return new LobbyListScreen();
         }
     },
     STATS {
         public AbstractScreen getScreen(Object... params) {
-            return new LoginScreen();
+            return new StatsScreen();
         }
     },
     NEWLOBBY {
         public AbstractScreen getScreen(Object... params) {
-            return new LoginScreen();
+            return new NewLobbyScreen();
         }
     },
     GAMELOBBY {
         public AbstractScreen getScreen(Object... params) {
-            return new LoginScreen();
+            return new GameLobbyScreen();
         }
     },
     GAMESCENE {
         public AbstractScreen getScreen(Object... params) {
-            return new LoginScreen();
+            return new GameSceneScreen();
         }
     };
 
