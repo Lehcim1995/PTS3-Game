@@ -2,10 +2,8 @@ package com.asom.mygame;
 
 import Classes.*;
 import Interfaces.IGameObject;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import Scenes.ScreenManager;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -18,24 +16,23 @@ import javafx.beans.Observable;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 
-public class MainClass extends ApplicationAdapter
-{
+public class MainClass extends ApplicationAdapter {
     SpriteBatch batch;
     //Texture img;
     private Camera camera;
     private ShapeRenderer shapeRenderer;
     private float zoom = 1;
 
+
     @Override
-    public void create()
-    {
+    public void create() {
         batch = new SpriteBatch();
         //img = new Texture(Gdx.files.internal("core\\assets\\badlogic.jpg"));
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        camera = new OrthographicCamera(w*zoom,h*zoom);
+        camera = new OrthographicCamera(w * zoom, h * zoom);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, zoom);
         camera.update();
 
@@ -61,25 +58,20 @@ public class MainClass extends ApplicationAdapter
     }
 
     @Override
-    public void render()
-    {
-        try
-        {
+    public void render() {
+        try {
             update();
-        }
-        catch (RemoteException e)
-        {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
 
-        if (GameManager.getInstance().GetPlayer() != null)
-        {
+        if (GameManager.getInstance().GetPlayer() != null) {
             camera.position.set(GameManager.getInstance().GetPlayer().GetPosition().x, GameManager.getInstance().GetPlayer().GetPosition().y, 1);
         }
         //camera.rotate(camera. , 0, 0, 1);
         camera.update();
 
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //batch.setProjectionMatrix(camera.combined);
         //batch.begin();
@@ -88,8 +80,7 @@ public class MainClass extends ApplicationAdapter
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (Iterator<IGameObject> iterator = GameManager.getInstance().getObjects().iterator(); iterator.hasNext(); )
-        {
+        for (Iterator<IGameObject> iterator = GameManager.getInstance().getObjects().iterator(); iterator.hasNext(); ) {
             IGameObject go = iterator.next();
             go.Draw(shapeRenderer);
         }
@@ -106,14 +97,12 @@ public class MainClass extends ApplicationAdapter
         shapeRenderer.end();*/
     }
 
-    public void update() throws RemoteException
-    {
+    public void update() throws RemoteException {
         GameManager.getInstance().Update();
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         batch.dispose();
         //img.dispose();
         shapeRenderer.dispose();
@@ -124,5 +113,4 @@ public class MainClass extends ApplicationAdapter
         camera.viewportHeight = height * zoom;
         camera.viewportWidth = width * zoom;
     }
-
 }
