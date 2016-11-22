@@ -54,7 +54,7 @@ public class Connection
                             //success = true;
                             if(resultSet.next())
                             {
-                                return new User(resultSet.getString("name") + ", " + resultSet.getString("lastname"), resultSet.getInt("kills"), resultSet.getInt("deaths"), resultSet.getInt("shotshit"), resultSet.getInt("shots"), resultSet.getInt("matchesplayed"), resultSet.getInt("matcheswon"), resultSet.getInt("matcheslost"), resultSet.getInt("isbanned"));
+                                return new User(resultSet.getString("name") + " " + resultSet.getString("lastname"), resultSet.getString("email"), resultSet.getInt("kills"), resultSet.getInt("deaths"), resultSet.getInt("shotshit"), resultSet.getInt("shots"), resultSet.getInt("matchesplayed"), resultSet.getInt("matcheswon"), resultSet.getInt("matcheslost"), resultSet.getInt("isbanned"));
                             }
                         }
                     }
@@ -79,5 +79,36 @@ public class Connection
 
     public void UpdateStats(User user) {
 
+        String query = "UPDATE \"USER_TABLE\" SET kills = " + user.GetKills() + ", deaths = " + user.GetDeaths() + ", shotshit = " + user.GetShotsHit() + ", shots = " + user.GetShots()
+                + ", matchesplayed = " + user.GetMatchesPlayed() + ", matcheswon = " + user.GetMatchesWon() + ", matcheslost = " + user.GetMatchesLost() + " WHERE email = " + user.GetEmail();
+
+        try
+        {
+            if(database.Connect())
+            {
+                database.InsertQuery(query);
+            }
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void BanUser(User user) {
+
+        String query = "UPDATE \"USER_TABLE\" SET isbanned = 1 WHERE email = " + user.GetEmail();
+
+        try
+        {
+            if(database.Connect())
+            {
+                database.InsertQuery(query);
+            }
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 }

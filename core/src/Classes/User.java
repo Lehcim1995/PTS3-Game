@@ -6,6 +6,7 @@ package Classes;
 public class User
 {
     private String name;
+    private String email;
     private int kills;
     private int deaths;
     private int shotsHit;
@@ -15,9 +16,10 @@ public class User
     private int matchesLost;
     private boolean isBanned;
 
-    public User(String name, int kills, int deaths, int shotsHit, int shots, int matchesPlayed, int matchesWon, int matchesLost, int isBanned)
+    public User(String name, String email, int kills, int deaths, int shotsHit, int shots, int matchesPlayed, int matchesWon, int matchesLost, int isBanned)
     {
         this.name = name;
+        this.email = email;
         this.kills = kills;
         this.deaths = deaths;
         this.shotsHit = shotsHit;
@@ -56,9 +58,15 @@ public class User
 
     public String GetName() { return name; }
 
+    public String GetEmail() { return email; }
+
     public int GetKills() { return  kills; }
 
+    public int GetDeaths() { return deaths; }
+
     public int GetShots() { return shots; }
+
+    public int GetShotsHit() { return shotsHit; }
 
     public int GetMatchesPlayed() { return matchesPlayed; }
 
