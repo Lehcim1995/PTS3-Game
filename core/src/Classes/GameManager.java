@@ -93,7 +93,8 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
                 {
                     if (playerMe != null)
                     {
-                        remotePublisherForDomain.inform(propertyName, null, playerMe);
+                        remotePublisherForDomain.inform(GetPlayer, null, playerMe);
+                        //TODO dont use GetPlayer but use the playername
                     }
                 }
                 catch (RemoteException e)
@@ -158,20 +159,10 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
 
     public void SpawnPlayer()
     {
-        System.out.println("Client New Player");
-//        try
-//        {
-//            playerMe = new Player();
-//            //addPlayer(playerMe);
-//        }
-//        catch (RemoteException e)
-//        {
-//            System.out.println("Remote Exception " + e.getMessage());
-//        }
-
         try
         {
             remotePublisherForDomain.inform(ClientNewPlayer, null, playerMe);
+            //TODO Use String to send player name
         }
         catch (RemoteException e)
         {
@@ -285,6 +276,8 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
     {
         if (propertyChangeEvent.getPropertyName().equals(UpdatePlayer))
         {
+
+            //TODO don't use this
             //Vector2 pos = (Vector2) propertyChangeEvent.getNewValue();
             ArrayList<IGameObject> list = (ArrayList<IGameObject>) propertyChangeEvent.getNewValue();
             for (IGameObject go : list)
@@ -295,10 +288,12 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
                     if (p.GetName().equals(p2.GetName()))
                     {
                         p2.SetPosition(p.GetPosition());
+                        p2.SetRotation(p.GetRotation());
                         break;
                     }
                 }
             }
+
 
             //playerMe.SetPosition(pos);
         }
@@ -306,6 +301,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
         if (propertyChangeEvent.getPropertyName().equals(ServerNewPlayer))
         {
             System.out.println("Client New Player");
+            //TODO fix this bullshit
 
             ArrayList<IGameObject> list = (ArrayList<IGameObject>) propertyChangeEvent.getNewValue();
             Collections.reverse(list);

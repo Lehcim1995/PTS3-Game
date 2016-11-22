@@ -31,6 +31,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     private transient TimerTask GameTickTask;
 
     private List<IGameObject> mygameObjects;
+    private List<IGameObject> playerList;
     private Player player1;
     private Player player2;
     private Player player3;
@@ -41,6 +42,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     public ServerGameManger() throws RemoteException
     {
         mygameObjects = new ArrayList<IGameObject>();
+        playerList = new ArrayList<IGameObject>(10);
 
         try
         {
@@ -51,6 +53,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             remotePublisherForDomain.registerProperty(ClientNewPlayer);
             remotePublisherForDomain.registerProperty(UpdatePlayer);
             remotePublisherForDomain.registerProperty(ServerNewPlayer);
+            remotePublisherForDomain.registerProperty(GetPlayer);
 
             registry = LocateRegistry.createRegistry(portNumber);
             registry.rebind(testBindingName, remotePublisherForDomain);
@@ -58,6 +61,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             remotePublisherForListener = (IRemotePublisherForListener) remotePublisherForDomain;
             remotePublisherForListener.subscribeRemoteListener(this, propertyName);
             remotePublisherForListener.subscribeRemoteListener(this, ClientNewPlayer);
+            remotePublisherForListener.subscribeRemoteListener(this, GetPlayer);
 
         }
         catch (RemoteException ex)
@@ -167,6 +171,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
         if (propertyChangeEvent.getPropertyName().equals(ClientNewPlayer))
         {
+            //TODO use playername, remove hardcode;
+
             if (player1 == null)
             {
                 System.out.println("Server Create Player 1");
@@ -224,15 +230,26 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             }
         }
 
-        if (propertyChangeEvent.getPropertyName().equals(UpdatePlayer))
+        if (propertyChangeEvent.getPropertyName().equals(GetPlayer))
         {
-            Player p = (Player) propertyChangeEvent.getNewValue();
 
-            if (p.GetName().equals("player1"))
+            //TODO Use playername;
+            Player p = (Player) propertyChangeEvent.getNewValue();
+            System.out.println("Server Update Player " + p.GetName());
+
+            if (p.GetName().equals("Player1"))
             {
+                System.out.println("Server Update Player1");
                 player1.SetPosition(p.GetPosition());
+                player1.SetRotation(p.GetRotation());
             }
 
+            if (p.GetName().equals("Player2"))
+            {
+                System.out.println("Server Update Player2");
+                player2.SetPosition(p.GetPosition());
+                player2.SetRotation(p.GetRotation());
+            }
         }
     }
 }

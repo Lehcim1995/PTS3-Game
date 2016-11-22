@@ -19,7 +19,7 @@ public interface IGameManager extends Remote
     String remoteGameManger = "remoteGameManager";
     String propertyName = "gameobjects";
     int portNumber = 1099;
-    int fps = 10;
+    int fps = 64;
     float TICKLENGTH = 1000 / fps; // in milli
 
     List<IGameObject> GetTick() throws RemoteException;

@@ -113,4 +113,10 @@ public class Projectile extends GameObject
             ((Player) other).Die();
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return "Rekt";
+    }
 }

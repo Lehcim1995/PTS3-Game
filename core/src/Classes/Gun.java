@@ -203,7 +203,8 @@ public class Gun
         }
     }
 
-    public String ToString()
+    @Override
+    public String toString()
     {
         return name + " " + " Ammo" + currentBullets + "/" + maxBullets;
     }
