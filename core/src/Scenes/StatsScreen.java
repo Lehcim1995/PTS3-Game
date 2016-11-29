@@ -3,6 +3,7 @@ package Scenes;
 import Classes.User;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -18,19 +19,22 @@ import com.badlogic.gdx.utils.Align;
 public class StatsScreen extends AbstractScreen{
 
     User user;
-    Skin skin = new Skin();
+    Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
     public StatsScreen()
     {
         super();
 
         // TODO Pich up current user (from server)
-        user = null;
+        this.user = new User("Coolones", "jasper.v.son@home.nl", 300, 21, 300, 400, 30, 25, 5, 0);
     }
     @Override
     public void buildStage() {
+
+        Label stats = new Label("Stats", skin);
+
         Label kills = new Label("Total Kills: " + String.valueOf(user.GetKills()), skin);
-        Label deaths = new Label("Total Deaths" + String.valueOf(user.GetDeaths()), skin);
+        Label deaths = new Label("Total Deaths: " + String.valueOf(user.GetDeaths()), skin);
         Label KDratio = new Label("K/D ratio: " + String.valueOf(user.GetKDRatio()), skin);
         Label shotsFired = new Label("Total shots fired: " + String.valueOf(user.GetShots()), skin);
         Label shotsHit = new Label("Total shots hit: " + String.valueOf(user.GetShotsHit()), skin);
@@ -41,7 +45,31 @@ public class StatsScreen extends AbstractScreen{
         Label matchesLost = new Label("Total matches lost: " + String.valueOf(user.GetMatchesLost()), skin);
         ImageButton btnBack = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("core\\assets\\btn_back.png")))));
 
+        stats.setPosition(50.f, 440.f, Align.left);
 
+        kills.setPosition(50.f, 380.f, Align.left);
+        deaths.setPosition(50.f, 360.f, Align.left);
+        KDratio.setPosition(300.f, 370.f, Align.left);
+        shotsFired.setPosition(50.f, 320.f, Align.left);
+        shotsHit.setPosition(50.f, 300.f, Align.left);
+        accuracy.setPosition(300.f, 310.f, Align.left);
+        matchesPlayed.setPosition(50.f, 260.f, Align.left);
+        winRatio.setPosition(50.f, 240.f, Align.left);
+        matchesWon.setPosition(300.f, 260.f, Align.left);
+        matchesLost.setPosition(300.f, 240.f, Align.left);
+
+        addActor(stats);
+
+        addActor(kills);
+        addActor(deaths);
+        addActor(KDratio);
+        addActor(shotsFired);
+        addActor(shotsHit);
+        addActor(accuracy);
+        addActor(matchesPlayed);
+        addActor(winRatio);
+        addActor(matchesWon);
+        addActor(matchesLost);
 
         btnBack.setPosition(260.f, 40.f, Align.center);
         addActor(btnBack);

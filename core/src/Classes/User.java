@@ -76,11 +76,7 @@ public class User
 
     public float GetKDRatio() { return (float) kills / deaths; }
 
-    public float GetAccuracyPercentage() {
-        return (float) (shotsHit / shots) * 100;
-    }
+    public float GetAccuracyPercentage() { return (float) shotsHit / shots * 100; }
 
-    public float GetWinPercentage() {
-        return (float) (matchesWon / matchesLost) * 100;
-    }
+    public float GetWinPercentage() { return (float) matchesWon / matchesPlayed * 100; }
 }
