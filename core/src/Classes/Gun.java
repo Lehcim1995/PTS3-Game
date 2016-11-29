@@ -147,7 +147,7 @@ public class Gun
 
             Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x, owner.GetPosition().y), rot);
 
-            GameManager.getInstance().AddProjectile(projectile);
+            GameManager.getInstance().addGameObject(projectile);
             currentBullets--;
             hasShot = true;
             lastShot = millis();

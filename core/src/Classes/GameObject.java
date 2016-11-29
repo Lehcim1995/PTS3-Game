@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -30,10 +31,11 @@ public class GameObject implements IGameObject, Serializable
     protected float rotation;
     protected Shape boundingShape;
     protected SerializablePolygon hitbox;
+    protected long id;
 
     protected GameObject() throws RemoteException
     {
-
+        id = this.hashCode();
     }
 
     protected GameObject(Vector2 position, float rotation, SerializablePolygon hitbox) throws RemoteException
@@ -62,7 +64,7 @@ public class GameObject implements IGameObject, Serializable
 
     public Polygon getHitbox()
     {
-        return hitbox;
+        return hitbox.getLIBGDXPolygon();
     }
 
     public final static Vector2[] DEFAULTHITBOX(float size)
@@ -150,7 +152,7 @@ public class GameObject implements IGameObject, Serializable
     }
 
     @Override
-    public boolean isHit(IGameObject go)
+    public boolean isHit(IGameObject go) throws RemoteException
     {
         Vector2 other = new Vector2();
         other.x = go.getHitbox().getX();
@@ -159,7 +161,13 @@ public class GameObject implements IGameObject, Serializable
         float dis = position.dst(other);
 
         if (dis > 100) return false;
-        return isOverlap(hitbox, go.getHitbox());
+        return isOverlap(hitbox.getLIBGDXPolygon(), go.getHitbox());
+    }
+
+    @Override
+    public long getID()
+    {
+        return id;
     }
 
     //Static Methode to check if 2 polygons are intersecting
@@ -242,6 +250,7 @@ public class GameObject implements IGameObject, Serializable
     public void SetPosition(Vector2 pos)
     {
         position = pos;
+        hitbox.setPosition(pos.x, pos.y);
     }
 
     @Override

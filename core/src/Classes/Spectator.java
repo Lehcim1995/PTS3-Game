@@ -35,7 +35,7 @@ public class Spectator extends GameObject
     }
 
     public void SetSpectatedPlayer() {
-        player = gm.GetSpectatedPlayer(playerFromList);
+       // player = gm.GetSpectatedPlayer(playerFromList);
     }
 
     public void NextPlayer() {

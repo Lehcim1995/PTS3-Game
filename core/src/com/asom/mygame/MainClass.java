@@ -21,6 +21,7 @@ public class MainClass extends Game implements ApplicationListener{
     private float zoom = 1;
 
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -34,30 +35,17 @@ public class MainClass extends Game implements ApplicationListener{
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
-//        try
-//        {
-//            enemy = new Player();
-//        }
-//        catch (RemoteException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        try
-//        {
-//            player = new Player();
-//        }
-//        catch (RemoteException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        GameManager.getInstance().addPlayer(player);
-//        GameManager.getInstance().addPlayer(enemy);
     }
+
+
 
     @Override
     public void render() {
         try {
-            update();
+            synchronized (this)
+            {
+                update();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -65,33 +53,36 @@ public class MainClass extends Game implements ApplicationListener{
         if (GameManager.getInstance().GetPlayer() != null) {
             camera.position.set(GameManager.getInstance().GetPlayer().GetPosition().x, GameManager.getInstance().GetPlayer().GetPosition().y, 1);
         }
-        //camera.rotate(camera. , 0, 0, 1);
         camera.update();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //batch.setProjectionMatrix(camera.combined);
-        //batch.begin();
-        //batch.draw(img, position.x, position.y);s
-        //batch.end();
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (Iterator<IGameObject> iterator = GameManager.getInstance().getObjects().iterator(); iterator.hasNext(); ) {
+        for (Iterator<IGameObject> iterator = GameManager.getInstance().getAllObjects().iterator(); iterator.hasNext(); ) {
             IGameObject go = iterator.next();
-            go.Draw(shapeRenderer);
+            try
+            {
+                go.Draw(shapeRenderer);
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         shapeRenderer.end();
 
-        /*
+
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.WHITE);
-        for(Classes.GameObject go :  GameManager.getInstance().getObjects())
+        shapeRenderer.setColor(Color.RED);
+        for(IGameObject go :  GameManager.getInstance().getAllObjects())
         {
             shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
         }
-        shapeRenderer.end();*/
+        shapeRenderer.end();
     }
 
     @Override

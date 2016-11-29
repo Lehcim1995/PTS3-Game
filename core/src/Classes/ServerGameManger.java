@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * Created by michel on 15-11-2016.
  */
-public class ServerGameManger extends UnicastRemoteObject implements IGameManager, IRemotePropertyListener
+public class ServerGameManger extends UnicastRemoteObject implements IGameManager
 {
 
     private IRemotePublisherForDomain remotePublisherForDomain;
@@ -27,35 +27,25 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     private transient Timer GameTicks;
     private transient TimerTask GameTickTask;
 
-    private List<IGameObject> mygameObjects;
-    private Map<String, IGameObject> playerList;
+    private List<IGameObject> everything;
+    private Map<String, List<IGameObject>> idObjects;
 
     private Random r = new Random();
+    private Level level;
 
     public ServerGameManger() throws RemoteException
     {
-        mygameObjects = new ArrayList<IGameObject>();
-        playerList = new HashMap<String, IGameObject>(10);
+        everything = new ArrayList<IGameObject>();
+        idObjects = new HashMap<String, List<IGameObject>>(100);
+        level = new Level();
 
         try
         {
             remotePublisherForDomain = new RemotePublisher();
 
-            remotePublisherForDomain.registerProperty(propertyName);
-            remotePublisherForDomain.registerProperty(remoteGameManger);
-            remotePublisherForDomain.registerProperty(ClientNewPlayer);
-            remotePublisherForDomain.registerProperty(UpdatePlayer);
-            remotePublisherForDomain.registerProperty(ServerNewPlayer);
-            remotePublisherForDomain.registerProperty(GetPlayer);
-
             registry = LocateRegistry.createRegistry(portNumber);
             registry.rebind(testBindingName, remotePublisherForDomain);
-            registry.rebind("", this);
-
-            remotePublisherForListener = (IRemotePublisherForListener) remotePublisherForDomain;
-            remotePublisherForListener.subscribeRemoteListener(this, propertyName);
-            remotePublisherForListener.subscribeRemoteListener(this, ClientNewPlayer);
-            remotePublisherForListener.subscribeRemoteListener(this, GetPlayer);
+            registry.rebind(ServerManger, this);
 
         }
         catch (RemoteException ex)
@@ -69,14 +59,14 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             @Override
             public void run()
             {
-                try
-                {
-                    remotePublisherForDomain.inform(UpdatePlayer, this, mygameObjects);
-                }
-                catch (RemoteException e)
-                {
-                    System.out.println("Server: RemoteExeption " + e.getMessage());
-                }
+//                try
+//                {
+//                    //remotePublisherForDomain.inform(UpdatePlayer, this, mygameObjects);
+//                }
+//                catch (RemoteException e)
+//                {
+//                    System.out.println("Server: RemoteExeption " + e.getMessage());
+//                }
             }
         };
         GameTicks.scheduleAtFixedRate(GameTickTask, 0, (int) TICKLENGTH);
@@ -116,17 +106,79 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     }
 
     @Override
-    public List<IGameObject> GetTick()
+    public List<IGameObject> GetTick(String id)
     {
 
         System.out.println("GetTick");
-        return mygameObjects;
+        return idObjects.get(id);
     }
 
     @Override
-    public void SetTick(IGameObject object)
+    public void SetTick(String id, IGameObject object)
     {
-        mygameObjects.add(object);
+        System.out.println("incoming");
+
+        if (!idObjects.containsKey(id))
+        {
+            idObjects.put(id, new ArrayList<IGameObject>());
+            idObjects.get(id).addAll(everything);
+        }
+
+        everything.add(object);
+
+        for (Map.Entry<String, List<IGameObject>> entry : idObjects.entrySet())
+        {
+            if (!entry.getKey().equals(id))
+            {
+                entry.getValue().add(object);
+            }
+        }
+    }
+
+    @Override
+    public void UpdateTick(String id, IGameObject object) throws RemoteException
+    {
+        if (!idObjects.containsKey(id))
+        {
+            idObjects.put(id, new ArrayList<IGameObject>());
+        }
+
+        for (IGameObject go : everything)
+        {
+            if (go.getID() == object.getID())
+            {
+                go.SetPosition(object.GetPosition());
+                go.SetRotation(object.GetRotation());
+            }
+        }
+
+        for (Map.Entry<String, List<IGameObject>> entry : idObjects.entrySet())
+        {
+            if (!entry.getKey().equals(id))
+            {
+                for (IGameObject obj : entry.getValue())
+                {
+                    if(obj.getID() == object.getID())
+                    {
+                        obj.SetPosition(object.GetPosition());
+                        obj.SetRotation(object.GetRotation());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void DeleteTick(String id, IGameObject object) throws RemoteException
+    {
+
+    }
+
+    @Override
+    public Level GetLevel() throws RemoteException
+    {
+        return level;
     }
 
     public IGameObject CreatePlayer(String name) throws RemoteException
@@ -137,43 +189,5 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         p.SetColor(SerializableColor.getRandomColor());
 
         return p;
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException
-    {
-
-        if (propertyChangeEvent.getPropertyName().equals(ClientNewPlayer))
-        {
-            //TODO use playername
-
-            String name = (String) propertyChangeEvent.getNewValue();
-            name += r.nextInt(100000);
-
-            Player p;
-            System.out.println("Server Create Player " + name);
-            p = new Player(false);
-            p.SetName(name);
-            p.SetColor(SerializableColor.getRandomColor());
-
-            playerList.put(name, p);
-            mygameObjects.add(p);
-
-            remotePublisherForDomain.inform(ServerNewPlayer, playerList, p);
-        }
-
-
-
-        if (propertyChangeEvent.getPropertyName().equals(GetPlayer))
-        {
-
-            //TODO Use playername;
-            Player p = (Player) propertyChangeEvent.getNewValue();
-            //System.out.println("Server Update Player " + p.GetName());
-
-            Player updateplayer = (Player) playerList.get(p.GetName());
-            updateplayer.SetPosition(p.GetPosition());
-            updateplayer.SetRotation(p.GetRotation());
-        }
     }
 }

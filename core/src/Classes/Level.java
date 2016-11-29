@@ -1,5 +1,6 @@
 package Classes;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -17,12 +18,12 @@ import com.badlogic.gdx.physics.box2d.Shape;
 /**
  * Created by myron on 11-10-16.
  */
-public class Level
+public class Level implements Serializable
 {
     private long seed;
     private ArrayList<LevelBlock> levelBlocks;
     private ArrayList<LevelBlock> blockModule;
-    private int levelSize = 2;
+    private int levelSize = 4;
     private int row = 1;
     private int block = 1;
     private int blockSize = 1;
@@ -71,21 +72,20 @@ public class Level
         Random random = new Random(seed);
         for(int i = 0; i < (levelSize * levelSize); i++)
         {
-            Vector2[] hithoxVectorList = GameObject.DEFAULTHITBOX(13);
-            LevelBlock levelBlock = new LevelBlock(new Vector2(0,0),0,hithoxVectorList); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
+            LevelBlock levelBlock = new LevelBlock(new Vector2(0,0),0,GameObject.DEFAULTHITBOX(13)); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
             //GetNewBlockLocation(i)
             levelBlock.SetPosition(new Vector2(random.nextInt((int)LevelSizeX), random.nextInt((int)LevelSizeY)));
             newLevelBlockList.add(levelBlock);
 
-            GameManager.getInstance().addGameObject(levelBlock);
+            //GameManager.getInstance().addGameObject(levelBlock);
         }
         return newLevelBlockList;
     }
     private ArrayList<LevelBlock> CreateModules() throws RemoteException
     {
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
-        Vector2[] hithoxVectorList = GameObject.DEFAULTHITBOX(13); //{new Vector2(50,50),new Vector2(0,50),new Vector2(50,0),new Vector2(0,0)};
-        newLevelBlockList.add(new LevelBlock(new Vector2(0,0),0,hithoxVectorList));
+        //{new Vector2(50,50),new Vector2(0,50),new Vector2(50,0),new Vector2(0,0)};
+        newLevelBlockList.add(new LevelBlock(new Vector2(0,0),0,GameObject.DEFAULTHITBOX(13)));
         return newLevelBlockList;
     }
     private Vector2 GetNewBlockLocation(int blockNumber){

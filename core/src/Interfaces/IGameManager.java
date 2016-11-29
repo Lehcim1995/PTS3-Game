@@ -1,5 +1,7 @@
 package Interfaces;
 
+import Classes.Level;
+
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -18,11 +20,18 @@ public interface IGameManager extends Remote
     String testBindingName = "GameObjectsServer";
     String remoteGameManger = "remoteGameManager";
     String propertyName = "gameobjects";
+    String ServerManger = "serermanager";
 
     int portNumber = 1099;
     int fps = 30;
     float TICKLENGTH = 1000 / fps; // in milli
 
-    List<IGameObject> GetTick() throws RemoteException;
-    void SetTick(IGameObject object) throws RemoteException;;
+    List<IGameObject> GetTick(String id) throws RemoteException;
+    void SetTick(String id, IGameObject object) throws RemoteException;
+
+    void UpdateTick(String id, IGameObject object) throws RemoteException;
+
+    void DeleteTick(String id, IGameObject object) throws RemoteException;
+
+    Level GetLevel() throws RemoteException;
 }

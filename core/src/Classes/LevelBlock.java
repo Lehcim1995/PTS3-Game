@@ -1,5 +1,6 @@
 package Classes;
 
+import LibGDXSerialzableClasses.SerializableColor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,7 +18,7 @@ import java.rmi.RemoteException;
 public class LevelBlock extends GameObject
 {
 
-    private Color color = Color.LIGHT_GRAY;
+    private SerializableColor color = SerializableColor.LIGHT_GRAY;
     private float size = 26;
     private float halfSize = size/2;
 
@@ -29,7 +30,7 @@ public class LevelBlock extends GameObject
     @Override
     public void Draw(ShapeRenderer sr)
     {
-        sr.setColor(color);
+        sr.setColor(color.getLibGDXColor());
 
         sr.rect(position.x - halfSize, position.y - halfSize, size, size);
     }

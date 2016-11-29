@@ -18,11 +18,11 @@ public interface IGameObject extends Remote
     Texture GetTexture();
     void SetTexture(Texture tex);
 
-    Vector2 GetPosition();
-    void SetPosition(Vector2 pos);
+    Vector2 GetPosition() throws RemoteException;
+    void SetPosition(Vector2 pos) throws RemoteException;
 
-    float GetRotation();
-    void SetRotation(float rot);
+    float GetRotation() throws RemoteException;
+    void SetRotation(float rot) throws RemoteException;
 
     void OnCollisionEnter(IGameObject Other);
     void OnCollisionExit(IGameObject Other);
@@ -30,9 +30,11 @@ public interface IGameObject extends Remote
 
     void Update() throws RemoteException;
 
-    void Draw(ShapeRenderer shapeRenderer);
+    void Draw(ShapeRenderer shapeRenderer)  throws RemoteException;;
 
-    boolean isHit(IGameObject go2);
+    boolean isHit(IGameObject go2)  throws RemoteException;;
+
+    long getID();
 
     Polygon getHitbox();
 }

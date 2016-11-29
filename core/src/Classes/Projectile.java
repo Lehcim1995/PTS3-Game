@@ -22,7 +22,7 @@ public class Projectile extends GameObject
     private GameObject gameObject;
     private float bulletSpeed;
     private int damage;
-    private Gun gun;
+    private transient Gun gun;
     private long lifeTime = 10000; // in millisec
     private long born; //in millisec
 
@@ -94,9 +94,11 @@ public class Projectile extends GameObject
     @Override
     public void OnCollisionEnter(IGameObject other)
     {
+        System.out.println("Hit");
+
         if (other instanceof Projectile)
         {
-            if (((Projectile)other).gun.getOwner() != gun.getOwner() )
+            if (((Projectile)other).gun.getOwner().getID() != gun.getOwner().getID() )
             {
                 GameManager.getInstance().ClearProjectile(this);
             }
@@ -106,7 +108,7 @@ public class Projectile extends GameObject
             GameManager.getInstance().ClearProjectile(this);
 
         }
-        else if (other instanceof Player && gun.getOwner() != other)
+        else if (other instanceof Player && gun.getOwner().getID() != other.getID())
         {
             System.out.println(new KillLog(this, (Player) other));
             GameManager.getInstance().ClearProjectile(this);
