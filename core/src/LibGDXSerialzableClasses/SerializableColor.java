@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.NumberUtils;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Created by michel on 19-11-2016.
@@ -473,6 +474,18 @@ public class SerializableColor implements Serializable
     /** @return a copy of this color */
     public SerializableColor cpy () {
         return new SerializableColor(this);
+    }
+
+    public static SerializableColor getRandomColor()
+    {
+        Random r = new Random();
+        float rr,rg,rb,ra;
+        rr = r.nextFloat();
+        rg = r.nextFloat();
+        rb = r.nextFloat();
+        ra = r.nextFloat();
+
+        return new SerializableColor(rr,rg,rb,ra);
     }
 
     public Color getLibGDXColor()

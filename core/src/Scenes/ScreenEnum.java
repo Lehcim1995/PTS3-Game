@@ -1,5 +1,7 @@
 package Scenes;
 
+import com.asom.mygame.MainClass;
+
 /**
  * Created by Nick on 22-11-2016.
  */
@@ -21,9 +23,7 @@ public enum ScreenEnum {
         }
     },
     STATS {
-        public AbstractScreen getScreen(Object... params) {
-            return new StatsScreen();
-        }
+        public AbstractScreen getScreen(Object... params) { return new StatsScreen(); }
     },
     NEWLOBBY {
         public AbstractScreen getScreen(Object... params) {

@@ -1,7 +1,14 @@
 package Scenes;
 
+
 import Classes.Connection;
+
+import Classes.ASOM;
+import com.asom.mygame.MainClass;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -74,6 +81,7 @@ public class LoginScreen extends AbstractScreen {
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
+                ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 System.out.println(txtUserName.getText());
                 System.out.println(txtPassword.getText());
                 String user = txtUserName.getText();
