@@ -29,6 +29,12 @@ public class RegisterScreen extends AbstractScreen{
     private TextureRegion myTrCancel;
     private TextureRegionDrawable myTrdRegister;
     private TextureRegionDrawable myTrdCancel;
+    private TextField tfName;
+    private TextField tfLastName;
+    private TextField tfEmail;
+    private TextField tfUsername;
+    private TextField tfPassword;
+    private Skin tfSkin;
 
     public RegisterScreen()
     {
@@ -39,18 +45,38 @@ public class RegisterScreen extends AbstractScreen{
 
     @Override
     public void buildStage() {
+        tfSkin = new Skin(Gdx.files.internal("uiskin.json"));
+        tfName = new TextField("",tfSkin);
+        tfName.setMessageText("First name");
+        tfLastName = new TextField("",tfSkin);
+        tfLastName.setMessageText("Last name");
+        tfEmail = new TextField("",tfSkin);
+        tfEmail.setMessageText("Email");
+        tfUsername = new TextField("",tfSkin);
+        tfUsername.setMessageText("Username");
+        tfPassword = new TextField("",tfSkin);
+        tfPassword.setMessageText("Password");
         myTrRegister = new TextureRegion(txtrRegister);
         myTrCancel = new TextureRegion(txtrCancel);
         myTrdRegister = new TextureRegionDrawable(myTrRegister);
         myTrdCancel = new TextureRegionDrawable(myTrCancel);
-        TextField.TextFieldStyle tfs = new TextField.TextFieldStyle();
 
         ImageButton btnRegister = new ImageButton(myTrdRegister);
         ImageButton btnBack = new ImageButton(myTrdCancel);
 
+        tfName.setPosition(250.f, 450.f, Align.center);
+        tfLastName.setPosition(250.f, 400.f, Align.center);
+        tfEmail.setPosition(250.f, 350.f, Align.center);
+        tfUsername.setPosition(250.f, 300.f, Align.center);
+        tfPassword.setPosition(250.f, 250.f, Align.center);
         btnRegister.setPosition(375.f, 40.f, Align.center);
         btnBack.setPosition(125.f, 40.f, Align.center);
 
+        addActor(tfName);
+        addActor(tfLastName);
+        addActor(tfEmail);
+        addActor(tfUsername);
+        addActor(tfPassword);
         addActor(btnBack);
         addActor(btnRegister);
 
