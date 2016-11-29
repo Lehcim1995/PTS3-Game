@@ -15,6 +15,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
@@ -29,7 +30,8 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
     private ArrayList<Spectator> spectators;
     private ArrayList<Projectile> bullets;
     private ArrayList<KillLog> killLogs;
-    private ArrayList<Player> playerList;
+
+    private List<Player> playerList;
     private ArrayList<Chat> chats;
     private ArrayList<IGameObject> objects;
     private boolean gen = false;
@@ -44,7 +46,8 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
 
     private GameManager() throws RemoteException
     {
-        playerList = new ArrayList<Player>();
+
+        playerList = new CopyOnWriteArrayList<Player>();
         spectators = new ArrayList<Spectator>();
         bullets = new ArrayList<Projectile>();
         killLogs = new ArrayList<KillLog>();
@@ -69,7 +72,6 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
             remotePublisherForListener = (IRemotePublisherForListener) registry.lookup(testBindingName);
             remotePublisherForDomain = (IRemotePublisherForDomain) registry.lookup(testBindingName);
 
-
             remotePublisherForListener.subscribeRemoteListener(this, ServerNewPlayer);
             remotePublisherForListener.subscribeRemoteListener(this, UpdatePlayer);
         }
@@ -90,7 +92,6 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
             @Override
             public void run()
             {
-                //System.out.println("GameTick");
                 try
                 {
                     if (playerMe != null)
@@ -105,7 +106,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
                 }
             }
         };
-        GameTicks.scheduleAtFixedRate(GameTickTask, 0, (int) TICKLENGTH/2);
+        GameTicks.scheduleAtFixedRate(GameTickTask, 0, (int) TICKLENGTH);
     }
 
     public static GameManager getInstance()
@@ -163,8 +164,12 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
     {
         try
         {
-            remotePublisherForDomain.inform(ClientNewPlayer, null, playerMe);
-            //TODO Use String to send player name
+            //User u = new User();
+            //TODO get name from User
+            //Random r = new Random();
+            String name = "Speler ";
+
+            remotePublisherForDomain.inform(ClientNewPlayer, null, name);
         }
         catch (RemoteException e)
         {
@@ -250,7 +255,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
         //System.out.println("Client new " + go.getClass().getName());
     }
 
-    public void addPlayer(Player pl)
+    public synchronized void addPlayer(Player pl)
     {
         playerList.add(pl);
         addGameObject(pl);
@@ -282,16 +287,21 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
             //TODO don't use this
             //Vector2 pos = (Vector2) propertyChangeEvent.getNewValue();
             ArrayList<IGameObject> list = (ArrayList<IGameObject>) propertyChangeEvent.getNewValue();
+
+
             for (IGameObject go : list)
             {
-                Player p = (Player)go;
-                for (Player p2 : playerList)
+                if (go.getClass() == Player.class)
                 {
-                    if (p.GetName().equals(p2.GetName()))
+                    Player p = (Player)go;
+                    for (Player p2 : playerList)
                     {
-                        p2.SetPosition(p.GetPosition());
-                        p2.SetRotation(p.GetRotation());
-                        break;
+                        if (p.GetName().equals(p2.GetName()))
+                        {
+                            p2.SetPosition(p.GetPosition());
+                            p2.SetRotation(p.GetRotation());
+                            break;
+                        }
                     }
                 }
             }
@@ -302,43 +312,36 @@ public class GameManager extends UnicastRemoteObject implements IGameManager, IR
 
         if (propertyChangeEvent.getPropertyName().equals(ServerNewPlayer))
         {
-            System.out.println("Client New Player");
-            //TODO fix this bullshit
-
-            ArrayList<IGameObject> list = (ArrayList<IGameObject>) propertyChangeEvent.getNewValue();
-            Collections.reverse(list);
-            for (IGameObject go : list)
+            try
             {
 
-                Player p = (Player) go;
-                Player p2 = null;
+
+                Player p = (Player) propertyChangeEvent.getNewValue();
+                Map<String, IGameObject> players = (Map<String, IGameObject>) propertyChangeEvent.getOldValue();
 
                 if (playerMe == null)
                 {
-                    p2 = new Player(p, true);
-                    System.out.println("Client New Playable Player " + p2.GetName());
-                    playerMe = p2;
-                }
-                else
-                {
-                    if (p.GetName().equals(playerMe.GetName()))
-                    {
-
-                    }
-                    else
-                    {
-                        p2 = new Player(p, false);
-                    }
+                    playerMe = new Player(p, true);
+                    addPlayer(playerMe);
                 }
 
-                if (p2 != null)
+                for (Map.Entry<String, IGameObject> set : players.entrySet())
                 {
-                    addPlayer(p2);
+                    System.out.println(set.getKey());
+                    for (Player pl : playerList)
+                    {
+                        if (!set.getKey().equals(pl.GetName()))
+                        {
+                            Player newPlayer = new Player((Player) set.getValue(), false);
+                            addPlayer(newPlayer);
+                        }
+                    }
                 }
             }
+            catch (ConcurrentModificationException cmex)
+            {
+                LOGGER.log(java.util.logging.Level.WARNING, cmex.getMessage(), cmex);
+            }
         }
-
-        //List<GameObject> objectsList = (List<GameObject>) propertyChangeEvent.getNewValue();
-        //objects = (ArrayList<GameObject>) objectsList;
     }
 }
