@@ -25,9 +25,10 @@ public class StatsScreen extends AbstractScreen{
     {
         super();
 
-        // TODO Pich up current user (from server)
+        // TODO Pick up current user (from server)
         this.user = new User("Coolones", "jasper.v.son@home.nl", 300, 21, 300, 400, 30, 25, 5, 0);
     }
+
     @Override
     public void buildStage() {
 
