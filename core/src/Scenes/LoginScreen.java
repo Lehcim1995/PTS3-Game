@@ -86,16 +86,18 @@ public class LoginScreen extends AbstractScreen {
                 System.out.println(txtPassword.getText());
                 String user = txtUserName.getText();
                 String ww = txtPassword.getText();
-                try
-                {
-                    // maak instantie van connection class en roep de LogIn aan.
-                    Connection conn = new Connection();
-                    conn.LogIn(user,ww);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                    System.out.println("Error: " + e.getMessage());
+                if(txtUserName.getText().isEmpty() != true && txtPassword.getText().isEmpty() != true){
+                    try
+                    {
+                        //maak instantie van connection class en roep de LogIn aan.
+                        Connection conn = new Connection();
+                        conn.LogIn(user, ww);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        System.out.println("Error: lege strings");
+                    }
                 }
                 return false;
             }
