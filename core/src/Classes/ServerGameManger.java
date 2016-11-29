@@ -50,7 +50,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
             registry = LocateRegistry.createRegistry(portNumber);
             registry.rebind(testBindingName, remotePublisherForDomain);
-            //registry.rebind();
+            registry.rebind("", this);
 
             remotePublisherForListener = (IRemotePublisherForListener) remotePublisherForDomain;
             remotePublisherForListener.subscribeRemoteListener(this, propertyName);
@@ -71,7 +71,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             {
                 try
                 {
-                    remotePublisherForDomain.inform(UpdatePlayer, null, mygameObjects);
+                    remotePublisherForDomain.inform(UpdatePlayer, this, mygameObjects);
                 }
                 catch (RemoteException e)
                 {
@@ -120,13 +120,13 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     {
 
         System.out.println("GetTick");
-        return null;
+        return mygameObjects;
     }
 
     @Override
     public void SetTick(IGameObject object)
     {
-        System.out.println("SetTick");
+        mygameObjects.add(object);
     }
 
     public IGameObject CreatePlayer(String name) throws RemoteException
