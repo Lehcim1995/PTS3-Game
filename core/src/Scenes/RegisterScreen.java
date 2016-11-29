@@ -93,11 +93,10 @@ public class RegisterScreen extends AbstractScreen{
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
+                System.out.println("Empty string: " + tfName.getText().isEmpty());
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 return false;
             }
         });
-
-
     }
 }
