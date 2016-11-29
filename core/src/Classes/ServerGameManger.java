@@ -30,6 +30,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     private List<IGameObject> mygameObjects;
     private Map<String, IGameObject> playerList;
 
+    private Random r = new Random();
+
     public ServerGameManger() throws RemoteException
     {
         mygameObjects = new ArrayList<IGameObject>();
@@ -146,6 +148,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             //TODO use playername
 
             String name = (String) propertyChangeEvent.getNewValue();
+            name += r.nextInt(100000);
 
             Player p;
             System.out.println("Server Create Player " + name);
@@ -159,12 +162,14 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             remotePublisherForDomain.inform(ServerNewPlayer, playerList, p);
         }
 
+
+
         if (propertyChangeEvent.getPropertyName().equals(GetPlayer))
         {
 
             //TODO Use playername;
             Player p = (Player) propertyChangeEvent.getNewValue();
-            System.out.println("Server Update Player " + p.GetName());
+            //System.out.println("Server Update Player " + p.GetName());
 
             Player updateplayer = (Player) playerList.get(p.GetName());
             updateplayer.SetPosition(p.GetPosition());
