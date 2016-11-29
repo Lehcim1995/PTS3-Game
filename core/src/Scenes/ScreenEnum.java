@@ -23,9 +23,7 @@ public enum ScreenEnum {
         }
     },
     STATS {
-        public AbstractScreen getScreen(Object... params) {
-            return new StatsScreen();
-        }
+        public AbstractScreen getScreen(Object... params) { return new StatsScreen(); }
     },
     NEWLOBBY {
         public AbstractScreen getScreen(Object... params) {

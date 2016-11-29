@@ -61,12 +61,9 @@ public class LoginScreen extends AbstractScreen {
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
-<<<<<<< HEAD
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
-=======
                 System.out.println(txtUserName.getText());
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
->>>>>>> origin/master
                 return false;
             }
         });
