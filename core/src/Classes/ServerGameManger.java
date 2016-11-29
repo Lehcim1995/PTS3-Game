@@ -13,10 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Created by michel on 15-11-2016.
@@ -31,18 +28,12 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     private transient TimerTask GameTickTask;
 
     private List<IGameObject> mygameObjects;
-    private List<IGameObject> playerList;
-    private Player player1;
-    private Player player2;
-    private Player player3;
-    private Player player4;
-    private Player player5;
-    private Player player6;
+    private Map<String, IGameObject> playerList;
 
     public ServerGameManger() throws RemoteException
     {
         mygameObjects = new ArrayList<IGameObject>();
-        playerList = new ArrayList<IGameObject>(10);
+        playerList = new HashMap<String, IGameObject>(10);
 
         try
         {
@@ -57,6 +48,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
             registry = LocateRegistry.createRegistry(portNumber);
             registry.rebind(testBindingName, remotePublisherForDomain);
+            //registry.rebind();
 
             remotePublisherForListener = (IRemotePublisherForListener) remotePublisherForDomain;
             remotePublisherForListener.subscribeRemoteListener(this, propertyName);
@@ -77,37 +69,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             {
                 try
                 {
-                    if (player1 != null)
-                    {
-                        remotePublisherForDomain.inform(UpdatePlayer, null, mygameObjects);
-                        //System.out.println("Update Player 1");
-                    }
-                    if (player2 != null)
-                    {
-                        remotePublisherForDomain.inform(UpdatePlayer, null, mygameObjects);
-                        //System.out.println("Update Player 2");
-                    }
-                    if (player3 != null)
-                    {
-                        remotePublisherForDomain.inform(UpdatePlayer, null, mygameObjects);
-                        //System.out.println("Update Player 3");
-                    }
-                    if (player4 != null)
-                    {
-                        remotePublisherForDomain.inform(UpdatePlayer, null, mygameObjects);
-                        //System.out.println("Update Player 4");
-                    }
-                    if (player5 != null)
-                    {
-                        remotePublisherForDomain.inform(UpdatePlayer, null, mygameObjects);
-                        //System.out.println("Update Player 5");
-                    }
-                    if (player6 != null)
-                    {
-                        remotePublisherForDomain.inform(UpdatePlayer, null, mygameObjects);
-                        //System.out.println("Update Player 6");
-                    }
-
+                    remotePublisherForDomain.inform(UpdatePlayer, null, mygameObjects);
                 }
                 catch (RemoteException e)
                 {
@@ -165,69 +127,36 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         System.out.println("SetTick");
     }
 
+    public IGameObject CreatePlayer(String name) throws RemoteException
+    {
+        Player p;
+        p = new Player(false);
+        p.SetName(name);
+        p.SetColor(SerializableColor.getRandomColor());
+
+        return p;
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException
     {
 
         if (propertyChangeEvent.getPropertyName().equals(ClientNewPlayer))
         {
-            //TODO use playername, remove hardcode;
+            //TODO use playername
 
-            if (player1 == null)
-            {
-                System.out.println("Server Create Player 1");
-                player1 = new Player(false);
-                player1.SetName("Player1");
-                player1.SetColor(SerializableColor.BLACK);
-                mygameObjects.add(player1);
-                remotePublisherForDomain.inform(ServerNewPlayer, null, mygameObjects);
-                //TODO FIX dit
-            }
-            else if (player2 == null)
-            {
-                System.out.println("Server Create Player 2");
-                player2 = new Player(false);
-                player2.SetName("Player2");
-                player2.SetColor(SerializableColor.RED);
-                mygameObjects.add(player2);
-                remotePublisherForDomain.inform(ServerNewPlayer, null, mygameObjects);
-            }
-            else if (player3 == null)
-            {
-                System.out.println("Server Create Player 3");
-                player3 = new Player(false);
-                player3.SetName("Player3");
-                player3.SetColor(SerializableColor.BLUE);
-                mygameObjects.add(player3);
-                remotePublisherForDomain.inform(ServerNewPlayer, null, mygameObjects);
-            }
-            else if (player4 == null)
-            {
-                System.out.println("Server Create Player 4");
-                player4 = new Player(false);
-                player4.SetName("Player4");
-                player4.SetColor(SerializableColor.YELLOW);
-                mygameObjects.add(player4);
-                remotePublisherForDomain.inform(ServerNewPlayer, null, mygameObjects);
-            }
-            else if (player5 == null)
-            {
-                System.out.println("Server Create Player 5");
-                player5 = new Player(false);
-                player5.SetName("Player5");
-                player5.SetColor(SerializableColor.GREEN);
-                mygameObjects.add(player5);
-                remotePublisherForDomain.inform(ServerNewPlayer, null, mygameObjects);
-            }
-            else if (player6 == null)
-            {
-                System.out.println("Server Create Player 6");
-                player6 = new Player(false);
-                player6.SetName("Player6");
-                player6.SetColor(SerializableColor.GOLD);
-                mygameObjects.add(player6);
-                remotePublisherForDomain.inform(ServerNewPlayer, null, mygameObjects);
-            }
+            String name = (String) propertyChangeEvent.getNewValue();
+
+            Player p;
+            System.out.println("Server Create Player " + name);
+            p = new Player(false);
+            p.SetName(name);
+            p.SetColor(SerializableColor.getRandomColor());
+
+            playerList.put(name, p);
+            mygameObjects.add(p);
+
+            remotePublisherForDomain.inform(ServerNewPlayer, playerList, p);
         }
 
         if (propertyChangeEvent.getPropertyName().equals(GetPlayer))
@@ -237,19 +166,9 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             Player p = (Player) propertyChangeEvent.getNewValue();
             System.out.println("Server Update Player " + p.GetName());
 
-            if (p.GetName().equals("Player1"))
-            {
-                System.out.println("Server Update Player1");
-                player1.SetPosition(p.GetPosition());
-                player1.SetRotation(p.GetRotation());
-            }
-
-            if (p.GetName().equals("Player2"))
-            {
-                System.out.println("Server Update Player2");
-                player2.SetPosition(p.GetPosition());
-                player2.SetRotation(p.GetRotation());
-            }
+            Player updateplayer = (Player) playerList.get(p.GetName());
+            updateplayer.SetPosition(p.GetPosition());
+            updateplayer.SetRotation(p.GetRotation());
         }
     }
 }

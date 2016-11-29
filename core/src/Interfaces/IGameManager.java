@@ -18,8 +18,9 @@ public interface IGameManager extends Remote
     String testBindingName = "GameObjectsServer";
     String remoteGameManger = "remoteGameManager";
     String propertyName = "gameobjects";
+
     int portNumber = 1099;
-    int fps = 64;
+    int fps = 30;
     float TICKLENGTH = 1000 / fps; // in milli
 
     List<IGameObject> GetTick() throws RemoteException;
