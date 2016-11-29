@@ -2,21 +2,18 @@ package com.asom.mygame;
 
 import Classes.*;
 import Interfaces.IGameObject;
+import Scenes.AbstractScreen;
+import Scenes.ScreenEnum;
 import Scenes.ScreenManager;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Shape;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 
 import java.rmi.RemoteException;
 import java.util.Iterator;
 
-public class MainClass extends ApplicationAdapter {
+public class MainClass extends Game implements ApplicationListener{
     SpriteBatch batch;
     //Texture img;
     private Camera camera;
@@ -95,6 +92,16 @@ public class MainClass extends ApplicationAdapter {
             shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
         }
         shapeRenderer.end();*/
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
     }
 
     public void update() throws RemoteException {

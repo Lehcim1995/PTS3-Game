@@ -1,5 +1,7 @@
 package Scenes;
 
+import com.asom.mygame.MainClass;
+
 /**
  * Created by Nick on 22-11-2016.
  */

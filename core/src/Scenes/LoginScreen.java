@@ -1,6 +1,10 @@
 package Scenes;
 
+import Classes.ASOM;
+import com.asom.mygame.MainClass;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -34,7 +38,7 @@ public class LoginScreen extends AbstractScreen {
     public void buildStage() {
         myTextureRegion = new TextureRegion(txtrLogin);
         myTrd = new TextureRegionDrawable(myTextureRegion);
-        ImageButton btnLogin = new ImageButton(myTrd);
+        final ImageButton btnLogin = new ImageButton(myTrd);
         btnLogin.setPosition(260.f, 40.f, Align.center);
         addActor(btnLogin);
 
@@ -42,7 +46,7 @@ public class LoginScreen extends AbstractScreen {
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
-                ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 return false;
             }
         });
