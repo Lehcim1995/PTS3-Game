@@ -1,5 +1,6 @@
 package Scenes;
 
+import Classes.Connection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+import java.sql.SQLException;
 import java.time.format.TextStyle;
 
 
@@ -21,8 +23,11 @@ import java.time.format.TextStyle;
 public class LoginScreen extends AbstractScreen {
 
     private Texture txtrLogin;
+    private Texture txtrRegister;
     private TextureRegion myTextureRegion;
+    private TextureRegion registerTextureregion;
     private TextureRegionDrawable myTrd;
+    private TextureRegionDrawable registerTrd;
     private TextField txtUserName;
     private TextField txtPassword;
     private Skin tfSkin;
@@ -31,34 +36,69 @@ public class LoginScreen extends AbstractScreen {
     {
         super();
         txtrLogin = new Texture(Gdx.files.internal("core\\assets\\btn_login.png"));
+        txtrRegister = new Texture(Gdx.files.internal("core\\assets\\btn_register.png"));
+
     }
 
     @Override
     public void buildStage() {
-        // todo fix die kk skin shit.
+
+        // set textfield skin
         tfSkin = new Skin(Gdx.files.internal("uiskin.json"));
-        //TextField.TextFieldStyle tfs = new TextField.TextFieldStyle();
-        //tfs.font = tfSkin.getFont("tf");
+        // maak username textfield
         txtUserName = new TextField("",tfSkin);
-        txtUserName.setMessageText("Username");
+        txtUserName.setMessageText("EMAIL");
         txtUserName.setPosition(260.f,300.f,Align.center);
+        // maak password textfield
         txtPassword = new TextField("",tfSkin);
+        txtPassword.setPasswordMode(true);
         txtPassword.setMessageText("Password");
         txtPassword.setPosition(260.f,200.f, Align.center);
+        // maak login button
         myTextureRegion = new TextureRegion(txtrLogin);
         myTrd = new TextureRegionDrawable(myTextureRegion);
         ImageButton btnLogin = new ImageButton(myTrd);
-        btnLogin.setPosition(260.f, 40.f, Align.center);
+        btnLogin.setPosition(260.f, 150.f, Align.center);
+        // maak registrate button
+        registerTextureregion = new TextureRegion(txtrRegister);
+        registerTrd = new TextureRegionDrawable(registerTextureregion);
+        ImageButton btnRegister = new ImageButton(registerTrd);
+        btnRegister.setPosition(260.f,40.f,Align.center);
+        // voeg componenten toe aan de scene
         addActor(txtUserName);
         addActor(txtPassword);
         addActor(btnLogin);
+        addActor(btnRegister);
 
         btnLogin.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
                 System.out.println(txtUserName.getText());
-                ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                System.out.println(txtPassword.getText());
+                String user = txtUserName.getText();
+                String ww = txtPassword.getText();
+                try
+                {
+                    // maak instantie van connection class en roep de LogIn aan.
+                    Connection conn = new Connection();
+                    conn.LogIn(user,ww);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    System.out.println("Error: " + e.getMessage());
+                }
+                return false;
+            }
+        });
+
+        btnRegister.addListener(new InputListener(){
+            @Override
+                    public boolean touchDown(InputEvent event,
+            float x, float y, int pointer, int button){
+                System.out.println("Registerbutton klicked");
+                ScreenManager.getInstance().showScreen(ScreenEnum.REGISTER);
                 return false;
             }
         });
