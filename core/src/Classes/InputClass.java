@@ -46,7 +46,7 @@ public class InputClass implements InputProcessor
     @Override
     public boolean keyDown(int keycode)
     {
-        //System.out.println("Keydown");
+
         KeymapHold.put(keycode, true);
         //KeymapDown.put(keycode, Calendar.getInstance().getTime());
         return true;
@@ -57,7 +57,6 @@ public class InputClass implements InputProcessor
     {
         KeymapHold.put(keycode, false);
         //KeymapUp.put(keycode, Calendar.getInstance().getTime());
-
         return true;
     }
 

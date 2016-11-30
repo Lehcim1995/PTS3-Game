@@ -3,6 +3,9 @@ package Classes;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializableColor;
+import Scenes.AbstractScreen;
+import Scenes.GameSceneScreen;
+import com.badlogic.gdx.graphics.Camera;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -36,6 +39,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     private TimerTask GameTickTask;
 
     private Player playerMe;
+    private AbstractScreen scene;
 
     private GameManager() throws RemoteException
     {
@@ -72,7 +76,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         }
         catch (NotBoundException e)
         {
-            e.printStackTrace();
+            LOGGER.info("Client: NotBoundException " + e.getMessage());
             online = false;
         }
         Random r = new Random();
@@ -186,6 +190,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
 
     public void addPlayer(Player p) throws RemoteException
     {
+        System.out.println("Spawn");
         playerMe = p;
         addGameObject(p);
     }
@@ -247,5 +252,20 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     public String getName()
     {
         return name;
+    }
+
+    public AbstractScreen getScene()
+    {
+        return scene;
+    }
+
+    public void setScene(GameSceneScreen scene)
+    {
+        this.scene = scene;
+    }
+
+    public Camera getCamera()
+    {
+        return getScene().getCamera();
     }
 }

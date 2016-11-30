@@ -4,11 +4,13 @@ import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializablePolygon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Shape;
 
 import java.io.Serializable;
@@ -243,7 +245,14 @@ public class GameObject implements IGameObject, Serializable
 
     public Vector2 getScreenPosition()
     {
-        return new Vector2(/*position.x*/ Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2/* - position.y*/);
+
+        if (GameManager.getInstance().getScene().getCamera() == null)
+        {
+            return new Vector2(Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2);
+        }
+        Vector3 v3 = GameManager.getInstance().getScene().getCamera().project(new Vector3(position.x, position.y, 0));
+
+        return new Vector2(v3.x, v3.y);
     }
 
     @Override
@@ -294,5 +303,10 @@ public class GameObject implements IGameObject, Serializable
     public void Draw(ShapeRenderer shapeRenderer)
     {
 
+    }
+
+    public void Draw(ShapeRenderer shapeRenderer, Batch batch)
+    {
+        Draw(shapeRenderer);
     }
 }

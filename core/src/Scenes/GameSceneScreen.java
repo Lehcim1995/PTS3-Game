@@ -51,7 +51,12 @@ public class GameSceneScreen extends AbstractScreen{
 
         shapeRenderer = new ShapeRenderer();
         layout = new GlyphLayout();
+
+        //GameManager.getInstance();
+        //GameManager.getInstance().setScene(this);
     }
+
+
 
     @Override
     public void render(float delta) {
@@ -60,6 +65,11 @@ public class GameSceneScreen extends AbstractScreen{
             update();
         } catch (RemoteException e) {
             e.printStackTrace();
+        }
+
+        if (GameManager.getInstance().getScene() == null)
+        {
+            GameManager.getInstance().setScene(this);
         }
 
         if (GameManager.getInstance().getPlayer() != null) {
@@ -73,13 +83,13 @@ public class GameSceneScreen extends AbstractScreen{
         //batch.setProjectionMatrix(camera.combined);
 
         shapeRenderer.setProjectionMatrix(camera.combined);
-
+        
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Iterator<IGameObject> iterator = GameManager.getInstance().getAllObjects().iterator(); iterator.hasNext(); ) {
             IGameObject go = iterator.next();
             try
             {
-                go.Draw(shapeRenderer);
+                go.Draw(shapeRenderer, batch);
             }
             catch (RemoteException e)
             {
@@ -130,18 +140,5 @@ public class GameSceneScreen extends AbstractScreen{
     public Camera getCamera()
     {
         return camera;
-    }
-
-    public static Vector2 getScreenPositionFromWorld(Vector2 v)
-    {
-        Vector3 v3 = new Vector3(v.x, v.y, 0);
-        this.camera.project(v3);
-
-        return new Vector2(/*position.x*/ Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2/* - position.y*/);
-    }
-
-    public static Vector2 getWorldPositionFromScreen(Vector2 v)
-    {
-        return new Vector2(/*position.x*/ Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2/* - position.y*/);
     }
 }

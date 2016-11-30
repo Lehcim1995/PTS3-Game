@@ -1,6 +1,7 @@
 package Interfaces;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
@@ -30,7 +31,8 @@ public interface IGameObject extends Remote
 
     void update() throws RemoteException;
 
-    void Draw(ShapeRenderer shapeRenderer)  throws RemoteException;;
+    void Draw(ShapeRenderer shapeRenderer)  throws RemoteException;
+    void Draw(ShapeRenderer shapeRenderer, Batch batch)  throws RemoteException;
 
     boolean isHit(IGameObject go2)  throws RemoteException;;
 

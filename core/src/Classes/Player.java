@@ -7,6 +7,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -48,6 +50,9 @@ public class Player extends GameObject
     //
     private transient InputClass ic;
     private boolean shooting = false;
+
+    private BitmapFont font = new BitmapFont();
+    private GlyphLayout layout = new GlyphLayout();
 
     public boolean reloadThread = false;
 
@@ -127,7 +132,6 @@ public class Player extends GameObject
         {
             Gdx.input.setInputProcessor(ic);
         }
-
         setHitbox(CIRCLEHITBOX(halfWidth));
     }
 
@@ -201,6 +205,14 @@ public class Player extends GameObject
     public void Draw(ShapeRenderer sr, Batch bc)
     {
         Draw(sr);
+        bc.begin();
+        font.setColor(Color.BLACK);
+        String text = GameManager.getInstance().getPlayer().getGunEquipped().toString();
+        layout.setText(font, text);
+        float width = layout.width;// contains the width of the current set text
+        float height = layout.height; // contains the height of the current set text
+        font.draw(bc, layout, GameManager.getInstance().getCamera().viewportWidth -width, height);
+        bc.end();
     }
 
     public Gun getGunEquipped()
@@ -223,10 +235,10 @@ public class Player extends GameObject
     {
         lastpos = position;
         Vector2 pos = new Vector2();
-        //System.out.println("update");
 
         if (ic != null)
         {
+
             if (ic.GetKey(Input.Keys.W))
             {
                 pos.y += 1;
