@@ -22,7 +22,7 @@ public class Projectile extends GameObject
     private GameObject gameObject;
     private float bulletSpeed;
     private int damage;
-    private transient Gun gun;
+    private Gun gun;
     private long lifeTime = 10000; // in millisec
     private long born; //in millisec
 
@@ -75,7 +75,7 @@ public class Projectile extends GameObject
     }
 
     @Override
-    public void Update()
+    public void Update() throws RemoteException
     {
         float rad = MathUtils.degreesToRadians * (rotation - 90);
         Vector2 rot = new Vector2(MathUtils.sin(rad),MathUtils.cos(rad));
@@ -98,21 +98,51 @@ public class Projectile extends GameObject
 
         if (other instanceof Projectile)
         {
-            if (((Projectile)other).gun.getOwner().getID() != gun.getOwner().getID() )
+            if (((Projectile)other).gun != null)
             {
-                GameManager.getInstance().ClearProjectile(this);
+                if (((Projectile) other).gun.getOwner().getID() != gun.getOwner().getID())
+                {
+                    try
+                    {
+                        GameManager.getInstance().ClearProjectile(this);
+                    }
+                    catch (RemoteException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
         else if (other instanceof LevelBlock)
         {
-            GameManager.getInstance().ClearProjectile(this);
+            try
+            {
+                GameManager.getInstance().ClearProjectile(this);
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
 
         }
-        else if (other instanceof Player && gun.getOwner().getID() != other.getID())
+        else if (other instanceof Player )
         {
-            System.out.println(new KillLog(this, (Player) other));
-            GameManager.getInstance().ClearProjectile(this);
-            ((Player) other).Die();
+            if (gun != null)
+            {
+                if (gun.getOwner().getID() != other.getID())
+                {
+                    System.out.println(new KillLog(this, (Player) other));
+                    try
+                    {
+                        GameManager.getInstance().ClearProjectile(this);
+                    }
+                    catch (RemoteException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    ((Player) other).Die();
+                }
+            }
         }
     }
 

@@ -33,7 +33,7 @@ public class Player extends GameObject
     private float maxSpeed;
     private float acceleration;
     private float deAcceleration;
-    private transient Gun gunEquipped;
+    private Gun gunEquipped;
     private transient Random r = new Random();
     //Game vars
     private int kills;
@@ -169,6 +169,11 @@ public class Player extends GameObject
 
     public void Spawn()
     {
+
+        if (r == null)
+        {
+            r = new Random();
+        }
         position = new Vector2(r.nextInt(610) + 17, r.nextInt(450) + 17);
         //position = new Vector2(r.nextInt(2000) + 17, r.nextInt(2000) + 17);
     }

@@ -23,7 +23,7 @@ public interface IGameManager extends Remote
     String ServerManger = "serermanager";
 
     int portNumber = 1099;
-    int fps = 30;
+    int fps = 60;
     float TICKLENGTH = 1000 / fps; // in milli
 
     List<IGameObject> GetTick(String id) throws RemoteException;

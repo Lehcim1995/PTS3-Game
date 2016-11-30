@@ -263,6 +263,7 @@ public class GameObject implements IGameObject, Serializable
     public void SetRotation(float rot)
     {
         rotation = rot;
+        hitbox.setRotation(rot);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Random;
 import java.util.Timer;
@@ -15,7 +16,7 @@ import static com.badlogic.gdx.utils.TimeUtils.millis;
 /**
  * Created by myron on 11-10-16.
  */
-public class Gun
+public class Gun implements Serializable
 {
     private String name;
     private float reloadTime;
@@ -30,11 +31,11 @@ public class Gun
     private float bulletSpeed;
     private int projectileDamage;
 
-    private Thread reloadThread = null;
-    private Thread shootThread = null;
-    private long lastShot;
-    private boolean reloading = false;
-    private boolean hasShot = false;
+    private transient Thread reloadThread = null;
+    private transient Thread shootThread = null;
+    private transient long lastShot;
+    private transient boolean reloading = false;
+    private transient boolean hasShot = false;
 
     public enum gunType
     {

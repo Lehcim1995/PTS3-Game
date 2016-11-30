@@ -140,7 +140,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     {
         if (!idObjects.containsKey(id))
         {
-            idObjects.put(id, new ArrayList<IGameObject>());
+            idObjects.put(id, new ArrayList<>());
         }
 
         for (IGameObject go : everything)
@@ -172,6 +172,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public void DeleteTick(String id, IGameObject object) throws RemoteException
     {
+        idObjects.entrySet().forEach(stringListEntry -> stringListEntry.getValue().removeIf(gameObject -> gameObject.getID() == object.getID()));
+        everything.removeIf(gameObject -> gameObject.getID() == object.getID());
 
     }
 

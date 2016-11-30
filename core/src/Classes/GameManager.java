@@ -33,7 +33,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     private List<IGameObject> objects;
     private List<IGameObject> notMine;
     private boolean gen = false;
-    private boolean online = false;
+    private boolean online;
 
     private IGameManager Server;
     private Registry registry;
@@ -46,12 +46,13 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     {
 
         //spectators = new ArrayList<Spectator>();
-        killLogs = new ArrayList<KillLog>();
+        killLogs = new ArrayList<>();
         //chats = new ArrayList<Chat>();
-        objects = new ArrayList<IGameObject>();
-        notMine = new ArrayList<IGameObject>();
+        objects = new ArrayList<>();
+        notMine = new ArrayList<>();
 
         InetAddress localhost = null;
+        online = true;
         try
         {
             localhost = InetAddress.getLocalHost();
@@ -59,6 +60,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         catch (UnknownHostException e)
         {
             LOGGER.info("Client: UnknownHostException: " + e.getMessage());
+            online = false;
         }
         String ip = localhost.getHostAddress();
 
@@ -71,18 +73,24 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         catch (RemoteException ex)
         {
             LOGGER.info("Client: RemoteExeption " + ex.getMessage());
+            online = false;
         }
         catch (NotBoundException e)
         {
             e.printStackTrace();
+            online = false;
         }
-        Random r =new Random();
+        Random r = new Random();
         name = r.nextInt(100000000) + "";
         Player me = new Player(true);
         me.SetColor(SerializableColor.getRandomColor());
         AddPlayer(me);
 
-        level = Server.GetLevel();
+        if (online)
+            level = Server.GetLevel();
+        else
+            level = new Level();
+
         for(GameObject obj : level.getLevelBlocks())
         {
             objects.add(obj);
@@ -111,20 +119,22 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
 
         //objects.addAll(Server.GetTick());
         notMine.clear();
-        notMine.addAll(Server.GetTick(name));
+        if (online)
+            notMine.addAll(Server.GetTick(name));
         notMine.addAll(objects);
 
         ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();
         for (IGameObject object : clonelist)
         {
             object.Update();
-            Server.UpdateTick(name, object);
+            if (online)
+                Server.UpdateTick(name, object);
         }
 
-        ArrayList<GameObject[]> hitlist = new ArrayList<GameObject[]>();
-        for (IGameObject go1 : objects)
+        ArrayList<GameObject[]> hitlist = new ArrayList<>();
+        for (IGameObject go1 : notMine)
         {
-            for (IGameObject go2 : objects)
+            for (IGameObject go2 : notMine)
             {
                 if (go1 != go2)
                 {
@@ -159,9 +169,11 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         gen = true;
     }
 
-    public void ClearProjectile(Projectile p)
+
+
+    public void ClearProjectile(Projectile p) throws RemoteException
     {
-        objects.remove(p);
+        removeGameObject(p);
     }
 
     public void EndMatch()
@@ -185,7 +197,15 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     public synchronized void addGameObject(GameObject go) throws RemoteException
     {
         objects.add(go);
-        Server.SetTick(name, go);
+        if (online)
+            Server.SetTick(name, go);
+    }
+
+    public void removeGameObject(GameObject go) throws RemoteException
+    {
+        objects.remove(go);
+        if (online)
+            Server.DeleteTick(name, go);
     }
 
     public List<IGameObject> getObjects()

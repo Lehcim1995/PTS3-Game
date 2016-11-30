@@ -12,6 +12,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
+    sourceCompatibility = 1.8
 
     version = '1.0'
     ext {
@@ -29,6 +30,10 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+}
+
+subprojects {
+    apply plugin: "java"
 }
 
 project(":desktop") {

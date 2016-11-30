@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -71,21 +72,26 @@ public class GameSceneScreen extends AbstractScreen{
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (Iterator<IGameObject> iterator = GameManager.getInstance().getObjects().iterator(); iterator.hasNext(); ) {
+        for (Iterator<IGameObject> iterator = GameManager.getInstance().getAllObjects().iterator(); iterator.hasNext(); ) {
             IGameObject go = iterator.next();
-            go.Draw(shapeRenderer);
+            try
+            {
+                go.Draw(shapeRenderer);
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
         }
-
         shapeRenderer.end();
 
-        /*
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.WHITE);
-        for(Classes.GameObject go :  GameManager.getInstance().getObjects())
+        shapeRenderer.setColor(Color.RED);
+        for(IGameObject go :  GameManager.getInstance().getAllObjects())
         {
             shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
         }
-        shapeRenderer.end();*/
+        shapeRenderer.end();
     }
 
     @Override

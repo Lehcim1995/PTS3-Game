@@ -245,8 +245,10 @@ public class SerializablePolygon implements Serializable, Shape2D
     {
         Polygon p = new Polygon();
         p.setOrigin(getOriginX(),getOriginY());
+        p.setRotation(rotation);
         p.setVertices(localVertices);
         p.setPosition(getX(), getY());
+
 
         return p;
     }
