@@ -3,11 +3,7 @@ package Classes;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializableColor;
-import fontyspublisher.IRemotePropertyListener;
-import fontyspublisher.IRemotePublisherForDomain;
-import fontyspublisher.IRemotePublisherForListener;
 
-import java.beans.PropertyChangeEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
@@ -16,7 +12,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
@@ -82,9 +77,10 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         }
         Random r = new Random();
         name = r.nextInt(100000000) + "";
+        System.out.println(name);
         Player me = new Player(true);
-        me.SetColor(SerializableColor.getRandomColor());
-        AddPlayer(me);
+        me.setColor(SerializableColor.getRandomColor());
+        addPlayer(me);
 
         if (online)
             level = Server.GetLevel();
@@ -126,7 +122,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();
         for (IGameObject object : clonelist)
         {
-            object.Update();
+            object.update();
             if (online)
                 Server.UpdateTick(name, object);
         }
@@ -148,11 +144,11 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
 
         for (GameObject[] golist : hitlist)
         {
-            golist[0].OnCollisionEnter(golist[1]);
+            golist[0].onCollisionEnter(golist[1]);
         }
     }
 
-    public Player GetPlayer()
+    public Player getPlayer()
     {
         return playerMe;
     }
@@ -188,7 +184,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         //chats.add(chat);
     }
 
-    public void AddPlayer(Player p) throws RemoteException
+    public void addPlayer(Player p) throws RemoteException
     {
         playerMe = p;
         addGameObject(p);
@@ -246,5 +242,10 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     public Level GetLevel() throws RemoteException
     {
         return null;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 }

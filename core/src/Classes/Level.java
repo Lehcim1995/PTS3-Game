@@ -2,18 +2,10 @@ package Classes;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Vector;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Shape;
 
 /**
  * Created by myron on 11-10-16.
@@ -74,7 +66,7 @@ public class Level implements Serializable
         {
             LevelBlock levelBlock = new LevelBlock(new Vector2(0,0),0,GameObject.DEFAULTHITBOX(13)); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
             //GetNewBlockLocation(i)
-            levelBlock.SetPosition(new Vector2(random.nextInt((int)LevelSizeX), random.nextInt((int)LevelSizeY)));
+            levelBlock.setPosition(new Vector2(random.nextInt((int)LevelSizeX), random.nextInt((int)LevelSizeY)));
             newLevelBlockList.add(levelBlock);
 
             //GameManager.getInstance().addGameObject(levelBlock);

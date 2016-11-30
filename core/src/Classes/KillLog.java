@@ -20,6 +20,6 @@ public class KillLog
     @Override
     public String toString()
     {
-        return projectile.GetGun().getOwner().GetName() + " " + projectile.GetGun().toString() + " " + player.GetName() ;
+        return projectile.getGun().getOwner().getName() + " " + projectile.getGun().toString() + " " + player.getName() ;
     }
 }

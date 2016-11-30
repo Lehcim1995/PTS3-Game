@@ -2,9 +2,6 @@ package com.asom.mygame;
 
 import Classes.*;
 import Interfaces.IGameObject;
-import Scenes.AbstractScreen;
-import Scenes.ScreenEnum;
-import Scenes.ScreenManager;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -50,8 +47,8 @@ public class MainClass extends Game implements ApplicationListener{
             e.printStackTrace();
         }
 
-        if (GameManager.getInstance().GetPlayer() != null) {
-            camera.position.set(GameManager.getInstance().GetPlayer().GetPosition().x, GameManager.getInstance().GetPlayer().GetPosition().y, 1);
+        if (GameManager.getInstance().getPlayer() != null) {
+            camera.position.set(GameManager.getInstance().getPlayer().getPosition().x, GameManager.getInstance().getPlayer().getPosition().y, 1);
         }
         camera.update();
 

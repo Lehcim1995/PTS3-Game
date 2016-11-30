@@ -36,7 +36,7 @@ public class LevelBlock extends GameObject
     }
 
     @Override
-    public void Update()
+    public void update()
     {
         hitbox.setPosition(position.x, position.y);
         hitbox.setRotation(-rotation);

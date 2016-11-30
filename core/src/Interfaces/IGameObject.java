@@ -15,20 +15,20 @@ import java.rmi.RemoteException;
  */
 public interface IGameObject extends Remote
 {
-    Texture GetTexture();
-    void SetTexture(Texture tex);
+    Texture getTexture();
+    void setTexture(Texture tex);
 
-    Vector2 GetPosition() throws RemoteException;
-    void SetPosition(Vector2 pos) throws RemoteException;
+    Vector2 getPosition() throws RemoteException;
+    void setPosition(Vector2 pos) throws RemoteException;
 
-    float GetRotation() throws RemoteException;
-    void SetRotation(float rot) throws RemoteException;
+    float getRotation() throws RemoteException;
+    void setRotation(float rot) throws RemoteException;
 
-    void OnCollisionEnter(IGameObject Other);
-    void OnCollisionExit(IGameObject Other);
-    void OnCollisionStay(IGameObject Other);
+    void onCollisionEnter(IGameObject Other);
+    void onCollisionExit(IGameObject Other);
+    void onCollisionStay(IGameObject Other);
 
-    void Update() throws RemoteException;
+    void update() throws RemoteException;
 
     void Draw(ShapeRenderer shapeRenderer)  throws RemoteException;;
 

@@ -16,7 +16,7 @@ public interface IGameManager extends Remote
     String ClientNewPlayer = "ClientNewPlayer";
     String ServerNewPlayer = "ServerNewPlayer";
     String UpdatePlayer = "UpdatePlayer";
-    String GetPlayer = "GetPlayer";
+    String GetPlayer = "getPlayer";
     String testBindingName = "GameObjectsServer";
     String remoteGameManger = "remoteGameManager";
     String propertyName = "gameobjects";

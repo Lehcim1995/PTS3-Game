@@ -1,15 +1,10 @@
 package Classes;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Random;
-import java.util.Timer;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
 
@@ -143,10 +138,10 @@ public class Gun implements Serializable
         if (millis() - lastShot > 1000 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
             Random r = new Random();
-            float rot = owner.GetRotation();
+            float rot = owner.getRotation();
             rot += (r.nextFloat() * spread)/2;
 
-            Projectile projectile = new Projectile(this, new Vector2(owner.GetPosition().x, owner.GetPosition().y), rot);
+            Projectile projectile = new Projectile(this, new Vector2(owner.getPosition().x, owner.getPosition().y), rot);
 
             GameManager.getInstance().addGameObject(projectile);
             currentBullets--;

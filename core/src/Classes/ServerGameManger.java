@@ -3,12 +3,7 @@ package Classes;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializableColor;
-import fontyspublisher.IRemotePropertyListener;
-import fontyspublisher.IRemotePublisherForDomain;
-import fontyspublisher.IRemotePublisherForListener;
-import fontyspublisher.RemotePublisher;
 
-import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -20,12 +15,7 @@ import java.util.*;
  */
 public class ServerGameManger extends UnicastRemoteObject implements IGameManager
 {
-
-    private IRemotePublisherForDomain remotePublisherForDomain;
-    private IRemotePublisherForListener remotePublisherForListener;
     private Registry registry;
-    private transient Timer GameTicks;
-    private transient TimerTask GameTickTask;
 
     private List<IGameObject> everything;
     private Map<String, List<IGameObject>> idObjects;
@@ -41,10 +31,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
         try
         {
-            remotePublisherForDomain = new RemotePublisher();
-
             registry = LocateRegistry.createRegistry(portNumber);
-            registry.rebind(testBindingName, remotePublisherForDomain);
             registry.rebind(ServerManger, this);
 
         }
@@ -52,24 +39,6 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         {
             System.out.println("Server: RemoteExeption " + ex.getMessage());
         }
-
-        GameTicks = new Timer();
-        GameTickTask = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-//                try
-//                {
-//                    //remotePublisherForDomain.inform(UpdatePlayer, this, mygameObjects);
-//                }
-//                catch (RemoteException e)
-//                {
-//                    System.out.println("Server: RemoteExeption " + e.getMessage());
-//                }
-            }
-        };
-        GameTicks.scheduleAtFixedRate(GameTickTask, 0, (int) TICKLENGTH);
     }
 
     public static void main(String[] args)
@@ -120,19 +89,15 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
         if (!idObjects.containsKey(id))
         {
-            idObjects.put(id, new ArrayList<IGameObject>());
+            idObjects.put(id, new ArrayList<>());
             idObjects.get(id).addAll(everything);
         }
 
         everything.add(object);
 
-        for (Map.Entry<String, List<IGameObject>> entry : idObjects.entrySet())
-        {
-            if (!entry.getKey().equals(id))
-            {
-                entry.getValue().add(object);
-            }
-        }
+        idObjects.entrySet().stream().filter(entry -> !entry.getKey().equals(id)).forEach(entry -> {
+            entry.getValue().add(object);
+        });
     }
 
     @Override
@@ -147,8 +112,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         {
             if (go.getID() == object.getID())
             {
-                go.SetPosition(object.GetPosition());
-                go.SetRotation(object.GetRotation());
+                go.setPosition(object.getPosition());
+                go.setRotation(object.getRotation());
             }
         }
 
@@ -160,8 +125,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
                 {
                     if(obj.getID() == object.getID())
                     {
-                        obj.SetPosition(object.GetPosition());
-                        obj.SetRotation(object.GetRotation());
+                        obj.setPosition(object.getPosition());
+                        obj.setRotation(object.getRotation());
                         break;
                     }
                 }
@@ -187,8 +152,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     {
         Player p;
         p = new Player(false);
-        p.SetName(name);
-        p.SetColor(SerializableColor.getRandomColor());
+        p.setName(name);
+        p.setColor(SerializableColor.getRandomColor());
 
         return p;
     }

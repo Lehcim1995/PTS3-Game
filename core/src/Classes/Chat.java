@@ -1,10 +1,5 @@
 package Classes;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,6 +22,6 @@ public class Chat
 
     @Override
     public String toString() {
-        return time.toString() + " - " + fromPlayer.GetName() + " : " + message;
+        return time.toString() + " - " + fromPlayer.getName() + " : " + message;
     }
 }

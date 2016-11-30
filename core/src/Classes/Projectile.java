@@ -62,7 +62,7 @@ public class Projectile extends GameObject
 
     }
 
-    public Gun GetGun()
+    public Gun getGun()
     {
         return gun;
     }
@@ -75,7 +75,7 @@ public class Projectile extends GameObject
     }
 
     @Override
-    public void Update() throws RemoteException
+    public void update() throws RemoteException
     {
         float rad = MathUtils.degreesToRadians * (rotation - 90);
         Vector2 rot = new Vector2(MathUtils.sin(rad),MathUtils.cos(rad));
@@ -92,7 +92,7 @@ public class Projectile extends GameObject
     }
 
     @Override
-    public void OnCollisionEnter(IGameObject other)
+    public void onCollisionEnter(IGameObject other)
     {
         System.out.println("Hit");
 

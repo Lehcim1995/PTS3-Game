@@ -2,23 +2,18 @@ package Classes;
 
 import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializableColor;
-import LibGDXSerialzableClasses.SerializablePolygon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.input.*;
-import javafx.application.Platform;
 
 import java.rmi.RemoteException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by michel on 27-9-2016.
@@ -105,7 +100,7 @@ public class Player extends GameObject
         position = p.position;
         lastpos = position;
         speed = 125.1248f;
-        name = p.GetName();
+        name = p.getName();
         color = p.color;
 
         ic = new InputClass(this);
@@ -201,7 +196,11 @@ public class Player extends GameObject
 
         sr.setColor(color.getLibGDXColor());
         sr.circle(position.x, position.y, halfWidth);
+    }
 
+    public void Draw(ShapeRenderer sr, Batch bc)
+    {
+        Draw(sr);
     }
 
     public Gun getGunEquipped()
@@ -220,11 +219,11 @@ public class Player extends GameObject
     }
 
     @Override
-    public void Update() throws RemoteException
+    public void update() throws RemoteException
     {
         lastpos = position;
         Vector2 pos = new Vector2();
-        //System.out.println("Update");
+        //System.out.println("update");
 
         if (ic != null)
         {
@@ -286,7 +285,7 @@ public class Player extends GameObject
     }
 
     @Override
-    public void OnCollisionEnter(IGameObject other)
+    public void onCollisionEnter(IGameObject other)
     {
         if (other instanceof Player)
         {
@@ -314,17 +313,17 @@ public class Player extends GameObject
         }
     }
 
-    public String GetName()
+    public String getName()
     {
         return this.name;
     }
 
-    public void SetColor(SerializableColor color)
+    public void setColor(SerializableColor color)
     {
         this.color = color;
     }
 
-    public void SetName(String name)
+    public void setName(String name)
     {
         this.name = name;
     }

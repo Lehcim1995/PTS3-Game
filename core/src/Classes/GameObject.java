@@ -224,68 +224,68 @@ public class GameObject implements IGameObject, Serializable
     }
 
     @Override
-    public Texture GetTexture()
+    public Texture getTexture()
     {
         return texture;
     }
 
     @Override
-    public void SetTexture(Texture tex)
+    public void setTexture(Texture tex)
     {
         texture = tex;
     }
 
     @Override
-    public Vector2 GetPosition()
+    public Vector2 getPosition()
     {
         return position;
     }
 
-    public Vector2 GetScreenPosition()
+    public Vector2 getScreenPosition()
     {
         return new Vector2(/*position.x*/ Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2/* - position.y*/);
     }
 
     @Override
-    public void SetPosition(Vector2 pos)
+    public void setPosition(Vector2 pos)
     {
         position = pos;
         hitbox.setPosition(pos.x, pos.y);
     }
 
     @Override
-    public float GetRotation()
+    public float getRotation()
     {
         return rotation;
     }
 
     @Override
-    public void SetRotation(float rot)
+    public void setRotation(float rot)
     {
         rotation = rot;
         hitbox.setRotation(rot);
     }
 
     @Override
-    public void OnCollisionEnter(IGameObject other)
+    public void onCollisionEnter(IGameObject other)
     {
 
     }
 
     @Override
-    public void OnCollisionExit(IGameObject other)
+    public void onCollisionExit(IGameObject other)
     {
 
     }
 
     @Override
-    public void OnCollisionStay(IGameObject other)
+    public void onCollisionStay(IGameObject other)
     {
 
     }
 
     @Override
-    public void Update() throws RemoteException
+    public void update() throws RemoteException
     {
 
     }

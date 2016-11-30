@@ -28,7 +28,7 @@ public class Spectator extends GameObject
         String spectatedName = "No player available to spectate";
 
         if (player != null) {
-            spectatedName = player.GetName();
+            spectatedName = player.getName();
         }
 
         return spectatedName;
