@@ -1,6 +1,7 @@
 package Scenes;
 
 import Classes.Player;
+import Classes.User;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,15 +19,16 @@ import java.util.ArrayList;
 public class GameLobbyScreen extends AbstractScreen{
     private Texture txtrLeave;
     private Texture txtrReady;
-    private TextureRegion myTrLeave;
-    private TextureRegion myTrReady;
-    private TextureRegionDrawable myTrdLeave;
-    private TextureRegionDrawable myTrdReady;
+    private TextureRegion TrLeave;
+    private TextureRegion TrReady;
+    private TextureRegionDrawable TrdLeave;
+    private TextureRegionDrawable TrdReady;
     private List listPlayers;
     private List listChat;
     private Skin skin;
     private ScrollPane scrollPanePlayer;
     private ScrollPane scrollPaneChat;
+    private TextField txtChatInput;
 
     public GameLobbyScreen()
     {
@@ -40,15 +42,15 @@ public class GameLobbyScreen extends AbstractScreen{
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         //Button Leave
-        myTrLeave = new TextureRegion(txtrLeave);
-        myTrdLeave = new TextureRegionDrawable(myTrLeave);
-        ImageButton btnLeave = new ImageButton(myTrdLeave);
+        TrLeave = new TextureRegion(txtrLeave);
+        TrdLeave = new TextureRegionDrawable(TrLeave);
+        ImageButton btnLeave = new ImageButton(TrdLeave);
         btnLeave.setPosition(125.f, 40.f, Align.center);
 
         //Button Ready
-        myTrReady = new TextureRegion(txtrReady);
-        myTrdReady = new TextureRegionDrawable(myTrReady);
-        ImageButton btnReady = new ImageButton(myTrdReady);
+        TrReady = new TextureRegion(txtrReady);
+        TrdReady = new TextureRegionDrawable(TrReady);
+        ImageButton btnReady = new ImageButton(TrdReady);
         btnReady.setPosition(375.f, 40.f, Align.center);
 
         //List Players
@@ -63,15 +65,20 @@ public class GameLobbyScreen extends AbstractScreen{
         listChat.setItems("asd","qwe","zxc","fdg","Sibe","Myron","asdasdasd asd sad sa  d as dsa sd sad da s ads das dsa sad dsa");
         scrollPaneChat = new ScrollPane(listChat,skin);
         scrollPaneChat.setSize(200.f, 225.f);
-        scrollPaneChat.setPosition(25.f, 100.f);
+        scrollPaneChat.setPosition(25.f, 110.f);
         scrollPaneChat.isScrollingDisabledX();
-        scrollPaneChat.
+
+        //ChatBoxInput
+        txtChatInput = new TextField("",skin);
+        txtChatInput.setSize(200f, 25f);
+        txtChatInput.setPosition(125.f,85.f, Align.center);
 
         //Add all items to scene
         addActor(btnLeave);
         addActor(btnReady);
         addActor(scrollPanePlayer);
         addActor(scrollPaneChat);
+        addActor(txtChatInput);
 
         btnLeave.addListener(new InputListener() {
             @Override
@@ -88,8 +95,27 @@ public class GameLobbyScreen extends AbstractScreen{
                                      float x, float y, int pointer, int button) {
                 //todo set player to ready
                 System.out.println("Player X is ready");
+                //todo only when all players are ready
+                ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 return false;
             }
         });
+        //TODO Check if enter pressed then push text in message to server and add to chatlist
+        /*
+        txtChatInput.setTextFieldListener(new TextFieldListener() {
+            @Override
+            public void keyTyped(TextField textField, char key) {
+                if ((key == '\r' || key == '\n')){
+                    textField.next(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT));
+                }
+            }
+        });
+*/
+    }
+    public void addNewMessage(String message, User user){
+        //TODO: add message to the list of messages (may need to update the scrollpane)
+    }
+    public void addNewUser(User user){
+        //TODO: add user to the list of users in the lobby (may need to update the scrollpane)
     }
 }

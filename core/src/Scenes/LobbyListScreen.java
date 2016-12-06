@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
@@ -14,29 +17,64 @@ import com.badlogic.gdx.utils.Align;
  */
 public class LobbyListScreen extends AbstractScreen{
 
-    private Texture txtrLogin;
-    private TextureRegion myTextureRegion;
-    private TextureRegionDrawable myTrd;
+    private Texture txtrLogout;
+    private Texture txtrJoin;
+    private TextureRegion TrLogout;
+    private TextureRegion TrJoin;
+    private TextureRegionDrawable TrdLogout;
+    private TextureRegionDrawable TrdJoin;
+    private List listServers;
+    private ScrollPane scrollPaneServers;
+    private Skin skin;
 
     public LobbyListScreen()
     {
         super();
-        txtrLogin = new Texture(Gdx.files.internal("core\\assets\\btn_back.png"));
+        txtrLogout = new Texture(Gdx.files.internal("core\\assets\\btn_logout.png"));
+        txtrJoin = new Texture(Gdx.files.internal("core\\assets\\btn_join.png"));
     }
 
     @Override
     public void buildStage() {
-        myTextureRegion = new TextureRegion(txtrLogin);
-        myTrd = new TextureRegionDrawable(myTextureRegion);
-        ImageButton btnLogin = new ImageButton(myTrd);
-        btnLogin.setPosition(260.f, 40.f, Align.center);
-        addActor(btnLogin);
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        btnLogin.addListener(new InputListener() {
+        //Logout
+        TrLogout = new TextureRegion(txtrLogout);
+        TrdLogout = new TextureRegionDrawable(TrLogout);
+        ImageButton btnLogout = new ImageButton(TrdLogout);
+        btnLogout.setPosition(260.f, 120.f, Align.center);
+
+        //JoinGame
+        TrJoin = new TextureRegion(txtrJoin);
+        TrdJoin = new TextureRegionDrawable(TrJoin);
+        ImageButton btnJoin = new ImageButton(TrdJoin);
+        btnJoin.setPosition(260.f, 40.f, Align.center);
+
+        //List Players
+        listServers = new List(skin);
+        listServers.setItems("asd","qwe","zxc","fdg","Sibe","Myron","asdasdasd");
+        scrollPaneServers = new ScrollPane(listServers,skin);
+        scrollPaneServers.setSize(200.f, 150.f);
+        scrollPaneServers.setPosition(25.f, 350.f);
+
+        addActor(btnLogout);
+        addActor(btnJoin);
+        addActor(scrollPaneServers);
+
+
+        btnLogout.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
+                return false;
+            }
+        });
+        btnJoin.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event,
+                                     float x, float y, int pointer, int button) {
+                ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
                 return false;
             }
         });
