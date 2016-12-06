@@ -73,6 +73,7 @@ public class RegisterScreen extends AbstractScreen{
         addActor(btnBack);
         addActor(btnRegister);
 
+
         btnBack.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event,
@@ -86,7 +87,13 @@ public class RegisterScreen extends AbstractScreen{
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
-                System.out.println("Empty string: " + tfName.getText().isEmpty());
+                //TODO:
+                String name = tfName.getText();
+                String lastName = tfLastName.getText();
+                String email = tfEmail.getText();
+                String username = tfUsername.getText();
+                String password = tfPassword.getText();
+                System.out.println("Empty string: " + name.isEmpty());
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 return false;
             }
