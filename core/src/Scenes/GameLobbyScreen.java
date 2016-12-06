@@ -23,7 +23,10 @@ public class GameLobbyScreen extends AbstractScreen{
     private TextureRegionDrawable myTrdLeave;
     private TextureRegionDrawable myTrdReady;
     private List listPlayers;
+    private List listChat;
     private Skin skin;
+    private ScrollPane scrollPanePlayer;
+    private ScrollPane scrollPaneChat;
 
     public GameLobbyScreen()
     {
@@ -36,23 +39,39 @@ public class GameLobbyScreen extends AbstractScreen{
     public void buildStage() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        //Button Leave
         myTrLeave = new TextureRegion(txtrLeave);
-        myTrReady = new TextureRegion(txtrReady);
         myTrdLeave = new TextureRegionDrawable(myTrLeave);
-        myTrdReady = new TextureRegionDrawable(myTrReady);
-
         ImageButton btnLeave = new ImageButton(myTrdLeave);
-        ImageButton btnReady = new ImageButton(myTrdReady);
-
-        listPlayers = new List(skin);
-
-        listPlayers.setPosition(375.f, 400.f);
         btnLeave.setPosition(125.f, 40.f, Align.center);
+
+        //Button Ready
+        myTrReady = new TextureRegion(txtrReady);
+        myTrdReady = new TextureRegionDrawable(myTrReady);
+        ImageButton btnReady = new ImageButton(myTrdReady);
         btnReady.setPosition(375.f, 40.f, Align.center);
 
+        //List Players
+        listPlayers = new List(skin);
+        listPlayers.setItems("asd","qwe","zxc","fdg","Sibe","Myron","asdasdasd");
+        scrollPanePlayer = new ScrollPane(listPlayers,skin);
+        scrollPanePlayer.setSize(200.f, 150.f);
+        scrollPanePlayer.setPosition(25.f, 350.f);
+
+        //List Chat
+        listChat = new List(skin);
+        listChat.setItems("asd","qwe","zxc","fdg","Sibe","Myron","asdasdasd asd sad sa  d as dsa sd sad da s ads das dsa sad dsa");
+        scrollPaneChat = new ScrollPane(listChat,skin);
+        scrollPaneChat.setSize(200.f, 225.f);
+        scrollPaneChat.setPosition(25.f, 100.f);
+        scrollPaneChat.isScrollingDisabledX();
+        scrollPaneChat.
+
+        //Add all items to scene
         addActor(btnLeave);
         addActor(btnReady);
-        addActor(listPlayers);
+        addActor(scrollPanePlayer);
+        addActor(scrollPaneChat);
 
         btnLeave.addListener(new InputListener() {
             @Override
