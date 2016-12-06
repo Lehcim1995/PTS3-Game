@@ -1,5 +1,6 @@
 package Scenes;
 
+import Classes.Connection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+
+import java.rmi.RemoteException;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -94,6 +97,12 @@ public class RegisterScreen extends AbstractScreen{
                 String username = tfUsername.getText();
                 String password = tfPassword.getText();
                 System.out.println("Empty string: " + name.isEmpty());
+                try {
+                    Connection conn = new Connection();
+                    conn.CreateUser(name, lastName, email, username, password);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 return false;
             }
