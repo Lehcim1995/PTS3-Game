@@ -79,6 +79,7 @@ public class LoginScreen extends AbstractScreen {
                     try
                     {
                         //maak instantie van connection class en roep de LogIn aan.
+                        ///TODO:
                         Connection conn = new Connection();
                         conn.LogIn(user, ww);
                     }

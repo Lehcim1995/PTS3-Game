@@ -6,6 +6,7 @@ import LibGDXSerialzableClasses.SerializableColor;
 import Scenes.AbstractScreen;
 import Scenes.GameSceneScreen;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.utils.Json;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
