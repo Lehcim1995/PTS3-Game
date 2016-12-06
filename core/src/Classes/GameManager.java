@@ -69,6 +69,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
             registry = LocateRegistry.getRegistry(ip, portNumber);
 
             Server = (IGameManager) registry.lookup(ServerManger);
+
         }
         catch (RemoteException ex)
         {

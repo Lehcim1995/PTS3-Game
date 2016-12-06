@@ -26,14 +26,13 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
  */
 public class Database {
 
-    //"jdbc:sqlserver:mssql.fhict.local;databaseName=dbi327759;user=dbi327759;password=Mssql"
 
-    private final String serverNameSchool = "";
-    private final String mydatabaseSchool = "";
-    private final String usernameSchool = "";
-    private final String passwordSchool = "";
+    private final String serverNameSchool = "mssql.fhict.local";
+    private final String mydatabaseSchool = "dbi310866";
+    private final String usernameSchool = "dbi310866";
+    private final String passwordSchool = "cactus";
 
-    private final String url = "jdbc:sqlserver://" + serverNameSchool + ";user=" + usernameSchool + ";password=" + passwordSchool + ";database=" + mydatabaseSchool;
+    private final String url = "jdbc:sqlserver://" + serverNameSchool + ";database=" + mydatabaseSchool +";user=" + usernameSchool +";password=" + passwordSchool;
 
     private Database()
     {
@@ -151,11 +150,13 @@ public class Database {
             System.out.println("SQL Error " + e.getMessage());
             System.out.println("SQL Error " + e.getErrorCode());
             return -1;
-        } catch (ClassNotFoundException e)
+        }
+        catch (ClassNotFoundException e)
         {
             System.out.println("Class Error " + e.getMessage());
             return -1;
-        } finally
+        }
+        finally
         {
             if (conn != null)
             {
@@ -286,7 +287,7 @@ public class Database {
 
         try
         {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(connection);
             sta = conn.createStatement();
             if (conn == null)
@@ -298,11 +299,13 @@ public class Database {
         {
             System.out.println("SQL Error " + e.getMessage());
             return false;
-        } catch (ClassNotFoundException e)
-        {
-            System.out.println("Class Error " + e.getMessage());
-            return false;
-        } finally
+        }
+//        catch (ClassNotFoundException e)
+//        {
+//            System.out.println("Class Error " + e.getMessage());
+//            return false;
+//        }
+        finally
         {
             if (conn != null)
             {

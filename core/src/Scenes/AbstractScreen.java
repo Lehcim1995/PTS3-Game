@@ -1,5 +1,7 @@
 package Scenes;
 
+import Interfaces.IConnection;
+import Interfaces.IGameManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -7,15 +9,25 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.net.InetAddress;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 /**
  * Created by Nick on 22-11-2016.
  */
-public abstract class AbstractScreen extends Stage implements Screen {
+public abstract class AbstractScreen extends Stage implements Screen
+{
+
+    Registry registry;
+    IConnection conn;
 
     public abstract void buildStage();
 
     protected AbstractScreen() {
         super( new StretchViewport(500.0f, 500.0f, new OrthographicCamera()) );
+        registry = ScreenManager.getInstance().GetRegistry();
+        conn = ScreenManager.getInstance().GetConnection();
     }
 
     @Override

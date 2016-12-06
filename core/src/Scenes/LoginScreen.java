@@ -3,6 +3,8 @@ package Scenes;
 
 import Classes.Connection;
 
+import Interfaces.IConnection;
+import Interfaces.IUser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.sun.media.jfxmedia.logging.Logger;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.util.logging.Level;
 
 
 /**
@@ -33,7 +43,6 @@ public class LoginScreen extends AbstractScreen {
         super();
         txtrLogin = new Texture(Gdx.files.internal("core\\assets\\btn_login.png"));
         txtrRegister = new Texture(Gdx.files.internal("core\\assets\\btn_register.png"));
-
     }
 
     @Override
@@ -70,18 +79,25 @@ public class LoginScreen extends AbstractScreen {
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
-                ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 System.out.println(txtUserName.getText());
                 System.out.println(txtPassword.getText());
-                String user = txtUserName.getText();
+                String email = txtUserName.getText();
                 String ww = txtPassword.getText();
                 if(txtUserName.getText().isEmpty() != true && txtPassword.getText().isEmpty() != true){
                     try
                     {
-                        //maak instantie van connection class en roep de LogIn aan.
-                        ///TODO:
-                        Connection conn = new Connection();
-                        conn.LogIn(user, ww);
+                        IUser user = conn.LogIn(email, ww);
+                        if(user != null)
+                        {
+                            ScreenManager.getInstance().SetUser(user);
+                            ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                        }
+                        else
+                        {
+                            System.out.println("Niet geregistreerd");
+                            ///TODO: popup fout bij inloggen
+                        }
+
                     }
                     catch (Exception e)
                     {
