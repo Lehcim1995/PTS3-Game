@@ -21,7 +21,6 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 public class Connection extends UnicastRemoteObject implements IConnection
 {
     private transient Database database; ///TODO: Make database serializable
-
     public Connection() throws RemoteException
     {
             database = Database.InstanceGet();
@@ -33,7 +32,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
 //        String query = "INSERT INTO USER_TABLE(\"ID\", \"NAME\", \"LASTNAME\", \"EMAIL\", \"USERNAME\", \"PASSWORD\") VALUES (USERPK_SEQ.nextval, " + name + ", " + lastname + ", "  + email + ", " + username + ", " + password + ")";
             String query = "INSERT INTO USER_TABLE([ID], [NAME], [LASTNAME], [EMAIL], [USERNAME], [PASSWORD]) VALUES (?, ?, ?, ?, ?, ?)";
             List<Object> arguments = new ArrayList();
-            arguments.add("SELECT NEXT VALUE FOR USER_SEQ;");
+            arguments.add("select userpk_seq.nextval from user_table");
             arguments.add(name);
             arguments.add(lastname);
             arguments.add(email);
