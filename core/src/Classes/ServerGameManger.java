@@ -5,6 +5,8 @@ import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializableColor;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -36,8 +38,13 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             registry = LocateRegistry.createRegistry(portNumber);
             registry.rebind(ServerManger, this);
             registry.rebind(connection, connectionInstance);
+            System.out.println(InetAddress.getLocalHost().getHostAddress());
         }
         catch (RemoteException ex)
+        {
+            System.out.println("Server: RemoteExeption " + ex.getMessage());
+        }
+        catch (UnknownHostException ex)
         {
             System.out.println("Server: RemoteExeption " + ex.getMessage());
         }

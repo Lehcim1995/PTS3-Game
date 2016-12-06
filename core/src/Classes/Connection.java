@@ -32,7 +32,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
 //        String query = "INSERT INTO USER_TABLE(\"ID\", \"NAME\", \"LASTNAME\", \"EMAIL\", \"USERNAME\", \"PASSWORD\") VALUES (USERPK_SEQ.nextval, " + name + ", " + lastname + ", "  + email + ", " + username + ", " + password + ")";
             String query = "INSERT INTO USER_TABLE([ID], [NAME], [LASTNAME], [EMAIL], [USERNAME], [PASSWORD]) VALUES (?, ?, ?, ?, ?, ?)";
             List<Object> arguments = new ArrayList();
-            arguments.add("USERPK_SEQ.nextval");
+            arguments.add("select userpk_seq.nextval from user_table");
             arguments.add(name);
             arguments.add(lastname);
             arguments.add(email);
