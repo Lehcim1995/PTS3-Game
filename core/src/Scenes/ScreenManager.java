@@ -38,9 +38,9 @@ public class ScreenManager {
         {
             localhost = InetAddress.getLocalHost();
             ip = localhost.getHostAddress();
-            registry =  LocateRegistry.getRegistry("192.168.30.25", portNumber);
+            registry =  LocateRegistry.getRegistry("192.168.30.245", portNumber);
             ///TODO: Fix
-            conn = (IConnection) registry.lookup("rmi://192.168.30.25/" + connection);
+            conn = (IConnection) registry.lookup("rmi://192.168.30.245/" + connection);
         }
         catch(RemoteException ex)
         {
