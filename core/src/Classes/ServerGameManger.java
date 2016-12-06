@@ -1,5 +1,6 @@
 package Classes;
 
+import Interfaces.IConnection;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializableColor;
@@ -19,6 +20,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
     private List<IGameObject> everything;
     private Map<String, List<IGameObject>> idObjects;
+    private IConnection connectionInstance = new Connection();
 
     private Random r = new Random();
     private Level level;
@@ -33,7 +35,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         {
             registry = LocateRegistry.createRegistry(portNumber);
             registry.rebind(ServerManger, this);
-
+            registry.rebind(connection, connectionInstance);
         }
         catch (RemoteException ex)
         {

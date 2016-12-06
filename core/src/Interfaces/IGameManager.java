@@ -21,6 +21,7 @@ public interface IGameManager extends Remote
     String remoteGameManger = "remoteGameManager";
     String propertyName = "gameobjects";
     String ServerManger = "serermanager";
+    String connection = "connection";
 
     int portNumber = 1099;
     int fps = 60;

@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.*;
+import java.util.logging.Level;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
@@ -19,9 +21,9 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 public class Connection extends UnicastRemoteObject implements IConnection
 {
     private transient Database database; ///TODO: Make database serializable
-    public Connection() throws SQLException, RemoteException
+    public Connection() throws RemoteException
     {
-        database = Database.InstanceGet();
+            database = Database.InstanceGet();
     }
     @Override
     public boolean CreateUser(String name, String lastname, String email, String username, String password)
