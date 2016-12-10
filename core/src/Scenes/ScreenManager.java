@@ -34,26 +34,6 @@ public class ScreenManager {
     // Singleton: private constructor
     private ScreenManager() {
         super();
-        try
-        {
-            localhost = InetAddress.getLocalHost();
-            ip = localhost.getHostAddress();
-            registry =  LocateRegistry.getRegistry("192.168.30.25", portNumber);
-            ///TODO: Fix
-            conn = (IConnection) registry.lookup("rmi://192.168.30.25/" + connection);
-        }
-        catch(RemoteException ex)
-        {
-            System.out.println("RemoteException: " + ex.getMessage());
-        }
-        catch(NotBoundException ex)
-        {
-            System.out.println("NotBoundException: " + ex.getMessage());
-        }
-        catch(UnknownHostException ex)
-        {
-            System.out.println("NotBoundException: " + ex.getMessage());
-        }
     }
 
     // Singleton: retrieve instance
@@ -97,5 +77,59 @@ public class ScreenManager {
     public IConnection GetConnection()
     {
         return conn;
+    }
+    public String Getmeaningofconnection()
+    {
+        return connection;
+    }
+
+    public String getIp()
+    {
+        return ip;
+    }
+
+    public int getPortNumber()
+    {
+        return portNumber;
+    }
+
+    public String getConnection()
+    {
+        return connection;
+    }
+
+    public Registry getRegistry()
+    {
+        return registry;
+    }
+
+    public IConnection getConn()
+    {
+        return conn;
+    }
+
+    public void setIp(String ip)
+    {
+        this.ip = ip;
+    }
+
+    public void setPortNumber(int portNumber)
+    {
+        this.portNumber = portNumber;
+    }
+
+    public void setConnection(String connection)
+    {
+        this.connection = connection;
+    }
+
+    public void setRegistry(Registry registry)
+    {
+        this.registry = registry;
+    }
+
+    public void setConn(IConnection conn)
+    {
+        this.conn = conn;
     }
 }

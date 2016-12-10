@@ -3,6 +3,7 @@ package Classes;
 import Interfaces.IConnection;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
+import Interfaces.IUser;
 import LibGDXSerialzableClasses.SerializableColor;
 
 import java.net.InetAddress;
@@ -11,6 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -35,10 +37,21 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
         try
         {
+
             registry = LocateRegistry.createRegistry(portNumber);
             registry.rebind(ServerManger, this);
             registry.rebind(connection, connectionInstance);
             System.out.println(InetAddress.getLocalHost().getHostAddress());
+//            IUser user = connectionInstance.LogIn("hans@email.com", "cactus");
+//            if(user !=null)
+//            {
+//                System.out.println("gelukt" + user);
+//            }
+//            else
+//            {
+//                System.out.println("gefaalt" );
+//            }
+
         }
         catch (RemoteException ex)
         {
@@ -48,6 +61,11 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         {
             System.out.println("Server: RemoteExeption " + ex.getMessage());
         }
+//        catch (SQLException e)
+//        {
+//            System.out.println("Server: sql Exception: " + e.getMessage());
+//        }
+
     }
 
     public static void main(String[] args)

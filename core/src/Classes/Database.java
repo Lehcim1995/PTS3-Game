@@ -27,12 +27,13 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 public class Database {
 
 
-    private final String serverNameSchool = "mssql.fhict.local";
-    private final String mydatabaseSchool = "dbi310866";
-    private final String usernameSchool = "dbi310866";
-    private final String passwordSchool = "cactus";
+    private final String serverNameSchool = "localhost";
+    private final String mydatabase = "asom";
+    private final String username = "root";
+    private final String password = "";
 
-    private final String url = "jdbc:sqlserver://" + serverNameSchool + ";database=" + mydatabaseSchool +";user=" + usernameSchool +";password=" + passwordSchool;
+    private final String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase;
+
 
     private Database()
     {
@@ -109,8 +110,8 @@ public class Database {
 
         try
         {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            conn = DriverManager.getConnection(url);
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(url, username, password);
             psta = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             int i = 0;
@@ -225,8 +226,8 @@ public class Database {
 
         try
         {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            conn = DriverManager.getConnection(url);
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(url, username, password);
             psta = conn.prepareStatement(sql);
 
             int i = 0;
@@ -255,10 +256,65 @@ public class Database {
         } catch (SQLException e)
         {
             System.out.println("SQL Error " + e.getMessage());
-        } catch (ClassNotFoundException e)
+        }
+        catch (ClassNotFoundException e)
         {
             System.out.println("Class Error " + e.getMessage());
-        } finally
+        }
+        finally
+        {
+            if (conn != null)
+            {
+                conn.close();
+            }
+
+            if (sta != null)
+            {
+                sta.close();
+            }
+
+            if (rs != null)
+            {
+                rs.close();
+            }
+        }
+
+        return objList;
+    }
+
+    private <T> ArrayList<T> GetDatabaseNoPsts(String sql, DatabaseReturn<T> returnfunction) throws SQLException
+    {
+        ArrayList<T> objList = new ArrayList<T>();
+
+        Connection conn = null;
+        Statement sta = null;
+
+        ResultSet rs = null;
+
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(url, username, password);
+
+
+            int i = 0;
+
+
+            rs = sta.executeQuery(sql);
+
+            while (rs.next())
+            {
+                objList.add(returnfunction.ReturnType(rs));
+            }
+        } catch (SQLException e)
+        {
+            System.out.println("SQL Error " + e.getMessage());
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println("Class Error " + e.getMessage());
+        }
+        finally
         {
             if (conn != null)
             {
@@ -287,8 +343,9 @@ public class Database {
 
         try
         {
-            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            conn = DriverManager.getConnection(connection);
+            Class.forName("com.mysql.jdbc.Driver");
+
+            conn = DriverManager.getConnection(connection, username, password);
             sta = conn.createStatement();
             if (conn == null)
             {
@@ -300,11 +357,11 @@ public class Database {
             System.out.println("SQL Error " + e.getMessage());
             return false;
         }
-//        catch (ClassNotFoundException e)
-//        {
-//            System.out.println("Class Error " + e.getMessage());
-//            return false;
-//        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println("Class Error " + e.getMessage());
+            return false;
+        }
         finally
         {
             if (conn != null)
@@ -351,6 +408,34 @@ public class Database {
             };
 
             return GetDatabase(query, user, arguments);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<User> LogInNoArgs(String query) {
+        try
+        {
+            DatabaseReturn<User> user = (set) ->
+            {
+                String name = set.getString("username");
+                String email = set.getString("email");
+                int kills = set.getInt("kills");
+                int deaths = set.getInt("deaths");
+                int shotshit = set.getInt("shotshit");
+                int shots = set.getInt("shots");
+                int matchesplayed = set.getInt("matchesplayed");
+                int matcheswon = set.getInt("matcheswon");
+                int matcheslost = set.getInt("matcheslost");
+                int isBanned = set.getInt("isbanned");
+
+                return new User(name, email, kills, deaths, shotshit, shots, matchesplayed, matcheswon, matcheslost, isBanned);
+            };
+            ///TODO: Ophalen van User uit database gaat verkeerd
+            return GetDatabaseNoPsts(query,user);
         }
         catch (SQLException e)
         {

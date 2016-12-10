@@ -36,7 +36,9 @@ public class LoginScreen extends AbstractScreen {
     private TextureRegionDrawable registerTrd;
     private TextField txtUserName;
     private TextField txtPassword;
+    private TextField txtIP;
     private Skin tfSkin;
+    private IUser user;
 
     public LoginScreen()
     {
@@ -53,12 +55,16 @@ public class LoginScreen extends AbstractScreen {
         // maak username textfield
         txtUserName = new TextField("",tfSkin);
         txtUserName.setMessageText("EMAIL");
-        txtUserName.setPosition(260.f,300.f,Align.center);
+        txtUserName.setPosition(260.f, 300.f, Align.center);
         // maak password textfield
         txtPassword = new TextField("",tfSkin);
         txtPassword.setPasswordMode(true);
         txtPassword.setMessageText("Password");
-        txtPassword.setPosition(260.f,200.f, Align.center);
+        txtPassword.setPosition(260.f,250.f, Align.center);
+        //maak ip textfield
+        txtIP = new TextField("",tfSkin);
+        txtIP.setMessageText("Server IP");
+        txtIP.setPosition(260.f,200.f,Align.center);
         // maak login button
         myTextureRegion = new TextureRegion(txtrLogin);
         myTrd = new TextureRegionDrawable(myTextureRegion);
@@ -68,12 +74,13 @@ public class LoginScreen extends AbstractScreen {
         registerTextureregion = new TextureRegion(txtrRegister);
         registerTrd = new TextureRegionDrawable(registerTextureregion);
         ImageButton btnRegister = new ImageButton(registerTrd);
-        btnRegister.setPosition(260.f,40.f,Align.center);
+        btnRegister.setPosition(260.f,90.f,Align.center);
         // voeg componenten toe aan de scene
         addActor(txtUserName);
         addActor(txtPassword);
         addActor(btnLogin);
         addActor(btnRegister);
+        addActor(txtIP);
 
         btnLogin.addListener(new InputListener() {
             @Override
@@ -83,10 +90,38 @@ public class LoginScreen extends AbstractScreen {
                 System.out.println(txtPassword.getText());
                 String email = txtUserName.getText();
                 String ww = txtPassword.getText();
-                if(txtUserName.getText().isEmpty() != true && txtPassword.getText().isEmpty() != true){
+                String ip = txtIP.getText();
+                if(txtUserName.getText().isEmpty() != true && txtPassword.getText().isEmpty() != true && txtIP.getText().isEmpty() != true){
                     try
                     {
-                        IUser user = conn.LogIn(email, ww);
+                        try
+                        {
+                            ScreenManager.getInstance().setIp(ip);
+                            registry =  LocateRegistry.getRegistry(ScreenManager.getInstance().getIp(), ScreenManager.getInstance().getPortNumber());
+                            ScreenManager.getInstance().setRegistry(registry);
+                            conn = (IConnection) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().Getmeaningofconnection());
+                            ScreenManager.getInstance().setConn(conn);
+                        }
+                        catch(RemoteException ex)
+                        {
+                            System.out.println("RemoteException: " + ex.getMessage());
+                        }
+                        catch(NotBoundException ex)
+                        {
+                            System.out.println("NotBoundException: " + ex.getMessage());
+                        }
+//                        catch(UnknownHostException ex)
+//                        {
+//                            System.out.println("UnknownHostException: " + ex.getMessage());
+//                        }
+                        if(conn != null)
+                        {
+                            ///TODO: ophalen gegevens fixen!
+                            user = ScreenManager.getInstance().getConn().LogIn(email, ww);
+                        }
+                        else{
+                            System.out.println("kon registry niet juist ophalen");
+                        }
                         if(user != null)
                         {
                             ScreenManager.getInstance().SetUser(user);
@@ -97,7 +132,6 @@ public class LoginScreen extends AbstractScreen {
                             System.out.println("Niet geregistreerd");
                             ///TODO: popup fout bij inloggen
                         }
-
                     }
                     catch (Exception e)
                     {
