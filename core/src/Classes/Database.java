@@ -207,6 +207,111 @@ public class Database {
         }
     }
 
+    public Integer SetDatabaseNoArgs(String sql)
+    {
+        Connection conn = null;
+        PreparedStatement psta = null;
+        ResultSet rs = null;
+
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(url, username, password);
+            psta = conn.prepareStatement(sql);
+
+//            int i = 0;
+//            for (Object obj : Arguments)
+//            {
+//                i++;
+//
+//                if (obj != null && obj.getClass() == Date.class) // when the argument is a date then convert to a timestamp
+//                {
+//                    psta.setTimestamp(i, DateToTimestamp((Date) obj));
+//                } else if (obj != null && obj.getClass() == String.class) // when the argument is a string then escap all html4 stuff
+//                {
+//                    psta.setObject(i, escapeHtml4((String) obj));
+//                } else
+//                {
+//                    psta.setObject(i, obj);
+//                }
+//            }
+
+            psta.executeUpdate();
+            rs = psta.getGeneratedKeys();
+            if (rs != null)
+            {
+                if (rs.next())
+                {
+                    if (rs.getInt(1) == 0)
+                    { //maybe errors
+
+                        return -1;
+                    }
+                    return rs.getInt(1);
+                }
+            }
+            return -1;
+        } catch (SQLException e)
+        {
+            System.out.println("SQL Error " + e.getMessage());
+            System.out.println("SQL Error " + e.getErrorCode());
+            return -1;
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println("Class Error " + e.getMessage());
+            return -1;
+        }
+        finally
+        {
+            if (conn != null)
+            {
+                //close and commit
+                System.out.println("commit " + sql);
+                try
+                {
+                    conn.commit();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+                try
+                {
+                    conn.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            if (psta != null)
+            {
+                try
+                {
+                    psta.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            if (rs != null)
+            {
+                try
+                {
+                    rs.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     /**
      * reusable database function
      *

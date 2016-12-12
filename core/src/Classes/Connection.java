@@ -31,17 +31,17 @@ public class Connection extends UnicastRemoteObject implements IConnection
     {
         if (!name.equals("") && !lastname.equals("") && email.contains("@") && !username.equals("") && !password.equals("")) {
 //        String query = "INSERT INTO USER_TABLE(\"ID\", \"NAME\", \"LASTNAME\", \"EMAIL\", \"USERNAME\", \"PASSWORD\") VALUES (USERPK_SEQ.nextval, " + name + ", " + lastname + ", "  + email + ", " + username + ", " + password + ")";
-            String query = "INSERT INTO USER_TABLE([ID], [NAME], [LASTNAME], [EMAIL], [USERNAME], [PASSWORD]) VALUES (?, ?, ?, ?, ?, ?)";
-            List<Object> arguments = new ArrayList();
-            arguments.add("SELECT NEXT VALUE FOR USER_SEQ;");
-            arguments.add(name);
-            arguments.add(lastname);
-            arguments.add(email);
-            arguments.add(username);
-            arguments.add(password);
+            String query = "INSERT INTO USER_TABLE(\"NAME\", \"LASTNAME\", \"EMAIL\", \"USERNAME\", \"PASSWORD\") VALUES (" + name + ", " + lastname + ", "  + email + ", " + username + ", " + password + ")";
+//            List<Object> arguments = new ArrayList();
+//            arguments.add("SELECT NEXT VALUE FOR USER_SEQ;");
+//            arguments.add(name);
+//            arguments.add(lastname);
+//            arguments.add(email);
+//            arguments.add(username);
+//            arguments.add(password);
 
 
-            database.SetDatabase(query, arguments);
+            database.SetDatabaseNoArgs(query);
             return true;
         }
         return false;
