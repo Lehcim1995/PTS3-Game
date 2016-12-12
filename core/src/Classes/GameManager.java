@@ -6,6 +6,7 @@ import LibGDXSerialzableClasses.SerializableColor;
 import Scenes.AbstractScreen;
 import Scenes.GameSceneScreen;
 import Scenes.ScreenManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.utils.Json;
 
@@ -43,6 +44,8 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
 
     private Player playerMe;
     private AbstractScreen scene;
+
+    private float tick = 0;
 
     private GameManager() throws RemoteException
     {
@@ -128,43 +131,46 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         //notMine.clear();
         if (online)
         {
-            //if (tick % 3 == 0) doe het elke 3 frames
-            List<IGameObject> tmp = Server.GetTick(name);
-
-            for (IGameObject i : tmp) //add if absent
+            tick += Gdx.graphics.getDeltaTime();
+            if (tick > 0.5f) //doe het elke zoveel seconden
             {
-                notMineMap.putIfAbsent(i.getID(), i);
-                notMineMap.get(i.getID()).setPosition(i.getPosition());
-                notMineMap.get(i.getID()).setRotation(i.getRotation());
-            }
-            //als id in notmine niet in tmp staat haaldeze weg
+                List<IGameObject> tmp = Server.GetTick(name);
 
-
-            for (Iterator iterator = notMineMap.entrySet().iterator(); iterator.hasNext(); ) // remove when extra
-            {
-                Map.Entry pair = (Map.Entry)iterator.next();
-                boolean found = false;
-
-                for (IGameObject obj2 : tmp)
+                for (IGameObject i : tmp) //add if absent
                 {
-                    if (((IGameObject) pair.getValue()).getID() == obj2.getID())
+                    notMineMap.putIfAbsent(i.getID(), i);
+                    notMineMap.get(i.getID()).setPosition(i.getPosition());
+                    notMineMap.get(i.getID()).setRotation(i.getRotation());
+                }
+                //als id in notmine niet in tmp staat haaldeze weg
+                //TODO : maak dit korter en sneller
+
+                //Werkt dit?
+                //notMineMap.entrySet().retainAll(tmp);
+
+                for (Iterator iterator = notMineMap.entrySet().iterator(); iterator.hasNext(); ) // remove when extra
+                {
+                    Map.Entry pair = (Map.Entry) iterator.next();
+                    boolean found = false;
+
+                    for (IGameObject obj2 : tmp)
                     {
-                        found = true;
+                        if (((IGameObject) pair.getValue()).getID() == obj2.getID())
+                        {
+                            found = true;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        iterator.remove();
                     }
                 }
-
-                if (!found)
-                {
-                    iterator.remove();
-                }
             }
 
-            //notMine.addAll(Server.GetTick(name));
+            notMine.addAll(notMineMap.values());
+            notMine.addAll(objects);
         }
-
-
-
-        notMine.addAll(objects);
 
         ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();
         for (IGameObject object : clonelist)

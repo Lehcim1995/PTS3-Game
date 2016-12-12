@@ -3,7 +3,6 @@ package Classes;
 import Interfaces.IConnection;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
-import Interfaces.IUser;
 import LibGDXSerialzableClasses.SerializableColor;
 
 import java.net.InetAddress;
@@ -12,7 +11,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -112,29 +110,18 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     {
         System.out.println("New Object From : " + id);
 
-        if (!idObjects.containsKey(id))
-        {
-            System.out.println("New Object from new Player Added new Player");
-            idObjects.put(id, new ArrayList<>());
-            idObjects.get(id).addAll(everything);
-        }
+        idObjects.putIfAbsent(id, everything); //Waaneer id niet bestaat voeg alles toe aan die speler
 
-        everything.add(object);
-
-        idObjects.entrySet().stream().filter(entry -> !entry.getKey().equals(id)).forEach(entry -> {
-            entry.getValue().add(object);
-        });
+        everything.add(object); // voeg nieuw object toe aan iedereen
+        idObjects.entrySet().stream().filter(entry -> !entry.getKey().equals(id)).forEach(entry -> entry.getValue().add(object)); //voeg object toe aan iedereen behalve ik
     }
 
     @Override
     public void UpdateTick(String id, IGameObject object) throws RemoteException
     {
         System.out.println("Update Object From : " + id);
-        if (!idObjects.containsKey(id))
-        {
-            //idObjects.put(id, new ArrayList<>());
-        }
 
+        //Update de position voor iedereen
         for (IGameObject go : everything)
         {
             if (go.getID() == object.getID())
@@ -145,13 +132,14 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             }
         }
 
+        //Update de position voor iedereen behalve mij
         for (Map.Entry<String, List<IGameObject>> entry : idObjects.entrySet())
         {
             if (!entry.getKey().equals(id))
             {
                 for (IGameObject obj : entry.getValue())
                 {
-                    if(obj.getID() == object.getID())
+                    if (obj.getID() == object.getID())
                     {
                         obj.setPosition(object.getPosition());
                         obj.setRotation(object.getRotation());
@@ -162,9 +150,40 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         }
     }
 
+    private void AddForEveryOne()
+    {
+
+    }
+
+    private void AddForEveryOneButMe()
+    {
+
+    }
+
+    private void AddForMe()
+    {
+
+    }
+
+    private void RemoveForEveryOne()
+    {
+
+    }
+
+    private void RemoveForEveryOneButMe()
+    {
+
+    }
+
+    private void RemoveForMe()
+    {
+
+    }
+
     @Override
     public void DeleteTick(String id, IGameObject object) throws RemoteException
     {
+        //haald object overal weg waar hij bestaat
         idObjects.entrySet().forEach(stringListEntry -> stringListEntry.getValue().removeIf(gameObject -> gameObject.getID() == object.getID()));
         everything.removeIf(gameObject -> gameObject.getID() == object.getID());
 
@@ -173,8 +192,9 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public void DeleteUser(String id)
     {
-        idObjects.entrySet().forEach(set -> everything.removeIf(obj -> obj.getID() == ((IGameObject)set.getValue()).getID()));
-        idObjects.entrySet().removeIf(keyid -> keyid.getKey() == id);
+        //delete alles van een user
+        idObjects.entrySet().forEach(set -> everything.removeIf(obj -> obj.getID() == ((IGameObject) set.getValue()).getID()));
+        idObjects.entrySet().removeIf(keyid -> Objects.equals(keyid.getKey(), id));
     }
 
     @Override
