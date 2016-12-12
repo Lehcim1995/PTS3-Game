@@ -34,5 +34,7 @@ public interface IGameManager extends Remote, Serializable
 
     void DeleteTick(String id, IGameObject object) throws RemoteException;
 
+    void DeleteUser(String id) throws RemoteException;
+
     Level GetLevel() throws RemoteException;
 }

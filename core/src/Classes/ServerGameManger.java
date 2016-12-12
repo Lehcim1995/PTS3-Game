@@ -170,6 +170,12 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     }
 
     @Override
+    public void DeleteUser(String id)
+    {
+        idObjects.entrySet().removeIf(keyid -> keyid.getKey() == id);
+    }
+
+    @Override
     public Level GetLevel() throws RemoteException
     {
         return level;

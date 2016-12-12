@@ -249,6 +249,12 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     }
 
     @Override
+    public void DeleteUser(String id) throws RemoteException
+    {
+
+    }
+
+    @Override
     public Level GetLevel() throws RemoteException
     {
         return null;
@@ -272,5 +278,10 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     public Camera getCamera()
     {
         return getScene().getCamera();
+    }
+
+    public void stop() throws RemoteException
+    {
+        Server.DeleteUser(name);
     }
 }

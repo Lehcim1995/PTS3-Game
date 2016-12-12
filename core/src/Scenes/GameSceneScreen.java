@@ -130,6 +130,7 @@ public class GameSceneScreen extends AbstractScreen{
         super.dispose();
         batch.dispose();
         shapeRenderer.dispose();
+        GameManager.getInstance().stop();
     }
 
     public void update() throws RemoteException {
