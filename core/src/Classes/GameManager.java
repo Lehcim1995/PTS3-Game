@@ -32,6 +32,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
 
     private List<IGameObject> objects;
     private List<IGameObject> notMine;
+    private Map<Long, IGameObject> notMineMap;
     private boolean gen = false;
     private boolean online;
 
@@ -51,6 +52,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         //chats = new ArrayList<Chat>();
         objects = new ArrayList<>();
         notMine = new ArrayList<>();
+        notMineMap = new HashMap<>(1000);
 
         InetAddress localhost = null;
         online = true;
@@ -126,32 +128,26 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         //notMine.clear();
         if (online)
         {
+            //if (tick % 3 == 0) doe het elke 3 frames
             List<IGameObject> tmp = Server.GetTick(name);
-            for (IGameObject i : tmp)
-            {
-                boolean added = false;
-                for (IGameObject i2 : notMine)
-                {
-                    if (i.getID() == i2.getID())
-                    {
-                        added = true;
-                        i2.setPosition(i.getPosition());
-                        i2.setRotation(i.getRotation());
-                    }
-                }
 
-                if (!added) notMine.add(i);
+            for (IGameObject i : tmp) //add if absent
+            {
+                notMineMap.putIfAbsent(i.getID(), i);
+                notMineMap.get(i.getID()).setPosition(i.getPosition());
+                notMineMap.get(i.getID()).setRotation(i.getRotation());
             }
             //als id in notmine niet in tmp staat haaldeze weg
 
-            for (Iterator<IGameObject> iterator = notMine.iterator(); iterator.hasNext(); )
+
+            for (Iterator iterator = notMineMap.entrySet().iterator(); iterator.hasNext(); ) // remove when extra
             {
-                IGameObject obj = iterator.next();
+                Map.Entry pair = (Map.Entry)iterator.next();
                 boolean found = false;
 
                 for (IGameObject obj2 : tmp)
                 {
-                    if (obj.getID() == obj2.getID())
+                    if (((IGameObject) pair.getValue()).getID() == obj2.getID())
                     {
                         found = true;
                     }
