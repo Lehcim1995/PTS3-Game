@@ -132,7 +132,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         System.out.println("Update Object From : " + id);
         if (!idObjects.containsKey(id))
         {
-            idObjects.put(id, new ArrayList<>());
+            //idObjects.put(id, new ArrayList<>());
         }
 
         for (IGameObject go : everything)
