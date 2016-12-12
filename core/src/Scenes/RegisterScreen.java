@@ -1,6 +1,7 @@
 package Scenes;
 
 import Classes.Connection;
+import Interfaces.IConnection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,7 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -53,8 +56,8 @@ public class RegisterScreen extends AbstractScreen{
         tfUsername.setMessageText("Username");
         tfPassword = new TextField("",tfSkin);
         tfPassword.setMessageText("Password");
-        tfPassword = new TextField("",tfSkin);
-        tfPassword.setMessageText("Server IP");
+        tfIP = new TextField("",tfSkin);
+        tfIP.setMessageText("Server IP");
 
         myTrRegister = new TextureRegion(txtrRegister);
         myTrCancel = new TextureRegion(txtrCancel);
@@ -81,6 +84,7 @@ public class RegisterScreen extends AbstractScreen{
         addActor(tfPassword);
         addActor(btnBack);
         addActor(btnRegister);
+        addActor(tfIP);
 
 
         btnBack.addListener(new InputListener() {
@@ -102,10 +106,23 @@ public class RegisterScreen extends AbstractScreen{
                 String email = tfEmail.getText();
                 String username = tfUsername.getText();
                 String password = tfPassword.getText();
+                String IP = tfIP.getText();
+
                 System.out.println("Empty string: " + name.isEmpty());
                 try {
-                    Connection conn = new Connection();
-                    conn.CreateUser(name, lastName, email, username, password);
+                    try
+                    {
+                        ScreenManager.getInstance().setIp(IP);
+                        registry =  LocateRegistry.getRegistry(ScreenManager.getInstance().getIp(), ScreenManager.getInstance().getPortNumber());
+                        ScreenManager.getInstance().setRegistry(registry);
+                        conn = (IConnection) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().Getmeaningofconnection());
+                        ScreenManager.getInstance().setConn(conn);
+                    }
+                    catch(NotBoundException ex)
+                    {
+                        System.out.println("NotBoundException: " + ex.getMessage());
+                    }
+                    ScreenManager.getInstance().getConn().CreateUser(name, lastName, email, username, password);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
