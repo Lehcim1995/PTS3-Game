@@ -30,6 +30,7 @@ public class RegisterScreen extends AbstractScreen{
     private TextField tfEmail;
     private TextField tfUsername;
     private TextField tfPassword;
+    private TextField tfIP;
     private Skin tfSkin;
 
     public RegisterScreen()
@@ -52,6 +53,9 @@ public class RegisterScreen extends AbstractScreen{
         tfUsername.setMessageText("Username");
         tfPassword = new TextField("",tfSkin);
         tfPassword.setMessageText("Password");
+        tfPassword = new TextField("",tfSkin);
+        tfPassword.setMessageText("Server IP");
+
         myTrRegister = new TextureRegion(txtrRegister);
         myTrCancel = new TextureRegion(txtrCancel);
         myTrdRegister = new TextureRegionDrawable(myTrRegister);
@@ -65,6 +69,7 @@ public class RegisterScreen extends AbstractScreen{
         tfEmail.setPosition(250.f, 350.f, Align.center);
         tfUsername.setPosition(250.f, 300.f, Align.center);
         tfPassword.setPosition(250.f, 250.f, Align.center);
+
         btnRegister.setPosition(375.f, 40.f, Align.center);
         btnBack.setPosition(125.f, 40.f, Align.center);
 
