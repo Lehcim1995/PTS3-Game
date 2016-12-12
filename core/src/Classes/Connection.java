@@ -87,46 +87,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
 
         return null;
     }
-    public IUser LogIn(String email, String password)
-    {
-        if(email.contains("@") && !password.equals(""))
-        {
-            String LogInQuery = "SELECT * FROM USER_Table WHERE EMAIL = '" + email + "' AND PASSWoRD = '" + password + "'";
-            //String LogInQuery = "SELECT * FROM [USER_TABLE] WHERE EMAIL = ? AND [PASSWORD] = ?";
-            List<Object> arguments = new ArrayList();
-            arguments.add(email);
-            arguments.add(password);
 
-            try
-            {
-                //success = true;
-                System.out.println(LogInQuery);
-                //ArrayList<User> resultSet = database.LogIn(LogInQuery, arguments);
-                ///TODO: Connectionklasse fixen en zorgen dat er juiste gegevens worden opgehaald
-                ///TODO: Mogelijk met Prepared statement (Pas connectionklasse aan naar MYSQL implementation
-                ///TODO: geen gebruik van LogInNoArgs() maar Login!
-                ArrayList<User> resultSet = database.LogInNoArgs(LogInQuery);
-//                if(resultSet != null)
-//                {
-                //success = true;
-//                            if(resultSet.next())
-//                            {
-//                                return new User(resultSet.getString("username"), resultSet.getString("email"), resultSet.getInt("kills"), resultSet.getInt("deaths"), resultSet.getInt("shotshit"), resultSet.getInt("shots"), resultSet.getInt("matchesplayed"), resultSet.getInt("matcheswon"), resultSet.getInt("matcheslost"), resultSet.getInt("isbanned"));
-//                            }
-                if(resultSet.size() == 1)
-                {
-                    return resultSet.get(0);
-                }
-//                }
-            }
-            catch(Exception ex)
-            {
-                System.out.println(ex.getMessage());
-            }
-        }
-
-        return null;
-    }
 
     public void UpdateStats(User user) {
 
