@@ -295,10 +295,9 @@ public class Database {
         {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url, username, password);
-
+            sta = conn.createStatement();
 
             int i = 0;
-
 
             rs = sta.executeQuery(sql);
 
