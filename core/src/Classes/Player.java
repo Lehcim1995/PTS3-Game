@@ -51,8 +51,8 @@ public class Player extends GameObject
     private transient InputClass ic;
     private boolean shooting = false;
 
-    private BitmapFont font = new BitmapFont();
-    private GlyphLayout layout = new GlyphLayout();
+    private transient BitmapFont font = new BitmapFont();
+    private transient GlyphLayout layout = new GlyphLayout();
 
     public boolean reloadThread = false;
 

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by michel on 15-11-2016.
  */
-public interface IGameManager extends Remote
+public interface IGameManager extends Remote, Serializable
 {
 
     String ClientNewPlayer = "ClientNewPlayer";
