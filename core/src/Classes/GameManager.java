@@ -5,6 +5,7 @@ import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializableColor;
 import Scenes.AbstractScreen;
 import Scenes.GameSceneScreen;
+import Scenes.ScreenManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.utils.Json;
 
@@ -62,7 +63,9 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
             LOGGER.info("Client: UnknownHostException: " + e.getMessage());
             online = false;
         }
-        String ip = localhost.getHostAddress();
+        String ip = ScreenManager.getInstance().getIp();//localhost.getHostAddress();
+        int portNumber = ScreenManager.getInstance().getPortNumber();
+
 
         try
         {
