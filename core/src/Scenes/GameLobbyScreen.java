@@ -3,6 +3,7 @@ package Scenes;
 import Classes.Player;
 import Classes.User;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -62,11 +63,15 @@ public class GameLobbyScreen extends AbstractScreen{
 
         //List Chat
         listChat = new List(skin);
-        listChat.setItems("asd","qwe","zxc","fdg","Sibe","Myron","asdasdasd asd sad sa  d as dsa sd sad da s ads das dsa sad dsa");
+        listChat.setItems("asd","qwe","zxc","fdg","Sibe","Myron");
         scrollPaneChat = new ScrollPane(listChat,skin);
-        scrollPaneChat.setSize(200.f, 225.f);
+        scrollPaneChat.setSize(200.f, 150.f);
         scrollPaneChat.setPosition(25.f, 110.f);
-        scrollPaneChat.isScrollingDisabledX();
+        //final Table table = new Table();
+       // table.setFillParent(true);
+        //table.add(scrollPaneChat).fill();
+        //scrollPaneChat.setForceScroll(false, true);
+
 
         //ChatBoxInput
         txtChatInput = new TextField("",skin);
@@ -101,16 +106,19 @@ public class GameLobbyScreen extends AbstractScreen{
             }
         });
         //TODO Check if enter pressed then push text in message to server and add to chatlist
-        /*
-        txtChatInput.setTextFieldListener(new TextFieldListener() {
+
+        txtChatInput.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char key) {
                 if ((key == '\r' || key == '\n')){
-                    textField.next(Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT));
+                    textField.next(Gdx.input.isKeyPressed(Input.Keys.ENTER));
+
+                    listChat.setItems(listChat.getItems().toString(System.lineSeparator()) + System.lineSeparator() + textField.getText());
+                    textField.setText("");
                 }
             }
         });
-*/
+
     }
     public void addNewMessage(String message, User user){
         //TODO: add message to the list of messages (may need to update the scrollpane)
