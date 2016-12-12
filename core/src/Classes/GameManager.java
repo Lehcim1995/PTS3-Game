@@ -85,7 +85,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
             online = false;
         }
         Random r = new Random();
-        name = r.nextInt(100000000) + "";
+        name = ScreenManager.getInstance().getUser().GetName(); //r.nextInt(100000000) + "";
         System.out.println(name);
         Player me = new Player(true);
         me.setColor(SerializableColor.getRandomColor());

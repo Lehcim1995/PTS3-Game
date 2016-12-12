@@ -132,4 +132,9 @@ public class ScreenManager {
     {
         this.conn = conn;
     }
+
+    public IUser getUser()
+    {
+        return user;
+    }
 }
