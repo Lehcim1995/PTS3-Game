@@ -316,7 +316,6 @@ public class Player extends GameObject
         }
         else if (other instanceof LevelBlock)
         {
-            System.out.println("Player block");
             Vector2 playerpos = new Vector2(position);
             Vector2 otherpos = ((LevelBlock)other).position;
             LevelBlock lb = (LevelBlock)other;

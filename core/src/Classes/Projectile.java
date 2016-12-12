@@ -94,8 +94,6 @@ public class Projectile extends GameObject
     @Override
     public void onCollisionEnter(IGameObject other)
     {
-        System.out.println("Hit");
-
         if (other instanceof Projectile)
         {
             if (((Projectile)other).gun != null)
@@ -127,19 +125,27 @@ public class Projectile extends GameObject
         }
         else if (other instanceof Player )
         {
+            System.out.println("Hit een speler");
+
             if (gun != null)
             {
+                System.out.println("Gun niet null");
+
                 if (gun.getOwner().getID() != other.getID())
                 {
+                    System.out.println("player is niet mijn owner");
+                    System.out.println("Owner : " + gun.getOwner().getName());
+                    System.out.println("Other : " + ((Player) other).getName());
                     System.out.println(new KillLog(this, (Player) other));
-                    try
-                    {
-                        GameManager.getInstance().ClearProjectile(this);
-                    }
-                    catch (RemoteException e)
-                    {
-                        e.printStackTrace();
-                    }
+//                    try
+//                    {
+//                        GameManager.getInstance().ClearProjectile(this);
+//                    }
+//                    catch (RemoteException e)
+//                    {
+//                        e.printStackTrace();
+//                    }
+                    System.out.println("player gaat dood");
                     ((Player) other).Die();
                 }
             }
