@@ -205,14 +205,18 @@ public class Player extends GameObject
     public void Draw(ShapeRenderer sr, Batch bc)
     {
         Draw(sr);
-        bc.begin();
-        font.setColor(Color.BLACK);
-        String text = GameManager.getInstance().getPlayer().getGunEquipped().toString();
-        layout.setText(font, text);
-        float width = layout.width;// contains the width of the current set text
-        float height = layout.height; // contains the height of the current set text
-        font.draw(bc, layout, GameManager.getInstance().getCamera().viewportWidth -width, height);
-        bc.end();
+
+        if (font != null && layout != null)
+        {
+            bc.begin();
+            font.setColor(Color.BLACK);
+            String text = GameManager.getInstance().getPlayer().getGunEquipped().toString();
+            layout.setText(font, text);
+            float width = layout.width;// contains the width of the current set text
+            float height = layout.height; // contains the height of the current set text
+            font.draw(bc, layout, GameManager.getInstance().getCamera().viewportWidth - width, height);
+            bc.end();
+        }
     }
 
     public Gun getGunEquipped()
