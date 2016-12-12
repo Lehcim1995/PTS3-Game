@@ -32,7 +32,7 @@ public class Database {
     private final String username = "root";
     private final String password = "";
 
-    private final String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase+"&relaxAutoCommit=true";
+    private final String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase+"?&relaxAutoCommit=true";
 
 
     private Database()
