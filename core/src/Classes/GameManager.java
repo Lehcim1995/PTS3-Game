@@ -123,9 +123,51 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         }
 
         //objects.addAll(Server.GetTick());
-        notMine.clear();
+        //notMine.clear();
         if (online)
-            notMine.addAll(Server.GetTick(name));
+        {
+            List<IGameObject> tmp = Server.GetTick(name);
+            for (IGameObject i : tmp)
+            {
+                boolean added = false;
+                for (IGameObject i2 : notMine)
+                {
+                    if (i.getID() == i2.getID())
+                    {
+                        added = true;
+                        i2.setPosition(i.getPosition());
+                        i2.setRotation(i.getRotation());
+                    }
+                }
+
+                if (!added) notMine.add(i);
+            }
+            //als id in notmine niet in tmp staat haaldeze weg
+
+            for (Iterator<IGameObject> iterator = notMine.iterator(); iterator.hasNext(); )
+            {
+                IGameObject obj = iterator.next();
+                boolean found = false;
+
+                for (IGameObject obj2 : tmp)
+                {
+                    if (obj.getID() == obj2.getID())
+                    {
+                        found = true;
+                    }
+                }
+
+                if (!found)
+                {
+                    iterator.remove();
+                }
+            }
+
+            //notMine.addAll(Server.GetTick(name));
+        }
+
+
+
         notMine.addAll(objects);
 
         ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();

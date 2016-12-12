@@ -42,7 +42,7 @@ public class GameObject implements IGameObject, Serializable
 
     protected GameObject(Vector2 position, float rotation, SerializablePolygon hitbox) throws RemoteException
     {
-        super();
+        id = this.hashCode();
         this.position = position;
         this.rotation = rotation;
         this.hitbox = hitbox;
@@ -50,7 +50,7 @@ public class GameObject implements IGameObject, Serializable
 
     protected GameObject(Texture texture, Vector2 position, float rotation) throws RemoteException
     {
-        super();
+        id = this.hashCode();
         this.texture = texture;
         this.position = position;
         this.rotation = rotation;
@@ -58,7 +58,7 @@ public class GameObject implements IGameObject, Serializable
 
     protected GameObject(Vector2 position, float rotation) throws RemoteException
     {
-        super();
+        id = this.hashCode();
         this.position = position;
         this.rotation = rotation;
         hitbox = new SerializablePolygon();

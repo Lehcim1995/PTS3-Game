@@ -31,8 +31,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
     public ServerGameManger() throws RemoteException
     {
-        everything = new ArrayList<IGameObject>();
-        idObjects = new HashMap<String, List<IGameObject>>(100);
+        everything = new ArrayList<>();
+        idObjects = new HashMap<>(100);
         level = new Level();
 
         try
@@ -104,18 +104,17 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public List<IGameObject> GetTick(String id)
     {
-
-        System.out.println("GetTick");
         return idObjects.get(id);
     }
 
     @Override
     public void SetTick(String id, IGameObject object)
     {
-        System.out.println("incoming");
+        System.out.println("New Object From : " + id);
 
         if (!idObjects.containsKey(id))
         {
+            System.out.println("New Object from new Player Added new Player");
             idObjects.put(id, new ArrayList<>());
             idObjects.get(id).addAll(everything);
         }
@@ -130,6 +129,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public void UpdateTick(String id, IGameObject object) throws RemoteException
     {
+        System.out.println("Update Object From : " + id);
         if (!idObjects.containsKey(id))
         {
             idObjects.put(id, new ArrayList<>());
@@ -141,6 +141,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             {
                 go.setPosition(object.getPosition());
                 go.setRotation(object.getRotation());
+                break;
             }
         }
 
@@ -172,6 +173,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public void DeleteUser(String id)
     {
+        idObjects.entrySet().forEach(set -> everything.removeIf(obj -> obj.getID() == ((IGameObject)set.getValue()).getID()));
         idObjects.entrySet().removeIf(keyid -> keyid.getKey() == id);
     }
 
