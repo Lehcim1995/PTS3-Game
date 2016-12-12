@@ -44,7 +44,7 @@ public class ScreenManager {
         return instance;
     }
 
-    public void SetUser(IUser user)
+    public void setUser(IUser user)
     {
         this.user = user;
     }

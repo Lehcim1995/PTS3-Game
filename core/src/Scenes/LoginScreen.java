@@ -124,7 +124,7 @@ public class LoginScreen extends AbstractScreen {
                         }
                         if(user != null)
                         {
-                            ScreenManager.getInstance().SetUser(user);
+                            ScreenManager.getInstance().setUser(user);
                             ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                         }
                         else

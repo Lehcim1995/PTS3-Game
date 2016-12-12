@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Align;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.sql.SQLException;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -110,23 +111,26 @@ public class RegisterScreen extends AbstractScreen{
 
                 System.out.println("Empty string: " + name.isEmpty());
                 try {
-                    try
-                    {
                         ScreenManager.getInstance().setIp(IP);
                         registry =  LocateRegistry.getRegistry(ScreenManager.getInstance().getIp(), ScreenManager.getInstance().getPortNumber());
                         ScreenManager.getInstance().setRegistry(registry);
                         conn = (IConnection) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().Getmeaningofconnection());
                         ScreenManager.getInstance().setConn(conn);
-                    }
-                    catch(NotBoundException ex)
-                    {
-                        System.out.println("NotBoundException: " + ex.getMessage());
-                    }
-                    ScreenManager.getInstance().getConn().CreateUser(name, lastName, email, username, password);
+
+                        if (ScreenManager.getInstance().getConn().CreateUser(name, lastName, email, username, password)) {
+                            ScreenManager.getInstance().setUser(ScreenManager.getInstance().getConn().LogIn(email, password));
+                            ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                        }
                 } catch (RemoteException e) {
                     e.printStackTrace();
+                }catch(NotBoundException ex)
+                {
+                    System.out.println("NotBoundException: " + ex.getMessage());
                 }
-                ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
                 return false;
             }
         });
