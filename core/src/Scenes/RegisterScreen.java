@@ -69,6 +69,7 @@ public class RegisterScreen extends AbstractScreen{
         tfEmail.setPosition(250.f, 350.f, Align.center);
         tfUsername.setPosition(250.f, 300.f, Align.center);
         tfPassword.setPosition(250.f, 250.f, Align.center);
+        tfIP.setPosition(250.f, 200.f, Align.center);
 
         btnRegister.setPosition(375.f, 40.f, Align.center);
         btnBack.setPosition(125.f, 40.f, Align.center);
