@@ -1,6 +1,7 @@
 package Scenes;
 
 import Classes.User;
+import Interfaces.IUser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,7 +19,7 @@ import com.badlogic.gdx.utils.Align;
  */
 public class StatsScreen extends AbstractScreen{
 
-    User user;
+    IUser user;
     Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
     public StatsScreen()
@@ -26,7 +27,7 @@ public class StatsScreen extends AbstractScreen{
         super();
 
         // TODO Pick up current user (from server)
-        this.user = new User("Coolones", "jasper.v.son@home.nl", 300, 21, 300, 400, 30, 25, 5, 0);
+        this.user = ScreenManager.getInstance().getUser();
     }
 
     @Override

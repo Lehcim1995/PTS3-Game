@@ -19,10 +19,13 @@ public class LobbyListScreen extends AbstractScreen{
 
     private Texture txtrLogout;
     private Texture txtrJoin;
+    private Texture txtrStats;
     private TextureRegion TrLogout;
     private TextureRegion TrJoin;
+    private TextureRegion TrStats;
     private TextureRegionDrawable TrdLogout;
     private TextureRegionDrawable TrdJoin;
+    private TextureRegionDrawable TrdStats;
     private List listServers;
     private ScrollPane scrollPaneServers;
     private Skin skin;
@@ -32,6 +35,7 @@ public class LobbyListScreen extends AbstractScreen{
         super();
         txtrLogout = new Texture(Gdx.files.internal("core\\assets\\btn_logout.png"));
         txtrJoin = new Texture(Gdx.files.internal("core\\assets\\btn_join.png"));
+        txtrStats = new Texture(Gdx.files.internal("core\\assets\\btn_stats.png"));
     }
 
     @Override
@@ -42,13 +46,19 @@ public class LobbyListScreen extends AbstractScreen{
         TrLogout = new TextureRegion(txtrLogout);
         TrdLogout = new TextureRegionDrawable(TrLogout);
         ImageButton btnLogout = new ImageButton(TrdLogout);
-        btnLogout.setPosition(260.f, 120.f, Align.center);
+        btnLogout.setPosition(260.f, 40.f, Align.center);
 
         //JoinGame
         TrJoin = new TextureRegion(txtrJoin);
         TrdJoin = new TextureRegionDrawable(TrJoin);
         ImageButton btnJoin = new ImageButton(TrdJoin);
-        btnJoin.setPosition(260.f, 40.f, Align.center);
+        btnJoin.setPosition(260.f, 120.f, Align.center);
+
+        //Stats
+        TrStats = new TextureRegion(txtrStats);
+        TrdStats = new TextureRegionDrawable(TrStats);
+        ImageButton btnStats = new ImageButton(TrdStats);
+        btnStats.setPosition(260.f, 200.f, Align.center);
 
         //List Players
         listServers = new List(skin);
@@ -59,6 +69,7 @@ public class LobbyListScreen extends AbstractScreen{
 
         addActor(btnLogout);
         addActor(btnJoin);
+        addActor(btnStats);
         addActor(scrollPaneServers);
 
 
@@ -75,6 +86,14 @@ public class LobbyListScreen extends AbstractScreen{
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
+                return false;
+            }
+        });
+        btnStats.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event,
+                                     float x, float y, int pointer, int button) {
+                ScreenManager.getInstance().showScreen(ScreenEnum.STATS);
                 return false;
             }
         });
