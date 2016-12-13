@@ -2,9 +2,6 @@ package Classes;
 
 import Interfaces.IUser;
 
-import java.io.Serializable;
-import java.rmi.server.UnicastRemoteObject;
-
 /**
  * Created by Stefan on 10/11/2016.
  */
@@ -61,30 +58,30 @@ public class User implements IUser
         this.matchesPlayed++;
     }
     @Override
-    public String GetName() { return name; }
+    public String getName() { return name; }
     @Override
-    public String GetEmail() { return email; }
+    public String getEmail() { return email; }
     @Override
-    public int GetKills() { return  kills; }
+    public int getKills() { return  kills; }
     @Override
-    public int GetDeaths() { return deaths; }
+    public int getDeaths() { return deaths; }
     @Override
-    public int GetShots() { return shots; }
+    public int getShots() { return shots; }
     @Override
-    public int GetShotsHit() { return shotsHit; }
+    public int getShotsHit() { return shotsHit; }
     @Override
-    public int GetMatchesPlayed() { return matchesPlayed; }
+    public int getMatchesPlayed() { return matchesPlayed; }
     @Override
-    public int GetMatchesWon() { return matchesWon; }
+    public int getMatchesWon() { return matchesWon; }
     @Override
-    public int GetMatchesLost() { return matchesLost; }
+    public int getMatchesLost() { return matchesLost; }
     @Override
-    public float GetKDRatio() { return (float) kills / deaths; }
+    public float getKDRatio() { return (float) kills / deaths; }
     @Override
-    public float GetAccuracyPercentage() { return (float) shotsHit / shots * 100; }
+    public float getAccuracyPercentage() { return (float) shotsHit / shots * 100; }
     @Override
-    public float GetWinPercentage() { return (float) matchesWon / matchesPlayed * 100; }
+    public float getWinPercentage() { return (float) matchesWon / matchesPlayed * 100; }
     @Override
-    public boolean GetIsBanned() { return isBanned; }
+    public boolean getBanned() { return isBanned; }
 
 }

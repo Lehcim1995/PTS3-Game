@@ -6,7 +6,6 @@ import Interfaces.IUser;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jasper on 19-11-2016.
@@ -17,7 +16,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
 
     public Connection() throws RemoteException
     {
-        database = Database.InstanceGet();
+        database = Database.getInstance();
     }
 
     @Override
@@ -28,7 +27,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
         {
             String query = "INSERT INTO USER_TABLE(NAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (?,?,?,?,?)";
 
-            database.SetDatabase(query, name, lastname, email, username, password);
+            database.setDatabase(query, name, lastname, email, username, password);
             return true;
         }
         return false;
@@ -64,13 +63,13 @@ public class Connection extends UnicastRemoteObject implements IConnection
     {
         String query = "UPDATE USER_TABLE SET kills = ?, deaths = ?, shotshit = ?, shots = ?, matchesplayed = ?, matcheswon = ?, matcheslost = ? WHERE email = ?";
 
-        database.SetDatabase(query, user.GetKills(), user.GetDeaths(), user.GetShotsHit(), user.GetShots(), user.GetMatchesPlayed(),  user.GetMatchesWon(), user.GetMatchesLost(), user.GetEmail());
+        database.setDatabase(query, user.getKills(), user.getDeaths(), user.getShotsHit(), user.getShots(), user.getMatchesPlayed(),  user.getMatchesWon(), user.getMatchesLost(), user.getEmail());
     }
 
     public void BanUser(User user)
     {
         String query = "UPDATE USER_TABLE SET isbanned = 1 WHERE email = ?";
 
-        database.SetDatabase(query, user.GetEmail());
+        database.setDatabase(query, user.getEmail());
     }
 }

@@ -7,17 +7,17 @@ import java.io.Serializable;
  */
 public interface IUser extends Serializable
 {
-    String GetName();
-    String GetEmail();
-    int GetKills();
-    int GetDeaths();
-    int GetShots();
-    int GetShotsHit();
-    int GetMatchesPlayed();
-    int GetMatchesWon();
-    int GetMatchesLost();
-    float GetKDRatio();
-    float GetAccuracyPercentage();
-    float GetWinPercentage();
-    boolean GetIsBanned();
+    String getName();
+    String getEmail();
+    int getKills();
+    int getDeaths();
+    int getShots();
+    int getShotsHit();
+    int getMatchesPlayed();
+    int getMatchesWon();
+    int getMatchesLost();
+    float getKDRatio();
+    float getAccuracyPercentage();
+    float getWinPercentage();
+    boolean getBanned();
 }

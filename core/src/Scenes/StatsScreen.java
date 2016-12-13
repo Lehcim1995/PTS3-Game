@@ -1,10 +1,8 @@
 package Scenes;
 
-import Classes.User;
 import Interfaces.IUser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -35,16 +33,16 @@ public class StatsScreen extends AbstractScreen{
 
         Label stats = new Label("Stats", skin);
 
-        Label kills = new Label("Total Kills: " + String.valueOf(user.GetKills()), skin);
-        Label deaths = new Label("Total Deaths: " + String.valueOf(user.GetDeaths()), skin);
-        Label KDratio = new Label("K/D ratio: " + String.valueOf(user.GetKDRatio()), skin);
-        Label shotsFired = new Label("Total shots fired: " + String.valueOf(user.GetShots()), skin);
-        Label shotsHit = new Label("Total shots hit: " + String.valueOf(user.GetShotsHit()), skin);
-        Label accuracy = new Label("Accuracy: " + String.valueOf(user.GetAccuracyPercentage()) + "%", skin);
-        Label matchesPlayed = new Label("Total matches played: " + String.valueOf(user.GetMatchesPlayed()), skin);
-        Label winRatio = new Label("Win ratio: " + String.valueOf(user.GetWinPercentage() + "%"), skin);
-        Label matchesWon = new Label("Total matches won: " + String.valueOf(user.GetMatchesWon()), skin);
-        Label matchesLost = new Label("Total matches lost: " + String.valueOf(user.GetMatchesLost()), skin);
+        Label kills = new Label("Total Kills: " + String.valueOf(user.getKills()), skin);
+        Label deaths = new Label("Total Deaths: " + String.valueOf(user.getDeaths()), skin);
+        Label KDratio = new Label("K/D ratio: " + String.valueOf(user.getKDRatio()), skin);
+        Label shotsFired = new Label("Total shots fired: " + String.valueOf(user.getShots()), skin);
+        Label shotsHit = new Label("Total shots hit: " + String.valueOf(user.getShotsHit()), skin);
+        Label accuracy = new Label("Accuracy: " + String.valueOf(user.getAccuracyPercentage()) + "%", skin);
+        Label matchesPlayed = new Label("Total matches played: " + String.valueOf(user.getMatchesPlayed()), skin);
+        Label winRatio = new Label("Win ratio: " + String.valueOf(user.getWinPercentage() + "%"), skin);
+        Label matchesWon = new Label("Total matches won: " + String.valueOf(user.getMatchesWon()), skin);
+        Label matchesLost = new Label("Total matches lost: " + String.valueOf(user.getMatchesLost()), skin);
         ImageButton btnBack = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("core\\assets\\btn_back.png")))));
 
         stats.setPosition(50.f, 440.f, Align.left);

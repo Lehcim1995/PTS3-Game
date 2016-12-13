@@ -1,5 +1,3 @@
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,34 +5,41 @@
  */
 package Classes;
 
-import javax.jws.soap.SOAPBinding;
-import java.sql.DriverManager;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 /**
- *
  * @author michel
  */
-public class Database {
+public class Database
+{
 
 
+    private static Database instance;
     private final String serverNameSchool = "localhost";
     private final String mydatabase = "asom";
     private final String username = "root";
     private final String password = "";
+    private final String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase + "?&relaxAutoCommit=true";
+    private DatabaseReturn<User> UserReturn = (set) -> //Lambda voor het ophalen van user
+    {
+        String name = set.getString("username");
+        String email = set.getString("email");
+        int kills = set.getInt("kills");
+        int deaths = set.getInt("deaths");
+        int shotshit = set.getInt("shotshit");
+        int shots = set.getInt("shots");
+        int matchesplayed = set.getInt("matchesplayed");
+        int matcheswon = set.getInt("matcheswon");
+        int matcheslost = set.getInt("matcheslost");
+        int isBanned = set.getInt("isbanned");
 
-    private final String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase+"?&relaxAutoCommit=true";
-
+        return new User(name, email, kills, deaths, shotshit, shots, matchesplayed, matcheswon, matcheslost, isBanned);
+    };
 
     private Database()
     {
@@ -43,26 +48,27 @@ public class Database {
             if (DatabaseConnection(url))
             {
                 System.out.println("School db connected");
-            } else
+            }
+            else
             {
                 System.out.println("Cannot connect to any database");
             }
-        } catch (SQLException ex)
+        }
+        catch (SQLException ex)
         {
             System.out.println("SQLError in Constructor : " + ex);
         }
     }
 
-    private static Database instance;
-
     /**
-     *
-     * @return
+     * @return The singleton of the database
      */
-    public static Database InstanceGet()
+    public static Database getInstance()
     {
         return instance == null ? instance = new Database() : instance; // kan helaas niet kleiner :'(
     }
+
+    //<editor-fold defaultstate="collapsed" desc=" Raw DbFunctions ">
 
     /**
      * Converts a date to timestamp
@@ -75,35 +81,16 @@ public class Database {
         return new Timestamp(date.getTime());
     }
 
-    //<editor-fold defaultstate="collapsed" desc=" Raw DbFunctions ">
-    /**
-     * inteface to use as a delegete
-     *
-     * @param <T> The generic of the interface
-     */
-    interface DatabaseReturn<T> {
-
-        /**
-         *
-         * @param set the resultset from the query
-         * @return returns whatever you want
-         * @throws SQLException
-         */
-        T ReturnType(ResultSet set) throws SQLException;
-    }
-
     /**
      * Makes a save SQL statement and executes it
      *
-     * @param sql The query, use an "?" at the place of a input. Like this:
-     * INSERT INTO
-     * [dbo].[Member]([Username],[Firstname],[Birthdate],[HashedPassword],[StateID],[HasAccess],[Lastname],[Email],[Address],[PhoneNumber],[Job])
-     * VALUES(?,?,?,?,?,?,?,?,?,?,?);
+     * @param sql       The query, use an "?" at the place of a input. Like this:
+     *                  INSERT INTO TABLE('name', 'lastname' , enz ) VALUES(?,?, enz);
      * @param Arguments The arguments correspont to same questionmark.
-     * @return
+     * @return The generated key
      * @throws SQLException
      */
-    public Integer SetDatabase(String sql, Object... Arguments)
+    public Integer setDatabase(String sql, Object... Arguments)
     {
         Connection conn = null;
         PreparedStatement psta = null;
@@ -125,14 +112,14 @@ public class Database {
                 {
                     if (rs.getInt(1) == 0)
                     { //maybe errors
-
                         return -1;
                     }
                     return rs.getInt(1);
                 }
             }
             return -1;
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println("SQL Error " + e.getMessage());
             System.out.println("SQL Error " + e.getErrorCode());
@@ -193,9 +180,9 @@ public class Database {
         }
     }
 
-    public Integer SetDatabaseNoArgs(String sql)
+    public Integer setDatabaseNoArgs(String sql)
     {
-        return SetDatabase(sql);
+        return setDatabase(sql);
     }
 
     private void EscapeSQL(PreparedStatement preparedStatement, Object... Arguments) throws SQLException
@@ -208,10 +195,12 @@ public class Database {
             if (obj != null && obj.getClass() == Date.class) // when the argument is a date then convert to a timestamp
             {
                 preparedStatement.setTimestamp(i, DateToTimestamp((Date) obj));
-            } else if (obj != null && obj.getClass() == String.class) // when the argument is a string then escap all html4 stuff
+            }
+            else if (obj != null && obj.getClass() == String.class) // when the argument is a string then escap all html4 stuff
             {
                 preparedStatement.setObject(i, escapeHtml4((String) obj));
-            } else
+            }
+            else
             {
                 preparedStatement.setObject(i, obj);
             }
@@ -226,7 +215,7 @@ public class Database {
      * @return
      * @throws SQLException
      */
-    private <T> ArrayList<T> GetDatabase(String sql, DatabaseReturn<T> returnfunction, Object... Arguments) throws SQLException
+    private <T> ArrayList<T> getDatabase(String sql, DatabaseReturn<T> returnfunction, Object... Arguments) throws SQLException
     {
         ArrayList<T> objList = new ArrayList<T>();
 
@@ -249,7 +238,8 @@ public class Database {
             {
                 objList.add(returnfunction.ReturnType(rs));
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println("SQL Error " + e.getMessage());
         }
@@ -278,9 +268,9 @@ public class Database {
         return objList;
     }
 
-    private <T> ArrayList<T> GetDatabaseNoPsts(String sql, DatabaseReturn<T> returnfunction) throws SQLException
+    private <T> ArrayList<T> getDatabaseNoPsts(String sql, DatabaseReturn<T> returnfunction) throws SQLException
     {
-       return GetDatabase(sql, returnfunction);
+        return getDatabase(sql, returnfunction);
     }
 
     private boolean DatabaseConnection(String connection) throws SQLException
@@ -300,7 +290,8 @@ public class Database {
                 return false;
             }
             return !conn.isClosed();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println("SQL Error " + e.getMessage());
             return false;
@@ -329,27 +320,11 @@ public class Database {
         }
     }
 
-    private DatabaseReturn<User> UserReturn = (set) ->
+    public ArrayList<User> LogIn(String query, Object... arguments)
     {
-        String name = set.getString("username");
-        String email = set.getString("email");
-        int kills = set.getInt("kills");
-        int deaths = set.getInt("deaths");
-        int shotshit = set.getInt("shotshit");
-        int shots = set.getInt("shots");
-        int matchesplayed = set.getInt("matchesplayed");
-        int matcheswon = set.getInt("matcheswon");
-        int matcheslost = set.getInt("matcheslost");
-        int isBanned = set.getInt("isbanned");
-
-        return new User(name, email, kills, deaths, shotshit, shots, matchesplayed, matcheswon, matcheslost, isBanned);
-    };
-
-
-    public ArrayList<User> LogIn(String query, Object... arguments) {
         try
         {
-            return GetDatabase(query, UserReturn, arguments);
+            return getDatabase(query, UserReturn, arguments);
         }
         catch (SQLException e)
         {
@@ -358,7 +333,8 @@ public class Database {
         return null;
     }
 
-    public ArrayList<User> LogInNoArgs(String query) {
+    public ArrayList<User> LogInNoArgs(String query)
+    {
         try
         {
             ///TODO: Ophalen van User uit database gaat verkeerd
@@ -369,5 +345,21 @@ public class Database {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * inteface to use as a delegete
+     *
+     * @param <T> The generic of the interface
+     */
+    interface DatabaseReturn<T>
+    {
+
+        /**
+         * @param set the resultset from the query
+         * @return returns whatever you want
+         * @throws SQLException
+         */
+        T ReturnType(ResultSet set) throws SQLException;
     }
 }
