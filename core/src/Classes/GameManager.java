@@ -128,13 +128,29 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         }
 
         //objects.addAll(Server.GetTick());
-        //notMine.clear();
+        notMine.clear();
         if (online)
         {
             tick += Gdx.graphics.getDeltaTime();
             if (tick > 0.005f) //doe het elke zoveel seconden
             {
                 List<IGameObject> tmp = Server.GetTick(name);
+                /*
+                for (IGameObject i : tmp)
+                {
+                    boolean added = false;
+                    for (IGameObject i2 : notMine)
+                    {
+                        if (i.getID() == i2.getID())
+                        {
+                            added = true;
+                            i2.setPosition(i.getPosition());
+                            i2.setRotation(i.getRotation());
+                        }
+                    }
+
+                    if (!added) notMine.add(i);
+                }*/
 
                 for (IGameObject i : tmp) //add if absent
                 {
@@ -142,6 +158,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
                     notMineMap.get(i.getID()).setPosition(i.getPosition());
                     notMineMap.get(i.getID()).setRotation(i.getRotation());
                 }
+
                 //als id in notmine niet in tmp staat haaldeze weg
                 //TODO : maak dit korter en sneller
 
@@ -167,10 +184,10 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
                     }
                 }
             }
-
             notMine.addAll(notMineMap.values());
             notMine.addAll(objects);
         }
+
 
         ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();
         for (IGameObject object : clonelist)
