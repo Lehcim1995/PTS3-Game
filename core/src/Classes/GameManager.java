@@ -8,7 +8,6 @@ import Scenes.GameSceneScreen;
 import Scenes.ScreenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.utils.Json;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -18,8 +17,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 /**
  * Created by Nick on 11-10-2016.
@@ -47,10 +45,12 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
 
     private float tick = 0;
 
+    private Logger logger;
+
     private GameManager() throws RemoteException
     {
 
-        //spectators = new ArrayList<Spectator>();
+        logger = Logger.getAnonymousLogger();
         killLogs = new ArrayList<>();
         //chats = new ArrayList<Chat>();
         objects = new ArrayList<>();
@@ -65,7 +65,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         }
         catch (UnknownHostException e)
         {
-            LOGGER.info("Client: UnknownHostException: " + e.getMessage());
+            logger.info("Client: UnknownHostException: " + e.getMessage());
             online = false;
         }
         String ip = ScreenManager.getInstance().getIp();//localhost.getHostAddress();
@@ -81,12 +81,12 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         }
         catch (RemoteException ex)
         {
-            LOGGER.info("Client: RemoteExeption " + ex.getMessage());
+            logger.info("Client: RemoteExeption " + ex.getMessage());
             online = false;
         }
         catch (NotBoundException e)
         {
-            LOGGER.info("Client: NotBoundException " + e.getMessage());
+            logger.info("Client: NotBoundException " + e.getMessage());
             online = false;
         }
         Random r = new Random();
@@ -115,7 +115,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         }
         catch (RemoteException ex)
         {
-            LOGGER.info("Client Remote error " + ex.getMessage());
+            //logger.info("Client Remote error " + ex.getMessage());
         }
         return instance;
     }
