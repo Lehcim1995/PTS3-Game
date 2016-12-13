@@ -110,7 +110,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     {
         System.out.println("New Object From : " + id);
 
-        idObjects.putIfAbsent(id, everything); //Waaneer id niet bestaat voeg alles toe aan die speler
+        idObjects.putIfAbsent(id, new ArrayList<>(everything)); //Waaneer id niet bestaat voeg alles toe aan die speler
 
         everything.add(object); // voeg nieuw object toe aan iedereen
         idObjects.entrySet().stream().filter(entry -> !entry.getKey().equals(id)).forEach(entry -> entry.getValue().add(object)); //voeg object toe aan iedereen behalve ik
