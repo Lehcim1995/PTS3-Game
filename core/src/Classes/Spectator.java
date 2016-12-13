@@ -17,7 +17,7 @@ public class Spectator extends GameObject
         this.name = name;
         this.gm = gameManager;
         this.playerFromList = 0;
-        SetSpectatedPlayer();
+        setSpectatedPlayer();
     }
 
     public String getName() {
@@ -34,17 +34,17 @@ public class Spectator extends GameObject
         return spectatedName;
     }
 
-    public void SetSpectatedPlayer() {
+    public void setSpectatedPlayer() {
        // player = gm.GetSpectatedPlayer(playerFromList);
     }
 
     public void NextPlayer() {
         playerFromList++;
-        SetSpectatedPlayer();
+        setSpectatedPlayer();
     }
 
     public void PrevPlayer() {
         playerFromList--;
-        SetSpectatedPlayer();
+        setSpectatedPlayer();
     }
 }
