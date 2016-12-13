@@ -1,11 +1,15 @@
 package Scenes;
 
+import Classes.Chat;
+import Classes.GameManager;
 import Classes.Player;
 import Classes.User;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -13,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
+
+import static com.badlogic.gdx.graphics.g3d.particles.ParticleChannels.Color;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -30,6 +36,10 @@ public class GameLobbyScreen extends AbstractScreen{
     private ScrollPane scrollPanePlayer;
     private ScrollPane scrollPaneChat;
     private TextField txtChatInput;
+    private ArrayList<Chat> chats = new ArrayList<>();
+    private BitmapFont font = new BitmapFont();
+    private GlyphLayout layout = new GlyphLayout();
+    private Batch bc = new SpriteBatch();
 
     public GameLobbyScreen()
     {
@@ -64,15 +74,18 @@ public class GameLobbyScreen extends AbstractScreen{
         //List Chat
         listChat = new List(skin);
         listChat.setItems("asd","qwe","zxc","fdg","Sibe","Myron");
-        scrollPaneChat = new ScrollPane(listChat,skin);
+        Table textAreaHolder = new Table();
+        textAreaHolder.debug();
+        scrollPaneChat = new ScrollPane(textAreaHolder);
+        scrollPaneChat.setForceScroll(false, true);
+        scrollPaneChat.setFlickScroll(true);
+        scrollPaneChat.setOverscroll(false, false);
         scrollPaneChat.setSize(200.f, 150.f);
         scrollPaneChat.setPosition(25.f, 110.f);
         //final Table table = new Table();
        // table.setFillParent(true);
         //table.add(scrollPaneChat).fill();
         //scrollPaneChat.setForceScroll(false, true);
-
-
         //ChatBoxInput
         txtChatInput = new TextField("",skin);
         txtChatInput.setSize(200f, 25f);
@@ -112,8 +125,18 @@ public class GameLobbyScreen extends AbstractScreen{
             public void keyTyped(TextField textField, char key) {
                 if ((key == '\r' || key == '\n')){
                     textField.next(Gdx.input.isKeyPressed(Input.Keys.ENTER));
-
                     listChat.setItems(listChat.getItems().toString(System.lineSeparator()) + System.lineSeparator() + textField.getText());
+//                    if (font != null && layout != null)
+//                    {
+//                        bc.begin();
+//                        font.setColor(com.badlogic.gdx.graphics.Color.BLACK);
+//                        String text = txtChatInput.getText();
+//                        layout.setText(font, text);
+//                        float width = layout.width;// contains the width of the current set text
+//                        float height = layout.height; // contains the height of the current set text
+//                        font.draw(bc, layout, 0f, 0f);
+//                        bc.end();
+//                    }
                     textField.setText("");
                 }
             }
