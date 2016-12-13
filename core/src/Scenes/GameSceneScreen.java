@@ -132,6 +132,7 @@ public class GameSceneScreen extends AbstractScreen{
         shapeRenderer.dispose();
         try
         {
+            GameManager.getInstance().removePlayer(GameManager.getInstance().getPlayer());
             GameManager.getInstance().stop();
         }
         catch (RemoteException e)
