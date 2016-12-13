@@ -268,13 +268,6 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
             Server.SetTick(name, go);
     }
 
-    public void removePlayer(Player p) throws RemoteException
-    {
-        System.out.println("leave");
-        playerMe = null;
-        removeGameObject(p);
-    }
-
     public void removeGameObject(GameObject go) throws RemoteException
     {
         objects.remove(go);
