@@ -23,7 +23,8 @@ public class Connection extends UnicastRemoteObject implements IConnection
     @Override
     public boolean CreateUser(String name, String lastname, String email, String username, String password)
     {
-        if (!name.equals("") && !lastname.equals("") && email.contains("@") && !username.equals("") && !password.equals(""))
+
+        if (!name.isEmpty() && !lastname.isEmpty() && email.contains("@") && !username.isEmpty() && !password.isEmpty())
         {
 //          String query = "INSERT INTO USER_TABLE(\"ID\", \"NAME\", \"LASTNAME\", \"EMAIL\", \"USERNAME\", \"PASSWORD\") VALUES (USERPK_SEQ.nextval, " + name + ", " + lastname + ", "  + email + ", " + username + ", " + password + ")";
             //String query = "INSERT INTO USER_TABLE(NAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (\"" + name + "\", \"" + lastname + "\", \"" + email + "\", \"" + username + "\", \"" + password + "\")";
@@ -38,7 +39,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
     @Override
     public IUser LogIn(String email, String password)
     {
-        if (email.contains("@") && !password.equals(""))
+        if (email.contains("@") && !password.isEmpty())
         {
             //String LogInQuery = "SELECT * FROM USER_Table WHERE EMAIL = '" + email + "' AND PASSWORD = '" + password + "'";
             String LogInQuery = "SELECT * FROM USER_Table WHERE EMAIL = ? AND PASSWORD = ?";
