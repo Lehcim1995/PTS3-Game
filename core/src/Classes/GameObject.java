@@ -28,6 +28,9 @@ public class GameObject implements IGameObject, Serializable
     protected GameObject() throws RemoteException
     {
         id = this.hashCode();
+        position = new Vector2();
+        rotation = 0;
+        hitbox = VerticisToPolygon(CIRCLEHITBOX(5));
     }
 
     protected GameObject(Vector2 position, float rotation, SerializablePolygon hitbox) throws RemoteException
@@ -100,12 +103,16 @@ public class GameObject implements IGameObject, Serializable
 
     public void setHitbox(Vector2[] verticis)
     {
+        hitbox = VerticisToPolygon(verticis);
+        hitbox.setOrigin(0, 0);
+    }
+
+    public SerializablePolygon VerticisToPolygon(Vector2[] verticis)
+    {
         if (verticis.length < 3)
         {
             throw new IllegalArgumentException("Need atleast 3 or more verticies");
         }
-
-        hitbox = new SerializablePolygon();
 
         float[] verticisList = new float[verticis.length * 2];
 
@@ -115,8 +122,10 @@ public class GameObject implements IGameObject, Serializable
             verticisList[j + 1] = verticis[i].y;
         }
 
-        hitbox.setOrigin(0, 0);
-        hitbox.setVertices(verticisList);
+        //hitbox.setOrigin(0, 0);
+        //hitbox.setVertices(verticisList);
+
+        return new SerializablePolygon(verticisList);
     }
 
     public void setOrigin(Vector2 origin)

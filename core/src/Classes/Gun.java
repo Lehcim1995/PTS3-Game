@@ -14,6 +14,7 @@ import static com.badlogic.gdx.utils.TimeUtils.millis;
 public class Gun implements Serializable
 {
     public final static Gun CZ75 = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, null);
+    public final static Gun SUPER = new Gun("SUPER", 0, 50, 0, 10, 500, gunType.Automatic, true, 1000, 1000, null);
     private String name;
     private float reloadTime;
     private float bulletsPerSecond;
