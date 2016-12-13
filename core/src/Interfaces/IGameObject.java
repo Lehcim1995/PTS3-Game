@@ -16,9 +16,6 @@ import java.rmi.RemoteException;
  */
 public interface IGameObject extends Remote
 {
-    Texture getTexture();
-    void setTexture(Texture tex);
-
     Vector2 getPosition() throws RemoteException;
     void setPosition(Vector2 pos) throws RemoteException;
 

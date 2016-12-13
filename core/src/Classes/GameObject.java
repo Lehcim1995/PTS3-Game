@@ -15,9 +15,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Random;
 
 
 /**
@@ -25,13 +23,8 @@ import java.util.Random;
  */
 public class GameObject implements IGameObject, Serializable
 {
-
-    protected Texture texture;
-    protected Sprite sprite;
-
     protected Vector2 position;
     protected float rotation;
-    protected Shape boundingShape;
     protected SerializablePolygon hitbox;
     protected long id;
 
@@ -48,36 +41,17 @@ public class GameObject implements IGameObject, Serializable
         this.hitbox = hitbox;
     }
 
-    protected GameObject(Texture texture, Vector2 position, float rotation) throws RemoteException
-    {
-        id = this.hashCode();
-        this.texture = texture;
-        this.position = position;
-        this.rotation = rotation;
-    }
-
     protected GameObject(Vector2 position, float rotation) throws RemoteException
     {
         id = this.hashCode();
         this.position = position;
         this.rotation = rotation;
-        hitbox = new SerializablePolygon();
-    }
-
-    public Polygon getHitbox()
-    {
-        return hitbox.getLIBGDXPolygon();
+        setHitbox(DEFAULTHITBOX(10));
     }
 
     public final static Vector2[] DEFAULTHITBOX(float size)
     {
-        Vector2 v1 = new Vector2(size,size);
-        Vector2 v2 = new Vector2(-size,size);
-        Vector2 v3 = new Vector2(size,-size);
-        Vector2 v4 = new Vector2(-size,-size);
-        Vector2[] v5 = {v1,v2,v4,v3};
-
-        return v5;
+        return DEFAULTHITBOX(size, size);
     }
 
     public final static Vector2[] CIRCLEHITBOX(float size)
@@ -104,17 +78,27 @@ public class GameObject implements IGameObject, Serializable
 
     public final static Vector2[] DEFAULTHITBOX(float height, float width)
     {
-        float y = height/2;
-        float x = width/2;
+        float y = height / 2;
+        float x = width / 2;
 
-        Vector2 v1 = new Vector2(x,y);
-        Vector2 v2 = new Vector2(-x,y);
-        Vector2 v3 = new Vector2(x,-y);
-        Vector2 v4 = new Vector2(-x,-y);
+        Vector2 v1 = new Vector2(x, y);
+        Vector2 v2 = new Vector2(-x, y);
+        Vector2 v3 = new Vector2(x, -y);
+        Vector2 v4 = new Vector2(-x, -y);
 
-        Vector2[] v5 = {v1,v2,v4,v3};
+        Vector2[] v5 = {v1, v2, v4, v3};
 
         return v5;
+    }
+
+    public Polygon getHitbox()
+    {
+        return hitbox.getLIBGDXPolygon();
+    }
+
+    public void setHitbox(SerializablePolygon hitbox)
+    {
+        this.hitbox = hitbox;
     }
 
     public void setHitbox(Vector2[] verticis)
@@ -138,19 +122,9 @@ public class GameObject implements IGameObject, Serializable
         hitbox.setVertices(verticisList);
     }
 
-    public void setHitbox(SerializablePolygon hitbox)
-    {
-        this.hitbox = hitbox;
-    }
-
     public void setOrigin(Vector2 origin)
     {
         hitbox.setOrigin(origin.x, origin.y);
-    }
-
-    public Shape getBoundingShape()
-    {
-        return boundingShape;
     }
 
     @Override
@@ -216,25 +190,10 @@ public class GameObject implements IGameObject, Serializable
 
         for (i = 0, j = verCount - 1; i < verCount; j = i++)
         {
-            if ((((verList.get(i).y <= y) && (y < verList.get(j).y))
-                    || ((verList.get(j).y <= y) && (y < verList.get(i).y)))
-                    && (x < (verList.get(j).x - verList.get(i).x) * (y - verList.get(i).y) / (verList.get(j).y - verList.get(i).y) + verList.get(i).x))
-
+            if ((((verList.get(i).y <= y) && (y < verList.get(j).y)) || ((verList.get(j).y <= y) && (y < verList.get(i).y))) && (x < (verList.get(j).x - verList.get(i).x) * (y - verList.get(i).y) / (verList.get(j).y - verList.get(i).y) + verList.get(i).x))
                 c = !c;
         }
         return c;
-    }
-
-    @Override
-    public Texture getTexture()
-    {
-        return texture;
-    }
-
-    @Override
-    public void setTexture(Texture tex)
-    {
-        texture = tex;
     }
 
     @Override
@@ -243,23 +202,23 @@ public class GameObject implements IGameObject, Serializable
         return position;
     }
 
-    public Vector2 getScreenPosition()
-    {
-
-        if (GameManager.getInstance().getScene().getCamera() == null)
-        {
-            return new Vector2(Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/2);
-        }
-        Vector3 v3 = GameManager.getInstance().getScene().getCamera().project(new Vector3(position.x, position.y, 0));
-
-        return new Vector2(v3.x, v3.y);
-    }
-
     @Override
     public void setPosition(Vector2 pos)
     {
         position = pos;
         hitbox.setPosition(pos.x, pos.y);
+    }
+
+    public Vector2 getScreenPosition()
+    {
+
+        if (GameManager.getInstance().getScene().getCamera() == null)
+        {
+            return new Vector2(Gdx.app.getGraphics().getWidth() / 2, Gdx.app.getGraphics().getHeight() / 2);
+        }
+        Vector3 v3 = GameManager.getInstance().getScene().getCamera().project(new Vector3(position.x, position.y, 0));
+
+        return new Vector2(v3.x, v3.y);
     }
 
     @Override

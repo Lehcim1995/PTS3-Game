@@ -5,14 +5,12 @@ import LibGDXSerialzableClasses.SerializableColor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Shape;
 
 import java.rmi.RemoteException;
 import java.util.Random;
@@ -22,6 +20,7 @@ import java.util.Random;
  */
 public class Player extends GameObject
 {
+    public boolean reloadThread = false;
     //Normal vars
     private String name;
     private float health;
@@ -37,26 +36,17 @@ public class Player extends GameObject
     private int deaths;
     private int shots;
     private int shotsHit;
-    //implementation vars
-    private boolean walkingUp;
-    private boolean walkingDown;
-    private boolean walkingLeft;
-    private boolean walkingRight;
     //Appearance
     private float width = 34;
-    private float halfWidth = width/2;
+    private float halfWidth = width / 2;
     private float quaterWidth = halfWidth / 2;
+    private float barrelLenght = 8;
     private SerializableColor color = SerializableColor.DARK_GRAY;
     //
     private transient InputClass ic;
     private boolean shooting = false;
-
     private transient BitmapFont font = new BitmapFont();
     private transient GlyphLayout layout = new GlyphLayout();
-
-    public boolean reloadThread = false;
-
-    private Vector2 lastpos;
 
     public Player(Vector2 position, float rotation) throws RemoteException
     {
@@ -64,25 +54,17 @@ public class Player extends GameObject
         setHitbox(CIRCLEHITBOX(halfWidth));
     }
 
-    public Player(Texture texture, Vector2 position, float rotation, Shape boundingShape, String name, Gun gunEquipped) throws RemoteException
-    {
-        super(texture, position, rotation);
-        this.name = name;
-        this.gunEquipped = gunEquipped;
-    }
-
     public Player() throws RemoteException
     {
         super();
         //640,480
         position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
-        lastpos = position;
         speed = 125.1248f;
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
+        this.gunEquipped = Gun.CZ75;
+        this.getGunEquipped().setOwner(this);
 
         Gdx.input.setInputProcessor(ic);
-
         setHitbox(CIRCLEHITBOX(halfWidth));
     }
 
@@ -91,10 +73,9 @@ public class Player extends GameObject
         super();
         //640,480
         position = p.position;
-        lastpos = position;
         speed = 125.1248f;
-        this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
-
+        this.gunEquipped = Gun.CZ75;
+        this.getGunEquipped().setOwner(this);
         setHitbox(CIRCLEHITBOX(halfWidth));
     }
 
@@ -103,13 +84,14 @@ public class Player extends GameObject
         super();
         //640,480
         position = p.position;
-        lastpos = position;
         speed = 125.1248f;
         name = p.getName();
         color = p.color;
 
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
+        this.gunEquipped = Gun.CZ75;
+        this.getGunEquipped().setOwner(this);
+
         if (PlayerInput)
         {
             Gdx.input.setInputProcessor(ic);
@@ -123,37 +105,16 @@ public class Player extends GameObject
         super();
         //640,480
         position = new Vector2(r.nextInt(610) + 30, r.nextInt(450) + 30);
-        lastpos = position;
         speed = 125.1248f;
         ic = new InputClass(this);
-        this.gunEquipped = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, this);
+        this.gunEquipped = Gun.CZ75;
+        this.getGunEquipped().setOwner(this);
 
         if (PlayerInput)
         {
             Gdx.input.setInputProcessor(ic);
         }
         setHitbox(CIRCLEHITBOX(halfWidth));
-    }
-
-    public void Walk(walkDir dir, boolean setWalking)
-    {
-        switch (dir)
-        {
-            case Up:
-                walkingUp = setWalking;
-                break;
-            case Down:
-                walkingDown = setWalking;
-                break;
-            case Left:
-                walkingLeft = setWalking;
-                break;
-            case Right:
-                walkingRight = setWalking;
-                break;
-            default:
-                break;
-        }
     }
 
     public void Shoot() throws RemoteException
@@ -174,13 +135,12 @@ public class Player extends GameObject
             r = new Random();
         }
         position = new Vector2(r.nextInt(610) + 17, r.nextInt(450) + 17);
-        //position = new Vector2(r.nextInt(2000) + 17, r.nextInt(2000) + 17);
     }
 
     public void Die()
     {
         health = 0;
-        deaths ++;
+        deaths++;
         GameManager.getInstance().SpawnPlayer(this);
     }
 
@@ -196,7 +156,7 @@ public class Player extends GameObject
         Vector2 rot = new Vector2((halfWidth + quaterWidth) * MathUtils.sin(rad), (halfWidth + quaterWidth) * MathUtils.cos(rad));
         //Vector2 rot2 = new Vector2((halfWidth - 1) * MathUtils.sin(rad), (halfWidth - 1) * MathUtils.cos(rad));
         sr.setColor(Color.RED);
-        sr.rectLine(position.x, position.y, position.x + rot.x, position.y + rot.y, 8);
+        sr.rectLine(position.x, position.y, position.x + rot.x, position.y + rot.y, barrelLenght);
 
         sr.setColor(color.getLibGDXColor());
         sr.circle(position.x, position.y, halfWidth);
@@ -237,7 +197,6 @@ public class Player extends GameObject
     @Override
     public void update() throws RemoteException
     {
-        lastpos = position;
         Vector2 pos = new Vector2();
 
         if (ic != null)
@@ -307,24 +266,19 @@ public class Player extends GameObject
         {
 
             Vector2 playerpos = new Vector2(position);
-            Vector2 otherpos = ((Player)other).position;
+            Vector2 otherpos = ((Player) other).position;
 
             Vector2 diff = playerpos.sub(otherpos).setLength(200 * Gdx.graphics.getDeltaTime());
             position.add(diff);
-
-            //System.out.println(((Player)other).position);
         }
         else if (other instanceof LevelBlock)
         {
             Vector2 playerpos = new Vector2(position);
-            Vector2 otherpos = ((LevelBlock)other).position;
-            LevelBlock lb = (LevelBlock)other;
+            Vector2 otherpos = ((LevelBlock) other).position;
+            LevelBlock lb = (LevelBlock) other;
 
             Vector2 diff = playerpos.sub(otherpos).setLength(200 * Gdx.graphics.getDeltaTime());
             position.add(diff);
-
-
-            //System.out.println(((Player)other).position);
         }
     }
 
@@ -333,14 +287,14 @@ public class Player extends GameObject
         return this.name;
     }
 
-    public void setColor(SerializableColor color)
-    {
-        this.color = color;
-    }
-
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public void setColor(SerializableColor color)
+    {
+        this.color = color;
     }
 
     enum walkDir

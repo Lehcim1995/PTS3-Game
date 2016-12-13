@@ -21,26 +21,11 @@ public class Projectile extends GameObject
 {
     private GameObject gameObject;
     private float bulletSpeed;
-    private int damage;
+    private int damage = 1;
     private Gun gun;
     private long lifeTime = 10000; // in millisec
     private long born; //in millisec
-
-    public Projectile(Gun gun, Texture texture, Vector2 position, float rotation, Shape boundingShape) throws RemoteException
-    {
-        super (texture, position, rotation);
-        this.gun = gun;
-        bulletSpeed = gun.getBulletSpeed();
-        damage = gun.getProjectileDamage();
-    }
-
-    public Projectile(Gun gun, Vector2 position, float rotation, Shape boundingShape) throws RemoteException
-    {
-        super (position, rotation);
-        this.gun = gun;
-        bulletSpeed = gun.getBulletSpeed();
-        damage = gun.getProjectileDamage();
-    }
+    private float size = 5;
 
     public Projectile(Gun gun, Vector2 position, float rotation) throws RemoteException
     {
@@ -49,15 +34,7 @@ public class Projectile extends GameObject
         bulletSpeed = gun.getBulletSpeed();
         damage = gun.getProjectileDamage();
 
-        float width = 5;
-
-        Vector2 v1 = new Vector2(width,width);
-        Vector2 v2 = new Vector2(-width,width);
-        Vector2 v3 = new Vector2(width,-width);
-        Vector2 v4 = new Vector2(-width,-width);
-        Vector2[] v5 = {v1,v2,v4,v3};
-
-        setHitbox(v5);
+        setHitbox(DEFAULTHITBOX(size));
         born = millis();
 
     }
