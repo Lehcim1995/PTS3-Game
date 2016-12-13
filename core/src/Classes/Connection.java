@@ -17,62 +17,46 @@ public class Connection extends UnicastRemoteObject implements IConnection
 
     public Connection() throws RemoteException
     {
-            database = Database.InstanceGet();
+        database = Database.InstanceGet();
     }
+
     @Override
     public boolean CreateUser(String name, String lastname, String email, String username, String password)
     {
-        if (!name.equals("") && !lastname.equals("") && email.contains("@") && !username.equals("") && !password.equals("")) {
-//        String query = "INSERT INTO USER_TABLE(\"ID\", \"NAME\", \"LASTNAME\", \"EMAIL\", \"USERNAME\", \"PASSWORD\") VALUES (USERPK_SEQ.nextval, " + name + ", " + lastname + ", "  + email + ", " + username + ", " + password + ")";
-            String query = "INSERT INTO USER_TABLE(NAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (\"" + name + "\", \"" + lastname + "\", \""  + email + "\", \"" + username + "\", \"" + password + "\")";
-//            List<Object> arguments = new ArrayList();
-//            arguments.add("SELECT NEXT VALUE FOR USER_SEQ;");
-//            arguments.add(name);
-//            arguments.add(lastname);
-//            arguments.add(email);
-//            arguments.add(username);
-//            arguments.add(password);
+        if (!name.equals("") && !lastname.equals("") && email.contains("@") && !username.equals("") && !password.equals(""))
+        {
+//          String query = "INSERT INTO USER_TABLE(\"ID\", \"NAME\", \"LASTNAME\", \"EMAIL\", \"USERNAME\", \"PASSWORD\") VALUES (USERPK_SEQ.nextval, " + name + ", " + lastname + ", "  + email + ", " + username + ", " + password + ")";
+            //String query = "INSERT INTO USER_TABLE(NAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (\"" + name + "\", \"" + lastname + "\", \"" + email + "\", \"" + username + "\", \"" + password + "\")";
+            String query = "INSERT INTO USER_TABLE(NAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (?,?,?,?,?)";
 
-
-            database.SetDatabaseNoArgs(query);
+            database.SetDatabase(query, name, lastname, email, username, password);
             return true;
         }
         return false;
     }
+
     @Override
     public IUser LogIn(String email, String password)
     {
-        if(email.contains("@") && !password.equals(""))
+        if (email.contains("@") && !password.equals(""))
         {
-            String LogInQuery = "SELECT * FROM USER_Table WHERE EMAIL = '" + email + "' AND PASSWoRD = '" + password + "'";
-            //String LogInQuery = "SELECT * FROM [USER_TABLE] WHERE EMAIL = ? AND [PASSWORD] = ?";
-            List<Object> arguments = new ArrayList();
-            arguments.add(email);
-            arguments.add(password);
+            //String LogInQuery = "SELECT * FROM USER_Table WHERE EMAIL = '" + email + "' AND PASSWORD = '" + password + "'";
+            String LogInQuery = "SELECT * FROM USER_Table WHERE EMAIL = ? AND PASSWORD = ?";
 
             try
             {
-                //success = true;
                 System.out.println(LogInQuery);
                 //ArrayList<User> resultSet = database.LogIn(LogInQuery, arguments);
                 ///TODO: Connectionklasse fixen en zorgen dat er juiste gegevens worden opgehaald
                 ///TODO: Mogelijk met Prepared statement (Pas connectionklasse aan naar MYSQL implementation
                 ///TODO: geen gebruik van LogInNoArgs() maar Login()!
-                ArrayList<User> resultSet = database.LogInNoArgs(LogInQuery);
-//                if(resultSet != null)
-//                {
-                    //success = true;
-//                            if(resultSet.next())
-//                            {
-//                                return new User(resultSet.getString("username"), resultSet.getString("email"), resultSet.getInt("kills"), resultSet.getInt("deaths"), resultSet.getInt("shotshit"), resultSet.getInt("shots"), resultSet.getInt("matchesplayed"), resultSet.getInt("matcheswon"), resultSet.getInt("matcheslost"), resultSet.getInt("isbanned"));
-//                            }
-                    if(resultSet.size() == 1)
-                    {
-                        return resultSet.get(0);
-                    }
-//                }
+                ArrayList<User> resultSet = database.LogIn(LogInQuery, email, password);
+                if (resultSet.size() == 1)
+                {
+                    return resultSet.get(0);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 System.out.println(ex.getMessage());
             }
@@ -82,30 +66,17 @@ public class Connection extends UnicastRemoteObject implements IConnection
     }
 
 
-    public void UpdateStats(User user) {
+    public void UpdateStats(User user)
+    {
+        String query = "UPDATE USER_TABLE SET kills = ?, deaths = ?, shotshit = ?, shots = ?, matchesplayed = ?, matcheswon = ?, matcheslost = ? WHERE email = ?";
 
-//        String query = "UPDATE \"USER_TABLE\" SET kills = ?, deaths = ?, shotshit = " + user.GetShotsHit() + ", shots = " + user.GetShots()
-//                + ", matchesplayed = " + user.GetMatchesPlayed() + ", matcheswon = " + user.GetMatchesWon() + ", matcheslost = " + user.GetMatchesLost() + " WHERE email = " + user.GetEmail();
-        String query = "UPDATE [USER_TABLE] SET [kills] = ?, [deaths] = ?, [shotshit] = ?, [shots] = ?, [matchesplayed] = ?, [matcheswon] = ?, [matcheslost] = ? WHERE [email] = ?";
-        List<Object> arguments = new ArrayList();
-        arguments.add(user.GetKills());
-        arguments.add(user.GetDeaths());
-        arguments.add(user.GetShotsHit());
-        arguments.add(user.GetShots());
-        arguments.add(user.GetMatchesPlayed());
-        arguments.add(user.GetMatchesWon());
-        arguments.add(user.GetMatchesLost());
-        arguments.add(user.GetEmail());
-
-        database.SetDatabase(query, arguments);
+        database.SetDatabase(query, user.GetKills(), user.GetDeaths(), user.GetShotsHit(), user.GetShots(), user.GetMatchesPlayed(),  user.GetMatchesWon(), user.GetMatchesLost(), user.GetEmail());
     }
 
-    public void BanUser(User user) {
+    public void BanUser(User user)
+    {
+        String query = "UPDATE USER_TABLE SET isbanned = 1 WHERE email = ?";
 
-        String query = "UPDATE [USER_TABLE] SET [isbanned] = 1 WHERE [email] = ?";
-        List<Object> arguments = new ArrayList();
-        arguments.add(user.GetEmail());
-
-        database.SetDatabase(query, arguments);
+        database.SetDatabase(query, user.GetEmail());
     }
 }
