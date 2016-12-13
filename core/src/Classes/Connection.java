@@ -26,8 +26,6 @@ public class Connection extends UnicastRemoteObject implements IConnection
 
         if (!name.isEmpty() && !lastname.isEmpty() && email.contains("@") && !username.isEmpty() && !password.isEmpty())
         {
-//          String query = "INSERT INTO USER_TABLE(\"ID\", \"NAME\", \"LASTNAME\", \"EMAIL\", \"USERNAME\", \"PASSWORD\") VALUES (USERPK_SEQ.nextval, " + name + ", " + lastname + ", "  + email + ", " + username + ", " + password + ")";
-            //String query = "INSERT INTO USER_TABLE(NAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (\"" + name + "\", \"" + lastname + "\", \"" + email + "\", \"" + username + "\", \"" + password + "\")";
             String query = "INSERT INTO USER_TABLE(NAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (?,?,?,?,?)";
 
             database.SetDatabase(query, name, lastname, email, username, password);
@@ -41,16 +39,11 @@ public class Connection extends UnicastRemoteObject implements IConnection
     {
         if (email.contains("@") && !password.isEmpty())
         {
-            //String LogInQuery = "SELECT * FROM USER_Table WHERE EMAIL = '" + email + "' AND PASSWORD = '" + password + "'";
             String LogInQuery = "SELECT * FROM USER_Table WHERE EMAIL = ? AND PASSWORD = ?";
 
             try
             {
                 System.out.println(LogInQuery);
-                //ArrayList<User> resultSet = database.LogIn(LogInQuery, arguments);
-                ///TODO: Connectionklasse fixen en zorgen dat er juiste gegevens worden opgehaald
-                ///TODO: Mogelijk met Prepared statement (Pas connectionklasse aan naar MYSQL implementation
-                ///TODO: geen gebruik van LogInNoArgs() maar Login()!
                 ArrayList<User> resultSet = database.LogIn(LogInQuery, email, password);
                 if (resultSet.size() == 1)
                 {
