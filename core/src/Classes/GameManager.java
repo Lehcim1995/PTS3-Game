@@ -71,7 +71,6 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         String ip = ScreenManager.getInstance().getIp();//localhost.getHostAddress();
         int portNumber = ScreenManager.getInstance().getPortNumber();
 
-
         try
         {
             registry = LocateRegistry.getRegistry(ip, portNumber);
@@ -134,6 +133,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
             tick += Gdx.graphics.getDeltaTime();
             if (tick > 0.005f) //doe het elke zoveel seconden
             {
+                tick = 0;
                 List<IGameObject> tmp = Server.GetTick(name);
                 /*
                 for (IGameObject i : tmp)

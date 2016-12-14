@@ -64,7 +64,7 @@ public class Level implements Serializable
         Random random = new Random(seed);
         for(int i = 0; i < (levelSize * levelSize); i++)
         {
-            LevelBlock levelBlock = new LevelBlock(new Vector2(0,0),0,GameObject.DEFAULTHITBOX(13)); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
+            LevelBlock levelBlock = new LevelBlock(new Vector2(0,0),0); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
             //GetNewBlockLocation(i)
             levelBlock.setPosition(new Vector2(random.nextInt((int)LevelSizeX), random.nextInt((int)LevelSizeY)));
             newLevelBlockList.add(levelBlock);
@@ -77,7 +77,7 @@ public class Level implements Serializable
     {
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
         //{new Vector2(50,50),new Vector2(0,50),new Vector2(50,0),new Vector2(0,0)};
-        newLevelBlockList.add(new LevelBlock(new Vector2(0,0),0,GameObject.DEFAULTHITBOX(13)));
+        newLevelBlockList.add(new LevelBlock(new Vector2(0,0),0));
         return newLevelBlockList;
     }
     private Vector2 GetNewBlockLocation(int blockNumber){

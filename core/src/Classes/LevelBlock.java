@@ -27,6 +27,13 @@ public class LevelBlock extends GameObject
         super (position, rotation);
         this.setHitbox(hitbox);
     }
+
+    public LevelBlock(Vector2 position, float rotation) throws RemoteException
+    {
+        super (position, rotation);
+        this.setHitbox(VerticisToPolygon(DEFAULTHITBOX(size)));
+    }
+
     @Override
     public void Draw(ShapeRenderer sr)
     {
