@@ -1,7 +1,7 @@
 package Classes;
 
 import java.rmi.RemoteException;
-
+import java.util.*;
 /**
  * Created by Jasper on 11-10-2016.
  */
@@ -35,14 +35,16 @@ public class Spectator extends GameObject
     }
 
     public void setSpectatedPlayer() {
-        Player p = gm.GetSpectatedPlayer(playerFromList);
-        if(p == null)
+        List<Player> playerList = gm.GetSpectatedPlayer();
+        if(!playerList.isEmpty())
         {
-            playerFromList = 0;
-            setSpectatedPlayer();
+            if(playerFromList < 0)
+                playerFromList =  playerList.size()-1;
+            if(playerFromList > playerList.size() -1)
+                playerFromList = 0;
+            //TODO: if no players in game to view error
+            player = playerList.get(playerFromList);
         }
-        else
-            player = p;
     }
 
     public void NextPlayer() {
