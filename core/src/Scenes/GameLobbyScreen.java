@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -135,14 +136,17 @@ public class GameLobbyScreen extends AbstractScreen{
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button){
-                System.out.println("Spectating");
+
                 if(!ScreenManager.getInstance().getIsSpectator()){
+                    System.out.println("Spectating");
                     ScreenManager.getInstance().setIsSpectator(true);
-                    btnReady.isDisabled();
+                    btnReady.setTouchable(Touchable.disabled);
+
                 }
                 else {
+                    System.out.println("No longer spectating");
                     ScreenManager.getInstance().setIsSpectator(false);
-                    btnReady.isDisabled();
+                    btnReady.setTouchable(Touchable.enabled);
                 }
 
                 return  false;
