@@ -163,7 +163,7 @@ public class ScreenManager {
     public void setpgm(IServer pgm){
         this.pgm = pgm;
     }
-    
+
     public IServer getpgm()
     {
         return pgm;

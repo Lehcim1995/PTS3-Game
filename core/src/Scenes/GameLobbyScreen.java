@@ -82,6 +82,7 @@ public class GameLobbyScreen extends AbstractScreen{
         listPlayers = new List(skin);
         try
         {
+            ///TODO: FIX Nullpointerexception
             listPlayers.setItems(ScreenManager.getInstance().getGameManager().getUsers().toArray());
         }
         catch (RemoteException e)
