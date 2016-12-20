@@ -26,6 +26,9 @@ public class GameSceneScreen extends AbstractScreen{
     private Camera camera;
     private ShapeRenderer shapeRenderer;
     private float zoom = 1;
+    private float cameraSizeX = 500;
+    private float cameraSizeY = 500;
+    private float aspectRatio = cameraSizeX/cameraSizeY;
     private BitmapFont font;
     private GlyphLayout layout;
 
@@ -40,23 +43,17 @@ public class GameSceneScreen extends AbstractScreen{
         batch = new SpriteBatch();
         font = new BitmapFont();
         font.setColor(Color.BLACK);
-        //img = new Texture(Gdx.files.internal("core\\assets\\badlogic.jpg"));
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        camera = new OrthographicCamera(w * zoom, h * zoom);
+        camera = new OrthographicCamera(cameraSizeX * zoom  * (getWidth()/getHeight()), cameraSizeY * zoom);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, zoom);
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
         layout = new GlyphLayout();
-
-        //GameManager.getInstance();
-        //GameManager.getInstance().setScene(this);
     }
-
-
 
     @Override
     public void render(float delta) {
@@ -83,8 +80,11 @@ public class GameSceneScreen extends AbstractScreen{
         //batch.setProjectionMatrix(camera.combined);
 
         shapeRenderer.setProjectionMatrix(camera.combined);
-        
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        shapeRenderer.setAutoShapeType(true);
+        shapeRenderer.begin();
+        shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+
         for (Iterator<IGameObject> iterator = GameManager.getInstance().getAllObjects().iterator(); iterator.hasNext(); ) {
             IGameObject go = iterator.next();
             try
@@ -96,9 +96,8 @@ public class GameSceneScreen extends AbstractScreen{
                 e.printStackTrace();
             }
         }
-        shapeRenderer.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
         for(IGameObject go :  GameManager.getInstance().getAllObjects())
         {
@@ -113,7 +112,7 @@ public class GameSceneScreen extends AbstractScreen{
             layout.setText(font, text);
             float width = layout.width;// contains the width of the current set text
             float height = layout.height; // contains the height of the current set text
-            font.draw(batch, layout, camera.viewportWidth -width, height);
+            font.draw(batch, layout, this.getWidth() -width, height);
         }
         batch.end();
     }
@@ -121,8 +120,11 @@ public class GameSceneScreen extends AbstractScreen{
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        camera.viewportHeight = height * zoom;
-        camera.viewportWidth = width * zoom;
+        camera.viewportHeight = cameraSizeY * (height/width);
+        camera.viewportWidth = cameraSizeX  * (width/height);
+
+        //camera.viewportHeight = height * zoom;
+        //camera.viewportWidth = width * zoom;
     }
 
     @Override
