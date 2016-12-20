@@ -1,9 +1,11 @@
 package Classes;
 
+import Scenes.ScreenManager;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 
+import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
@@ -18,6 +20,7 @@ public class InputClass implements InputProcessor
     private HashMap<Integer,Date> KeymapUp;
     private HashMap<Integer,Date> KeymapDown;
     private Timer timer;
+    private boolean chating;
 
     private final float holdDownTimer = 15;
 
@@ -47,7 +50,19 @@ public class InputClass implements InputProcessor
     public boolean keyDown(int keycode)
     {
 
-        KeymapHold.put(keycode, true);
+        if (!chating)
+            KeymapHold.put(keycode, true);
+        if(ScreenManager.getInstance().getIsSpectator())
+        {
+            if(keycode == Input.Keys.LEFT)
+            {
+                GameManager.getInstance().getSpectator().NextPlayer();
+            }
+            if(keycode == Input.Keys.RIGHT)
+            {
+                GameManager.getInstance().getSpectator().PrevPlayer();
+            }
+        }
         //KeymapDown.put(keycode, Calendar.getInstance().getTime());
         return true;
     }
@@ -55,6 +70,45 @@ public class InputClass implements InputProcessor
     @Override
     public boolean keyUp(int keycode)
     {
+        if (chating && keycode == Input.Keys.ENTER)
+        {
+            chating = false;
+            Chat c;
+            try
+            {
+                c = new Chat(GameManager.getInstance().chat, player);
+                GameManager.getInstance().addGameObject(c);
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
+
+            GameManager.getInstance().chat = "";
+        }
+
+        if (chating && keycode == Input.Keys.BACKSPACE)
+        {
+            String temp = GameManager.getInstance().chat;
+
+            if (!temp.isEmpty())
+            {
+                if (temp.length() < 2)
+                {
+                    GameManager.getInstance().chat = "";
+                }
+                else
+                {
+                    GameManager.getInstance().chat = temp.substring(0, temp.length() - 2);
+                }
+            }
+        }
+
+        if (keycode == Input.Keys.T)
+        {
+            chating = true;
+        }
+
         KeymapHold.put(keycode, false);
         //KeymapUp.put(keycode, Calendar.getInstance().getTime());
         return true;
@@ -63,7 +117,9 @@ public class InputClass implements InputProcessor
     @Override
     public boolean keyTyped(char character)
     {
-        return false;
+        if (chating)
+            GameManager.getInstance().chat += character;
+        return chating;
     }
 
     @Override

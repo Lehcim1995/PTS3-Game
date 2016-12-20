@@ -66,6 +66,7 @@ public class Player extends GameObject
 
         Gdx.input.setInputProcessor(ic);
         setHitbox(CIRCLEHITBOX(halfWidth));
+
     }
 
     public Player(Player p) throws RemoteException
@@ -146,7 +147,6 @@ public class Player extends GameObject
 
     public void Hit()
     {
-
     }
 
     @Override
@@ -295,13 +295,5 @@ public class Player extends GameObject
     public void setColor(SerializableColor color)
     {
         this.color = color;
-    }
-
-    enum walkDir
-    {
-        Up,
-        Down,
-        Left,
-        Right
     }
 }

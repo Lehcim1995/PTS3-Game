@@ -3,7 +3,10 @@ package Classes;
 import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializablePolygon;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
@@ -273,5 +276,14 @@ public class GameObject implements IGameObject, Serializable
     public void Draw(ShapeRenderer shapeRenderer, Batch batch)
     {
         Draw(shapeRenderer);
+    }
+
+    public void DrawText(Batch batch, BitmapFont font, GlyphLayout layout, String text, Vector2 position)
+    {
+        //font.setColor(Color.BLACK);
+        layout.setText(font, text);
+        float width = layout.width;// contains the width of the current set text
+        float height = layout.height; // contains the height of the current set text
+        font.draw(batch, layout, position.x, position.y);
     }
 }

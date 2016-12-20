@@ -49,6 +49,8 @@ public class ScreenManager {
         }
         return instance;
     }
+    //Player is spectator
+    private boolean isSpectator = false;
 
     public void setLobby(String lobby)
     {
@@ -157,9 +159,11 @@ public class ScreenManager {
     {
         return user;
     }
+
     public void setpgm(IServer pgm){
         this.pgm = pgm;
     }
+    
     public IServer getpgm()
     {
         return pgm;
@@ -173,5 +177,14 @@ public class ScreenManager {
     public IGameManager getGameManager()
     {
         return gameManager;
+    }
+
+    public void setIsSpectator(boolean spectator)
+    {
+        isSpectator = spectator;
+    }
+    public boolean getIsSpectator()
+    {
+        return isSpectator;
     }
 }

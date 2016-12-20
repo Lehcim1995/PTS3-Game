@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -29,10 +30,13 @@ import static com.badlogic.gdx.graphics.g3d.particles.ParticleChannels.Color;
 public class GameLobbyScreen extends AbstractScreen{
     private Texture txtrLeave;
     private Texture txtrReady;
+    private Texture txtrSpec;
     private TextureRegion TrLeave;
     private TextureRegion TrReady;
+    private TextureRegion TrSpec;
     private TextureRegionDrawable TrdLeave;
     private TextureRegionDrawable TrdReady;
+    private  TextureRegionDrawable TrdSpec;
     private List listPlayers;
     private List listChat;
     private Skin skin;
@@ -49,6 +53,7 @@ public class GameLobbyScreen extends AbstractScreen{
         super();
         txtrLeave = new Texture(Gdx.files.internal("core\\assets\\btn_leave.png"));
         txtrReady = new Texture(Gdx.files.internal("core\\assets\\btn_ready.png"));
+        txtrSpec = new Texture(Gdx.files.internal("core\\assets\\btn_spectate.png"));
     }
 
     @Override
@@ -66,6 +71,12 @@ public class GameLobbyScreen extends AbstractScreen{
         TrdReady = new TextureRegionDrawable(TrReady);
         ImageButton btnReady = new ImageButton(TrdReady);
         btnReady.setPosition(375.f, 40.f, Align.center);
+
+        //Spectate button
+        TrSpec = new TextureRegion(txtrSpec);
+        TrdSpec = new TextureRegionDrawable(TrSpec);
+        ImageButton btnSpectate = new ImageButton(TrdSpec);
+        btnSpectate.setPosition(375.f, 475.f, Align.center);
 
         //List Players
         listPlayers = new List(skin);
@@ -104,6 +115,7 @@ public class GameLobbyScreen extends AbstractScreen{
         //Add all items to scene
         addActor(btnLeave);
         addActor(btnReady);
+        addActor(btnSpectate);
         addActor(scrollPanePlayer);
         addActor(scrollPaneChat);
         addActor(txtChatInput);
@@ -127,6 +139,29 @@ public class GameLobbyScreen extends AbstractScreen{
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 return false;
             }
+        });
+
+        
+        btnSpectate.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event,
+                                     float x, float y, int pointer, int button){
+
+                if(!ScreenManager.getInstance().getIsSpectator()){
+                    System.out.println("Spectating");
+                    ScreenManager.getInstance().setIsSpectator(true);
+                    btnReady.setTouchable(Touchable.disabled);
+
+                }
+                else {
+                    System.out.println("No longer spectating");
+                    ScreenManager.getInstance().setIsSpectator(false);
+                    btnReady.setTouchable(Touchable.enabled);
+                }
+
+                return  false;
+            }
+
         });
         //TODO Check if enter pressed then push text in message to server and add to chatlist
 
