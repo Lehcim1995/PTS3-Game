@@ -5,6 +5,7 @@ import Classes.Level;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,4 +38,8 @@ public interface IGameManager extends Remote, Serializable
     void DeleteUser(String id) throws RemoteException;
 
     Level GetLevel() throws RemoteException;
+
+    ArrayList<String> getUsers() throws RemoteException;
+
+    void addUser(IUser user) throws RemoteException;
 }

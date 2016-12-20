@@ -4,8 +4,10 @@ import Classes.Chat;
 import Classes.GameManager;
 import Classes.Player;
 import Classes.User;
+import Interfaces.IGameManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -16,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import static com.badlogic.gdx.graphics.g3d.particles.ParticleChannels.Color;
@@ -66,7 +69,14 @@ public class GameLobbyScreen extends AbstractScreen{
 
         //List Players
         listPlayers = new List(skin);
-        listPlayers.setItems("asd","qwe","zxc","fdg","Sibe","Myron","asdasdasd");
+        try
+        {
+            listPlayers.setItems(ScreenManager.getInstance().getGameManager().getUsers().toArray());
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
         scrollPanePlayer = new ScrollPane(listPlayers,skin);
         scrollPanePlayer.setSize(200.f, 150.f);
         scrollPanePlayer.setPosition(25.f, 350.f);

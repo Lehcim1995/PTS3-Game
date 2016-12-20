@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+import java.rmi.RemoteException;
+
 /**
  * Created by Nick on 22-11-2016.
  */
@@ -71,7 +73,15 @@ public class NewLobbyScreen extends AbstractScreen{
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
                 // TODO maak game lobby
-                if(txtLobbyName.getText().isEmpty() != true){
+                if(!txtLobbyName.getText().isEmpty()){
+                    try
+                    {
+                        ScreenManager.getInstance().getpgm().CreateLobby(txtLobbyName.getText());
+                    }
+                    catch (RemoteException e)
+                    {
+                        e.printStackTrace();
+                    }
                     ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
                 }
                 else{

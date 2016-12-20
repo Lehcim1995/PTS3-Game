@@ -3,7 +3,11 @@ package Classes;
 import Interfaces.IConnection;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
+import Interfaces.IUser;
 import LibGDXSerialzableClasses.SerializableColor;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Array;
+import com.mysql.fabric.Server;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -12,71 +16,34 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by michel on 15-11-2016.
  */
 public class ServerGameManger extends UnicastRemoteObject implements IGameManager
 {
-    private Registry registry;
-
+    private String name;
     private List<IGameObject> everything;
     private Map<String, List<IGameObject>> idObjects;
-    private IConnection connectionInstance = new Connection();
+    private ArrayList<User> userList;
+    private ArrayList<String> stringUserList;
 
     private Random r = new Random();
     private Level level;
 
     public ServerGameManger() throws RemoteException
     {
-        everything = new ArrayList<>();
-        idObjects = new HashMap<>(100);
-        level = new Level();
-
-        try
-        {
-
-            registry = LocateRegistry.createRegistry(portNumber);
-            registry.rebind(ServerManger, this);
-            registry.rebind(connection, connectionInstance);
-            System.out.println(InetAddress.getLocalHost().getHostAddress());
-//            IUser user = connectionInstance.LogIn("hans@email.com", "cactus");
-//            if(user !=null)
-//            {
-//                System.out.println("gelukt" + user);
-//            }
-//            else
-//            {
-//                System.out.println("gefaalt" );
-//            }
-
-        }
-        catch (RemoteException ex)
-        {
-            System.out.println("Server: RemoteExeption " + ex.getMessage());
-        }
-        catch (UnknownHostException ex)
-        {
-            System.out.println("Server: RemoteExeption " + ex.getMessage());
-        }
-//        catch (SQLException e)
-//        {
-//            System.out.println("Server: sql Exception: " + e.getMessage());
-//        }
+        Constructor();
 
     }
 
-    public static void main(String[] args)
+    public ServerGameManger(String name) throws RemoteException
     {
-        try
-        {
-            ServerGameManger sgm = new ServerGameManger();
-        }
-        catch (RemoteException e)
-        {
-            e.printStackTrace();
-        }
+        Constructor();
+        this.name = name;
     }
+
 
     private <T> ArrayList<T> getObjectList(ArrayList<Object> list, Class<T> tocast)
     {
@@ -180,6 +147,16 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
     }
 
+    private void Constructor() throws RemoteException
+    {
+        everything = new ArrayList<>();
+        userList = new ArrayList<>();
+        stringUserList = new ArrayList<>();
+        idObjects = new HashMap<>(100);
+        level = new Level();
+
+    }
+
     @Override
     public void DeleteTick(String id, IGameObject object) throws RemoteException
     {
@@ -203,6 +180,23 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         return level;
     }
 
+    @Override
+    public ArrayList<String> getUsers() throws RemoteException
+    {
+        stringUserList.clear();
+        for(User u : userList)
+        {
+            stringUserList.add(u.getName());
+        }
+        return stringUserList;
+    }
+
+    @Override
+    public void addUser(IUser user) throws RemoteException
+    {
+        userList.add((User)user);
+    }
+
     public IGameObject CreatePlayer(String name) throws RemoteException
     {
         Player p;
@@ -211,5 +205,14 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         p.setColor(SerializableColor.getRandomColor());
 
         return p;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void addUser(User user){
+        userList.add(user);
     }
 }

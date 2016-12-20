@@ -1,6 +1,8 @@
 package Scenes;
 
 import Interfaces.IConnection;
+import Interfaces.IGameManager;
+import Interfaces.IServer;
 import Interfaces.IUser;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
@@ -18,6 +20,7 @@ import java.rmi.registry.Registry;
 public class ScreenManager {
     // Singleton: unique instance
     private static ScreenManager instance;
+    private String lobby;
 
     // Reference to game
     private Game game;
@@ -30,6 +33,9 @@ public class ScreenManager {
     private String connection = "connection";
     private Registry registry;
     private IConnection conn;
+    private String Server = "serermanager";
+    private IServer pgm;
+    private IGameManager gameManager;
 
     // Singleton: private constructor
     private ScreenManager() {
@@ -42,6 +48,16 @@ public class ScreenManager {
             instance = new ScreenManager();
         }
         return instance;
+    }
+
+    public void setLobby(String lobby)
+    {
+        this.lobby = lobby;
+    }
+
+    public String getLobby()
+    {
+        return lobby;
     }
 
     public void setUser(IUser user)
@@ -81,6 +97,10 @@ public class ScreenManager {
     public String Getmeaningofconnection()
     {
         return connection;
+    }
+    public String GetMeaningOfServer()
+    {
+        return Server;
     }
 
     public String getIp()
@@ -136,5 +156,22 @@ public class ScreenManager {
     public IUser getUser()
     {
         return user;
+    }
+    public void setpgm(IServer pgm){
+        this.pgm = pgm;
+    }
+    public IServer getpgm()
+    {
+        return pgm;
+    }
+
+    public void setGameManager(IGameManager gameManager)
+    {
+        this.gameManager = gameManager;
+    }
+
+    public IGameManager getGameManager()
+    {
+        return gameManager;
     }
 }

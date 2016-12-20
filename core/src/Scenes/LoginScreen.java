@@ -116,7 +116,6 @@ public class LoginScreen extends AbstractScreen {
 //                        }
                         if(conn != null)
                         {
-                            ///TODO: ophalen gegevens fixen!
                             user = ScreenManager.getInstance().getConn().LogIn(email, ww);
                         }
                         else{
