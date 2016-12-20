@@ -41,6 +41,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     private TimerTask GameTickTask;
 
     private Player playerMe;
+    private Spectator spectatorMe;
     private AbstractScreen scene;
 
     private float tick = 0;
@@ -91,10 +92,20 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
         Random r = new Random();
         name = ScreenManager.getInstance().getUser().getName(); //r.nextInt(100000000) + "";
         System.out.println(name);
-        Player me = new Player(true);
-        me.setColor(SerializableColor.getRandomColor());
-        addPlayer(me);
 
+        //todo: MIGHT NEED FIX
+        //Check if spectator if not make Player else make Spectator
+        if(ScreenManager.getInstance().getIsSpectator())
+        {
+            Spectator me = new Spectator(ScreenManager.getInstance().getUser().getName(),this);
+            addSpectator(me);
+        }
+        else
+        {
+            Player me = new Player(true);
+            me.setColor(SerializableColor.getRandomColor());
+            addPlayer(me);
+        }
         if (online)
             level = Server.GetLevel();
         else
@@ -256,11 +267,22 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
 
     public void addPlayer(Player p) throws RemoteException
     {
-        System.out.println("Spawn");
+        System.out.println("Spawn Player");
         playerMe = p;
         addGameObject(p);
     }
 
+    public void setSpectator(Spectator spectator)
+    {
+        this.spectatorMe = spectator;
+    }
+
+    public void addSpectator(Spectator s) throws RemoteException
+    {
+        System.out.println("Spawn Spectator");
+        spectatorMe = s;
+        addGameObject(s);
+    }
     public synchronized void addGameObject(GameObject go) throws RemoteException
     {
         objects.add(go);

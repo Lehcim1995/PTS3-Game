@@ -43,6 +43,8 @@ public class ScreenManager {
         }
         return instance;
     }
+    //Player is spectator
+    private boolean isSpectator = false;
 
     public void setUser(IUser user)
     {
@@ -136,5 +138,13 @@ public class ScreenManager {
     public IUser getUser()
     {
         return user;
+    }
+    public void setIsSpectator(boolean spectator)
+    {
+        isSpectator = spectator;
+    }
+    public boolean getIsSpectator()
+    {
+        return isSpectator;
     }
 }
