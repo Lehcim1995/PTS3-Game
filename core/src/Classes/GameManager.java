@@ -367,4 +367,16 @@ public class GameManager extends UnicastRemoteObject implements IGameManager
     {
         Server.DeleteUser(name);
     }
+    public Player GetSpectatedPlayer(int i)
+    {
+        List<Player> playerList = new ArrayList<>();
+        for(IGameObject go : objects)
+        {
+            if(go instanceof Player)
+            {
+                playerList.add((Player)go);
+            }
+        }
+        return playerList.get(i);
+    }
 }
