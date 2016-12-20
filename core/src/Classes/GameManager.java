@@ -269,7 +269,6 @@ public class GameManager extends UnicastRemoteObject
 
     }
 
-
     public void addPlayer(Player p) throws RemoteException
     {
         System.out.println("Spawn Player");
@@ -277,7 +276,10 @@ public class GameManager extends UnicastRemoteObject
         playerMe.setName(name);
         addGameObject(p);
     }
-
+    public Spectator getSpectator()
+    {
+        return spectatorMe;
+    }
     public void setSpectator(Spectator spectator)
     {
         this.spectatorMe = spectator;

@@ -1,5 +1,6 @@
 package Classes;
 
+import Scenes.ScreenManager;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
@@ -51,6 +52,17 @@ public class InputClass implements InputProcessor
 
         if (!chating)
             KeymapHold.put(keycode, true);
+        if(ScreenManager.getInstance().getIsSpectator())
+        {
+            if(keycode == Input.Keys.LEFT)
+            {
+                GameManager.getInstance().getSpectator().NextPlayer();
+            }
+            if(keycode == Input.Keys.RIGHT)
+            {
+                GameManager.getInstance().getSpectator().PrevPlayer();
+            }
+        }
         //KeymapDown.put(keycode, Calendar.getInstance().getTime());
         return true;
     }
