@@ -66,6 +66,7 @@ public class Player extends GameObject
 
         Gdx.input.setInputProcessor(ic);
         setHitbox(CIRCLEHITBOX(halfWidth));
+
     }
 
     public Player(Player p) throws RemoteException
