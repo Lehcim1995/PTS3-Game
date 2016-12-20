@@ -130,14 +130,20 @@ public class GameLobbyScreen extends AbstractScreen{
             }
         });
 
+        
         btnSpectate.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button){
                 System.out.println("Spectating");
-                ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
-
-
+                if(!ScreenManager.getInstance().getIsSpectator()){
+                    ScreenManager.getInstance().setIsSpectator(true);
+                    btnReady.isDisabled();
+                }
+                else {
+                    ScreenManager.getInstance().setIsSpectator(false);
+                    btnReady.isDisabled();
+                }
 
                 return  false;
             }
