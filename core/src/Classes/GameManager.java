@@ -26,9 +26,9 @@ public class GameManager extends UnicastRemoteObject
 {
     private static GameManager instance;
     private final Level level;
+    public String chat = "";
     private ArrayList<KillLog> killLogs;
     private String name;
-
     private List<IGameObject> objects;
     private List<IGameObject> notMine;
     private Map<Long, IGameObject> notMineMap;
@@ -36,18 +36,13 @@ public class GameManager extends UnicastRemoteObject
     private List<Chat> chatsOnline;
     private boolean gen = false;
     private boolean online;
-
     private IGameManager Server;
     private Registry registry;
-
     private Player playerMe;
+    private Spectator spectatorMe;
     private AbstractScreen scene;
-
     private float tick = 0;
-
     private Logger logger;
-
-    public String chat = "";
 
     private GameManager() throws RemoteException
     {
@@ -94,16 +89,24 @@ public class GameManager extends UnicastRemoteObject
         Random r = new Random();
         name = ScreenManager.getInstance().getUser().getName(); //r.nextInt(100000000) + "";
         System.out.println(name);
-        Player me = new Player(true);
-        me.setColor(SerializableColor.getRandomColor());
-        addPlayer(me);
 
-        if (online)
-            level = Server.GetLevel();
+        //todo: MIGHT NEED FIX
+        //Check if spectator if not make Player else make Spectator
+        if (ScreenManager.getInstance().getIsSpectator())
+        {
+            Spectator me = new Spectator(ScreenManager.getInstance().getUser().getName(), this);
+            addSpectator(me);
+        }
         else
-            level = new Level();
+        {
+            Player me = new Player(true);
+            me.setColor(SerializableColor.getRandomColor());
+            addPlayer(me);
+        }
+        if (online) level = Server.GetLevel();
+        else level = new Level();
 
-        for(GameObject obj : level.getLevelBlocks())
+        for (GameObject obj : level.getLevelBlocks())
         {
             objects.add(obj);
         }
@@ -190,8 +193,7 @@ public class GameManager extends UnicastRemoteObject
         for (IGameObject object : clonelist)
         {
             object.update();
-            if (online)
-                Server.UpdateTick(name, object);
+            if (online) Server.UpdateTick(name, object);
         }
 
         ArrayList<GameObject[]> hitlist = new ArrayList<>();
@@ -270,10 +272,22 @@ public class GameManager extends UnicastRemoteObject
 
     public void addPlayer(Player p) throws RemoteException
     {
-        System.out.println("Spawn");
+        System.out.println("Spawn Player");
         playerMe = p;
         playerMe.setName(name);
         addGameObject(p);
+    }
+
+    public void setSpectator(Spectator spectator)
+    {
+        this.spectatorMe = spectator;
+    }
+
+    public void addSpectator(Spectator s) throws RemoteException
+    {
+        System.out.println("Spawn Spectator");
+        spectatorMe = s;
+        addGameObject(s);
     }
 
     public synchronized void addGameObject(GameObject go) throws RemoteException
@@ -286,15 +300,13 @@ public class GameManager extends UnicastRemoteObject
         {
             objects.add(go);
         }
-        if (online)
-            Server.SetTick(name, go);
+        if (online) Server.SetTick(name, go);
     }
 
     public void removeGameObject(GameObject go) throws RemoteException
     {
         objects.remove(go);
-        if (online)
-            Server.DeleteTick(name, go);
+        if (online) Server.DeleteTick(name, go);
     }
 
     public List<IGameObject> getObjects()
@@ -340,7 +352,18 @@ public class GameManager extends UnicastRemoteObject
     public void clearChat(Chat chat) throws RemoteException
     {
         chats.remove(chat);
-        if (online)
-            removeGameObject(chat);
+        if (online) removeGameObject(chat);
+    }
+
+    public List<Player> GetSpectatedPlayer()
+    {
+        ArrayList<Player> playerList = new ArrayList<>();
+        for (IGameObject go : objects)
+            if (go instanceof Player)
+            {
+                playerList.add((Player) go);
+            }
+        return playerList;
+
     }
 }
