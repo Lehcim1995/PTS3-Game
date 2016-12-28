@@ -130,6 +130,7 @@ public class Level implements Serializable
         {
             for (int y = 0; y < size; y++)
             {
+                //TODO add non - filled to code
                 if (Math.sqrt(x * x + y * y) < size)
                 {
                     Vector2 addpos = new Vector2(x, y).scl(blockSize);
