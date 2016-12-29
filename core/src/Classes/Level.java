@@ -74,7 +74,10 @@ public class Level implements Serializable
             case 1:
             case 2:
             case 3:
-                blockList.addAll(GenerateLine(r.nextInt(levelBlockSizeX), r.nextInt(levelBlockSizeX), r.nextInt(levelBlockSizeX), r.nextInt(levelBlockSizeX), 0));
+                for(int i = 0; i < 10; i++)
+                {
+                    blockList.addAll(GenerateLine(r.nextInt(levelBlockSizeX), r.nextInt(levelBlockSizeX), r.nextInt(levelBlockSizeX), r.nextInt(levelBlockSizeX), 0));
+                }
                 break;
             default:
                 break;

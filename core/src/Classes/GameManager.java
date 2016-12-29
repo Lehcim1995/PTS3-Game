@@ -2,6 +2,7 @@ package Classes;
 
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
+import Interfaces.IServer;
 import LibGDXSerialzableClasses.SerializableColor;
 import Scenes.AbstractScreen;
 import Scenes.GameSceneScreen;
@@ -73,7 +74,10 @@ public class GameManager extends UnicastRemoteObject
         {
             registry = LocateRegistry.getRegistry(ip, portNumber);
             String ServerManger = "serermanager";
-            Server = (IGameManager) registry.lookup(ServerManger);
+            //Server = (IGameManager) registry.lookup(ServerManger); //TODO dit geeft een IServer terug geen IGamemanger
+            IServer tempserver = (IServer) registry.lookup(ServerManger);
+            Server = tempserver.JoinLobby("lol", ScreenManager.getInstance().getUser());
+
 
         }
         catch (RemoteException ex)

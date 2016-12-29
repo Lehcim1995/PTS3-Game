@@ -26,7 +26,7 @@ public class Projectile extends GameObject
 
     public Projectile(Gun gun, Vector2 position, float rotation) throws RemoteException
     {
-        super (position, rotation);
+        super(position, rotation);
         this.gun = gun;
         bulletSpeed = gun.getBulletSpeed();
         damage = gun.getProjectileDamage();
@@ -52,7 +52,7 @@ public class Projectile extends GameObject
     public void update() throws RemoteException
     {
         float rad = MathUtils.degreesToRadians * (rotation - 90);
-        Vector2 rot = new Vector2(MathUtils.sin(rad),MathUtils.cos(rad));
+        Vector2 rot = new Vector2(MathUtils.sin(rad), MathUtils.cos(rad));
         position.add(rot.scl(bulletSpeed * Gdx.graphics.getDeltaTime()));
 
         hitbox.setPosition(position.x, position.y);
@@ -70,7 +70,7 @@ public class Projectile extends GameObject
     {
         if (other instanceof Projectile)
         {
-            if (((Projectile)other).gun != null)
+            if (((Projectile) other).gun != null)
             {
                 if (((Projectile) other).gun.getOwner().getID() != gun.getOwner().getID())
                 {
@@ -97,30 +97,55 @@ public class Projectile extends GameObject
             }
 
         }
-        else if (other instanceof Player )
+        else if (other instanceof Player)
         {
-            System.out.println("Hit een speler");
-
             if (gun != null)
             {
-                System.out.println("Gun niet null");
 
                 if (gun.getOwner().getID() != other.getID())
                 {
-                    System.out.println("player is niet mijn owner");
-                    System.out.println("Owner : " + gun.getOwner().getName());
-                    System.out.println("Other : " + ((Player) other).getName());
-                    System.out.println(new KillLog(this, (Player) other));
-//                    try
-//                    {
-//                        GameManager.getInstance().ClearProjectile(this);
-//                    }
-//                    catch (RemoteException e)
-//                    {
-//                        e.printStackTrace();
-//                    }
-                    System.out.println("player gaat dood");
-                    ((Player) other).Die();
+
+                    System.out.println("Gun owner : " + gun.getOwner().getID());
+                    System.out.println("Target : " + other.getID());
+                    System.out.println("GameManager Player " + GameManager.getInstance().getPlayer().getID());
+
+                    if (other.getID() == GameManager.getInstance().getPlayer().getID()) //geraakte speler moet weg gaan
+                    {
+                        System.out.println(new KillLog(this, (Player) other));
+                        ((Player) other).Die();
+                    }
+
+                    if (gun.getOwner().getID() == GameManager.getInstance().getPlayer().getID()) // Schieter moet zijn kogel weg halen
+                    {
+                        Projectile meProjectile = this;
+                        Thread thread = new Thread()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                super.run();
+                                try
+                                {
+                                    Thread.sleep(10);
+                                    try
+                                    {
+                                        GameManager.getInstance().ClearProjectile(meProjectile);
+                                    }
+                                    catch (RemoteException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                catch (InterruptedException e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        };
+
+                        thread.run();
+                    }
                 }
             }
         }
