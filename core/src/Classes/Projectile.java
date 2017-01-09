@@ -118,7 +118,7 @@ public class Projectile extends GameObject
                     if (gun.getOwner().getID() == GameManager.getInstance().getPlayer().getID()) // Schieter moet zijn kogel weg halen
                     {
                         Projectile meProjectile = this;
-                        Thread thread = new Thread()
+                        new Thread()
                         {
                             @Override
                             public void run()
@@ -142,9 +142,7 @@ public class Projectile extends GameObject
                                 }
 
                             }
-                        };
-
-                        thread.run();
+                        }.run();
                     }
                 }
             }
