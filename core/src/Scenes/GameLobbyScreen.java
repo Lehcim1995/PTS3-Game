@@ -173,6 +173,16 @@ public class GameLobbyScreen extends AbstractScreen{
             }
 
         });
+
+        btnRefresh.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event,
+                                     float x, float y, int pointer, int button) {
+                ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
+                return false;
+            }
+        });
+
         //TODO Check if enter pressed then push text in message to server and add to chatlist
 
         txtChatInput.setTextFieldListener(new TextField.TextFieldListener() {
