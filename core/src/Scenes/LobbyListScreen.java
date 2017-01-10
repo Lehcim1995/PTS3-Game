@@ -5,6 +5,7 @@ import Interfaces.IServer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -134,6 +135,36 @@ public class LobbyListScreen extends AbstractScreen{
         addActor(btnRefresh);
         addActor(txtLobbyName);
 
+        scrollPaneServers.addListener(new InputListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+
+                String servernaam =  (String)listServers.getItems().get(listServers.getSelectedIndex());
+                System.out.println(servernaam);
+                try
+                {
+                    ScreenManager.getInstance().setLobby(txtLobbyName.getText());
+                    IGameManager sgm = pgm.JoinLobby(servernaam, ScreenManager.getInstance().getUser());
+                    if(sgm != null) {
+                        System.out.println("sgm is not null");
+
+                        ScreenManager.getInstance().setGameManager(sgm);
+                        sgm.addUser(ScreenManager.getInstance().getUser());
+                        ScreenManager.getInstance().setLobbyName(servernaam);
+                        ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
+                    }
+
+                }
+                catch (RemoteException e)
+                {
+                    LOGGER.log(Level.WARNING, e.getMessage(), e );
+                }
+
+                return false;
+            }
+        });
 
         btnLogout.addListener(new InputListener() {
             @Override
