@@ -20,6 +20,6 @@ public class KillLog
     @Override
     public String toString()
     {
-        return projectile.getGun().getOwner().getName() + " " + projectile.getGun().toString() + " " + player.getName() ;
+        return projectile.getGun().getOwner().getName() + " " + projectile.getGun().getName() + " " + player.getName() ;
     }
 }

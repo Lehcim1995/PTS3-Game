@@ -112,7 +112,7 @@ public class Projectile extends GameObject
                     if (other.getID() == GameManager.getInstance().getPlayer().getID()) //geraakte speler moet weg gaan
                     {
                         System.out.println(new KillLog(this, (Player) other));
-                        ((Player) other).Die();
+                        ((Player) other).Die(this);
                         gun.getOwner().Hit();
                     }
 

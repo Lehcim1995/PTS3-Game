@@ -376,4 +376,9 @@ public class GameManager extends UnicastRemoteObject
         return playerList;
 
     }
+
+    public void AddKillLog(KillLog kl)
+    {
+        killLogs.add(kl);
+    }
 }
