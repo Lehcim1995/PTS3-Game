@@ -170,6 +170,7 @@ public class GameSceneScreen extends AbstractScreen
         killBatch.begin();
 
         killLog.setText(font, GameManager.getInstance().chat);
+        font.draw(killBatch, killLog, padding, height);
 
         int iKill = (int) (height + height);
         float startKill = (int) (height + height);
