@@ -113,6 +113,7 @@ public class Projectile extends GameObject
                     {
                         System.out.println(new KillLog(this, (Player) other));
                         ((Player) other).Die();
+                        gun.getOwner().Hit();
                     }
 
                     if (gun.getOwner().getID() == GameManager.getInstance().getPlayer().getID()) // Schieter moet zijn kogel weg halen

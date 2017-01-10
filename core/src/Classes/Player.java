@@ -32,10 +32,10 @@ public class Player extends GameObject
     private Gun gunEquipped;
     private transient Random r = new Random();
     //Game vars
-    private int kills;
-    private int deaths;
-    private int shots;
-    private int shotsHit;
+    private int kills = 0;
+    private int deaths = 0;
+    private int shots = 0;
+    private int shotsHit = 0;
     //Appearance
     private float width = 34;
     private float halfWidth = width / 2;
@@ -121,6 +121,7 @@ public class Player extends GameObject
     public void Shoot() throws RemoteException
     {
         this.gunEquipped.Shoot();
+        shots ++;
     }
 
     public void Reload()
@@ -147,6 +148,9 @@ public class Player extends GameObject
 
     public void Hit()
     {
+        kills ++;
+        shotsHit ++;
+        System.out.println("Hit player killed by: " + name + " Kills: " + kills + " shotsHit: " + shotsHit);
     }
 
     @Override
