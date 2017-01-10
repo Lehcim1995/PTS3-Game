@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.rmi.RemoteException;
 import java.util.Iterator;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class MainClass extends Game implements ApplicationListener{
     SpriteBatch batch;
-    //Texture img;
     private Camera camera;
     private ShapeRenderer shapeRenderer;
     private float zoom = 1;
@@ -22,7 +24,6 @@ public class MainClass extends Game implements ApplicationListener{
     @Override
     public void create() {
         batch = new SpriteBatch();
-        //img = new Texture(Gdx.files.internal("core\\assets\\badlogic.jpg"));
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -43,8 +44,9 @@ public class MainClass extends Game implements ApplicationListener{
             {
                 update();
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        }
+        catch (RemoteException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e );
         }
 
         if (GameManager.getInstance().getPlayer() != null) {
@@ -65,7 +67,7 @@ public class MainClass extends Game implements ApplicationListener{
             }
             catch (RemoteException e)
             {
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING, e.getMessage(), e );
             }
         }
 
@@ -81,17 +83,23 @@ public class MainClass extends Game implements ApplicationListener{
         }
         shapeRenderer.end();
     }
-
+    /**
+     * Pauze moet overwrite worden.
+     */
     @Override
     public void pause() {
 
     }
-
+    /**
+     * Resume moet overwrite worden.
+     */
     @Override
     public void resume() {
 
     }
-
+    /**
+     * Update the scene.
+     */
     public void update() throws RemoteException {
         GameManager.getInstance().Update();
     }
@@ -99,7 +107,6 @@ public class MainClass extends Game implements ApplicationListener{
     @Override
     public void dispose() {
         batch.dispose();
-        //img.dispose();
         shapeRenderer.dispose();
     }
 

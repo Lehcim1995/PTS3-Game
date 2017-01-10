@@ -1,6 +1,5 @@
 package Scenes;
 
-import Classes.Connection;
 import Interfaces.IConnection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +16,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -36,7 +38,9 @@ public class RegisterScreen extends AbstractScreen{
     private TextField tfPassword;
     private TextField tfIP;
     private Skin tfSkin;
-
+    /**
+     * RegisterScreen Constructor
+     */
     public RegisterScreen()
     {
         super();
@@ -101,7 +105,6 @@ public class RegisterScreen extends AbstractScreen{
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
-                //TODO:
                 String name = tfName.getText();
                 String lastName = tfLastName.getText();
                 String email = tfEmail.getText();
@@ -109,7 +112,7 @@ public class RegisterScreen extends AbstractScreen{
                 String password = tfPassword.getText();
                 String IP = tfIP.getText();
 
-                System.out.println("Empty string: " + name.isEmpty());
+                LOGGER.log(Level.INFO, "Empty string: " + name.isEmpty());
                 try {
                         ScreenManager.getInstance().setIp(IP);
                         registry =  LocateRegistry.getRegistry(ScreenManager.getInstance().getIp(), ScreenManager.getInstance().getPortNumber());
@@ -121,14 +124,18 @@ public class RegisterScreen extends AbstractScreen{
                             ScreenManager.getInstance().setUser(ScreenManager.getInstance().getConn().LogIn(email, password));
                             ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                         }
-                } catch (RemoteException | SQLException e) {
-                    e.printStackTrace();
-                }catch(NotBoundException ex)
+                }
+                catch (RemoteException | SQLException e)
                 {
-                    System.out.println("NotBoundException: " + ex.getMessage());
-                }catch (Exception err)
+                    LOGGER.log(Level.WARNING, "Remote / SQL Exception: " + e.getMessage(), e);
+                }
+                catch(NotBoundException e)
                 {
-                    System.out.println("error");
+                    LOGGER.log(Level.WARNING, "NotBoundException: " + e.getMessage(), e);
+                }
+                catch (Exception e)
+                {
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
                 return false;
             }
