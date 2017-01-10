@@ -82,7 +82,7 @@ public class NewLobbyScreen extends AbstractScreen{
                     {
                         e.printStackTrace();
                     }
-                    ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
+                    ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                 }
                 else{
                     System.out.println("Geen lobby naam");
