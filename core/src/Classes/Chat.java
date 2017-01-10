@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import java.rmi.RemoteException;
-import java.util.Calendar;
-import java.util.Comparator;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
 import static com.badlogic.gdx.utils.TimeUtils.nanoTime;
@@ -27,7 +25,11 @@ public class Chat extends GameObject
 
     private transient BitmapFont font = new BitmapFont();
     private transient GlyphLayout layout = new GlyphLayout();
-
+    /**
+     * Chat constructor
+     * @param String Message - text message from a player
+     * @param Player fromPlayer - player that send the message
+     */
     public Chat(String message, Player fromPlayer) throws RemoteException
     {
         super();
@@ -41,14 +43,11 @@ public class Chat extends GameObject
     public void Draw(ShapeRenderer shapeRenderer, Batch batch)
     {
         super.Draw(shapeRenderer, batch);
-        /*if (font == null || layout == null)
-        {
-            font = new BitmapFont();
-            layout = new GlyphLayout();
-        }
-        DrawText(batch, font, layout, toString(), position);*/
     }
-
+    /**
+     * DrawChat
+     * @param Batch batch - Idk
+     */
     public void DrawChat(Batch batch) throws RemoteException
     {
         if (font == null || layout == null)
@@ -61,17 +60,26 @@ public class Chat extends GameObject
 
         dead = millis() - born > lifeTime;
     }
-
+    /**
+     * isDead
+     * @return Boolean true or false
+     */
     public boolean isDead()
     {
         return dead;
     }
-
+    /**
+     * getBorn
+     * @return long
+     */
     public float getBorn()
     {
         return born;
     }
-
+    /**
+     * setTextColor
+     * @parm Color c - The color of the text
+     */
     public void setTextColor(Color c)
     {
         if (font == null)
