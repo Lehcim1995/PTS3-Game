@@ -12,10 +12,10 @@ public class Spectator extends GameObject
     private int playerFromList;
     private Player player;
 
-    public Spectator(String name, GameManager gameManager) throws RemoteException
+    public Spectator(String name) throws RemoteException
     {
         this.name = name;
-        this.gm = gameManager;
+        //this.gm = gameManager;
         this.playerFromList = 0;
         setSpectatedPlayer();
     }
@@ -35,7 +35,7 @@ public class Spectator extends GameObject
     }
 
     public void setSpectatedPlayer() {
-        List<Player> playerList = gm.GetSpectatedPlayer();
+        List<Player> playerList = GameManager.getInstance().GetSpectatedPlayer();
         if(!playerList.isEmpty())
         {
             if(playerFromList < 0)

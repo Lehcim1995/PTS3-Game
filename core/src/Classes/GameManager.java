@@ -101,7 +101,7 @@ public class GameManager extends UnicastRemoteObject
         //Check if spectator if not make Player else make Spectator
         if (ScreenManager.getInstance().getIsSpectator())
         {
-            Spectator me = new Spectator(ScreenManager.getInstance().getUser().getName(), this);
+            Spectator me = new Spectator(ScreenManager.getInstance().getUser().getName());
             addSpectator(me);
         }
         else

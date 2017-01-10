@@ -152,13 +152,10 @@ public class GameLobbyScreen extends AbstractScreen{
                     System.out.println("Spectating");
                     ScreenManager.getInstance().setIsSpectator(true);
                     ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
-                    btnReady.setTouchable(Touchable.disabled);
-
                 }
                 else {
                     System.out.println("No longer spectating");
                     ScreenManager.getInstance().setIsSpectator(false);
-                    btnReady.setTouchable(Touchable.enabled);
                 }
 
                 return  false;
