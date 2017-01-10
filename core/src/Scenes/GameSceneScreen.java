@@ -2,6 +2,7 @@ package Scenes;
 
 import Classes.Chat;
 import Classes.GameManager;
+import Classes.KillLog;
 import Interfaces.IGameObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -30,11 +31,14 @@ public class GameSceneScreen extends AbstractScreen
 {
 
     SpriteBatch batch;
+    SpriteBatch killBatch;
+
     private Camera camera;
     private ShapeRenderer shapeRenderer;
     private float zoom = 1;
     private BitmapFont font;
     private GlyphLayout layout;
+    private GlyphLayout killLog;
 
     private Skin skin;
     private TextField txtChatInput;
@@ -49,6 +53,7 @@ public class GameSceneScreen extends AbstractScreen
     public void buildStage()
     {
         batch = new SpriteBatch();
+        killBatch = new SpriteBatch();
         font = new BitmapFont();
         font.setColor(Color.BLACK);
 
@@ -61,6 +66,7 @@ public class GameSceneScreen extends AbstractScreen
 
         shapeRenderer = new ShapeRenderer();
         layout = new GlyphLayout();
+        killLog = new GlyphLayout();
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
@@ -114,6 +120,7 @@ public class GameSceneScreen extends AbstractScreen
             try
             {
                 go.Draw(shapeRenderer, batch);
+                go.Draw(shapeRenderer, killBatch);
             }
             catch (RemoteException e)
             {
@@ -157,7 +164,35 @@ public class GameSceneScreen extends AbstractScreen
                 LOGGER.log(Level.WARNING, e.getMessage(), e );
             }
         }
+
         batch.end();
+
+        killBatch.begin();
+
+        killLog.setText(font, GameManager.getInstance().chat);
+
+        int iKill = (int) (height + height);
+        float startKill = (int) (height + height);
+        float maxitemsKill = height * 15;
+
+        for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext();)
+        {
+            KillLog kl = logs.next();
+            iKill += kl.getLayout().height + 3;
+            try
+            {
+                //start is max-items = 100% en start = 0;
+                float alpha = 1f- ( iKill / (startKill + maxitemsKill));
+                kl.setTextColor(new Color(0,0,0,alpha));
+                kl.setPosition(new Vector2(padding, iKill));
+                kl.DrawChat(killBatch);
+            }
+            catch (RemoteException e)
+            {
+                LOGGER.log(Level.WARNING, e.getMessage(), e );
+            }
+        }
+        killBatch.end();
     }
 
     @Override

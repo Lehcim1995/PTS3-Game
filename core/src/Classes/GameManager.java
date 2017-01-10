@@ -142,6 +142,7 @@ public class GameManager extends UnicastRemoteObject
         //objects.addAll(Server.GetTick());
         notMine.clear();
         chatsOnline.clear();
+        killLogs.clear();
         if (online)
         {
             tick += Gdx.graphics.getDeltaTime();
@@ -194,7 +195,9 @@ public class GameManager extends UnicastRemoteObject
         }
 
         chatsOnline.addAll(getObjectList(notMine, Chat.class));
+        killLogs.addAll(getObjectList(notMine, KillLog.class));
         chatsOnline.sort(Comparator.comparingDouble((chat1) -> -chat1.getBorn()));
+        killLogs.sort(Comparator.comparingDouble((killlog1) -> -killlog1.getBorn()));
 
         ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();
         for (IGameObject object : clonelist)
@@ -359,6 +362,8 @@ public class GameManager extends UnicastRemoteObject
     {
         return chatsOnline;
     }
+
+    public List<KillLog> getKillLogs() { return killLogs; }
 
     public void clearChat(Chat chat) throws RemoteException
     {

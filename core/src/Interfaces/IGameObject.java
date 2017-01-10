@@ -22,7 +22,7 @@ public interface IGameObject extends Remote
     float getRotation() throws RemoteException;
     void setRotation(float rot) throws RemoteException;
 
-    void onCollisionEnter(IGameObject Other);
+    void onCollisionEnter(IGameObject Other) throws RemoteException;
     void onCollisionExit(IGameObject Other);
     void onCollisionStay(IGameObject Other);
 

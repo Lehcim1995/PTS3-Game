@@ -254,7 +254,7 @@ public class GameObject implements IGameObject, Serializable
     }
 
     @Override
-    public void onCollisionEnter(IGameObject other)
+    public void onCollisionEnter(IGameObject other) throws RemoteException
     {
         // Has to have a Override.
     }

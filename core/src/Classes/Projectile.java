@@ -76,7 +76,7 @@ public class Projectile extends GameObject
     }
 
     @Override
-    public void onCollisionEnter(IGameObject other)
+    public void onCollisionEnter(IGameObject other) throws RemoteException
     {
         if (other instanceof Projectile)
         {
