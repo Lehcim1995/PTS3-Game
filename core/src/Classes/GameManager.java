@@ -268,14 +268,7 @@ public class GameManager extends UnicastRemoteObject
     {
         //level = new Level();
         gen = true;
-        if(spectatorMe != null)
-        {
-            spectatorMe.setSpectatedPlayer();
-        }
-        else
-        {
-            logger.info("Geen spectator");
-        }
+
 
     }
 

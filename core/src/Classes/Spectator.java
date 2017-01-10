@@ -2,6 +2,8 @@ package Classes;
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.logging.Logger;
+
 /**
  * Created by Jasper on 11-10-2016.
  */
@@ -11,13 +13,33 @@ public class Spectator extends GameObject
     //private GameManager gm;
     private int playerFromList;
     private Player player;
+    private Logger logger;
 
     public Spectator(String name) throws RemoteException
     {
+        logger = Logger.getAnonymousLogger();
         this.name = name;
-        //this.gm = gameManager;
+
         this.playerFromList = 0;
-        //setSpectatedPlayer();
+
+        ///TODO: Fix REcursive call of gamemanager.Getistance in constructor of spectator
+        new Thread(){
+            @Override
+            public void run()
+            {
+                super.run();
+                try
+                {
+                    Thread.sleep(100);
+                    setSpectatedPlayer();
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }.run();
+
     }
 
     public String getName() {
@@ -46,6 +68,9 @@ public class Spectator extends GameObject
             player = playerList.get(playerFromList);
             GameManager.getInstance().setSpectator(this);
         }
+        else{
+            logger.info("er zijn nog geen spelers om naar te kijken.");
+        }
     }
 
     public void NextPlayer() {
@@ -61,4 +86,8 @@ public class Spectator extends GameObject
     public Player getSpectatedPlayer(){
         return player;
     }
+
+
+
+
 }
