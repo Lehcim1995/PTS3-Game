@@ -1,10 +1,8 @@
 package Scenes;
 
-import Classes.ServerGameManger;
 import Interfaces.IGameManager;
 import Interfaces.IServer;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
-
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -28,23 +26,25 @@ public class LobbyListScreen extends AbstractScreen{
     private Texture txtrRefresh;
     private Texture txtrStats;
     private Texture txtrCreate;
-    private TextureRegion TrLogout;
-    private TextureRegion TrJoin;
-    private TextureRegion TrStats;
-    private TextureRegion TrCreate;
-    private TextureRegion TrRefresh;
-    private TextureRegionDrawable TrdLogout;
-    private TextureRegionDrawable TrdJoin;
-    private TextureRegionDrawable TrdStats;
-    private TextureRegionDrawable TrdCreate;
-    private TextureRegionDrawable TrdRefresh;
+    private TextureRegion trLogout;
+    private TextureRegion trJoin;
+    private TextureRegion trStats;
+    private TextureRegion trCreate;
+    private TextureRegion trRefresh;
+    private TextureRegionDrawable trdLogout;
+    private TextureRegionDrawable trdJoin;
+    private TextureRegionDrawable trdStats;
+    private TextureRegionDrawable trdCreate;
+    private TextureRegionDrawable trdRefresh;
     private List listServers;
     private ScrollPane scrollPaneServers;
     private TextField txtLobbyName;
     private Skin skin;
     private IServer pgm;
     private Skin tfSkin;
-
+    /**
+     * LobbyListScreen constructor
+     */
     public LobbyListScreen()
     {
         super();
@@ -62,11 +62,11 @@ public class LobbyListScreen extends AbstractScreen{
         }
         catch (RemoteException e)
         {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage(), e );
         }
         catch (NotBoundException e)
         {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage(), e );
         }
 
 
@@ -78,33 +78,33 @@ public class LobbyListScreen extends AbstractScreen{
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         tfSkin = new Skin(Gdx.files.internal("uiskin.json"));
         //Logout
-        TrLogout = new TextureRegion(txtrLogout);
-        TrdLogout = new TextureRegionDrawable(TrLogout);
-        ImageButton btnLogout = new ImageButton(TrdLogout);
+        trLogout = new TextureRegion(txtrLogout);
+        trdLogout = new TextureRegionDrawable(trLogout);
+        ImageButton btnLogout = new ImageButton(trdLogout);
         btnLogout.setPosition(260.f, 40.f, Align.center);
 
         //JoinGame
-        TrJoin = new TextureRegion(txtrJoin);
-        TrdJoin = new TextureRegionDrawable(TrJoin);
-        ImageButton btnJoin = new ImageButton(TrdJoin);
+        trJoin = new TextureRegion(txtrJoin);
+        trdJoin = new TextureRegionDrawable(trJoin);
+        ImageButton btnJoin = new ImageButton(trdJoin);
         btnJoin.setPosition(260.f, 120.f, Align.center);
 
         //Stats
-        TrStats = new TextureRegion(txtrStats);
-        TrdStats = new TextureRegionDrawable(TrStats);
-        ImageButton btnStats = new ImageButton(TrdStats);
+        trStats = new TextureRegion(txtrStats);
+        trdStats = new TextureRegionDrawable(trStats);
+        ImageButton btnStats = new ImageButton(trdStats);
         btnStats.setPosition(260.f, 200.f, Align.center);
 
         //Create
-        TrCreate = new TextureRegion(txtrCreate);
-        TrdCreate = new TextureRegionDrawable(TrCreate);
-        ImageButton btnCreate = new ImageButton(TrdCreate);
+        trCreate = new TextureRegion(txtrCreate);
+        trdCreate = new TextureRegionDrawable(trCreate);
+        ImageButton btnCreate = new ImageButton(trdCreate);
         btnCreate.setPosition(375.f, 475.f, Align.center);
 
         //refresh
-        TrRefresh = new TextureRegion(txtrRefresh);
-        TrdRefresh = new TextureRegionDrawable(TrRefresh);
-        ImageButton btnRefresh = new ImageButton(TrdRefresh);
+        trRefresh = new TextureRegion(txtrRefresh);
+        trdRefresh = new TextureRegionDrawable(trRefresh);
+        ImageButton btnRefresh = new ImageButton(trdRefresh);
         btnRefresh.setPosition(375.f, 400.f, Align.center);
 
         //textfieldlobby
@@ -147,8 +147,6 @@ public class LobbyListScreen extends AbstractScreen{
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
-
-
                 try
                 {
                     if(pgm.getLobbies().contains(txtLobbyName.getText()))
@@ -164,13 +162,13 @@ public class LobbyListScreen extends AbstractScreen{
                         }
                     }
                     else{
-                        System.out.println("voer geldige lobby in!");
+                        LOGGER.log(Level.INFO, "Voer geldige Lobby in!");
                     }
 
                 }
                 catch (RemoteException e)
                 {
-                    e.printStackTrace();
+                    LOGGER.log(Level.WARNING, e.getMessage(), e );
                 }
                 return false;
             }
@@ -191,7 +189,16 @@ public class LobbyListScreen extends AbstractScreen{
                 return false;
             }
         });
-    }
+
+        btnRefresh.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event,
+                                     float x, float y, int pointer, int button) {
+                ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                return false;
+            }
+        });
+        }
 
     @Override
     public void dispose() {

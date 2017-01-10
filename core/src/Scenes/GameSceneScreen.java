@@ -19,6 +19,9 @@ import com.badlogic.gdx.utils.Align;
 
 import java.rmi.RemoteException;
 import java.util.Iterator;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -30,9 +33,6 @@ public class GameSceneScreen extends AbstractScreen
     private Camera camera;
     private ShapeRenderer shapeRenderer;
     private float zoom = 1;
-    private float cameraSizeX = 500;
-    private float cameraSizeY = 500;
-    private float aspectRatio = cameraSizeX / cameraSizeY;
     private BitmapFont font;
     private GlyphLayout layout;
 
@@ -55,7 +55,6 @@ public class GameSceneScreen extends AbstractScreen
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        //camera = new OrthographicCamera(cameraSizeX * zoom, cameraSizeY * zoom);
         camera = new OrthographicCamera(w * zoom, h * zoom);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, zoom);
         camera.update();
@@ -82,7 +81,7 @@ public class GameSceneScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage(), e );
         }
 
         if (GameManager.getInstance().getScene() == null)
@@ -94,7 +93,10 @@ public class GameSceneScreen extends AbstractScreen
         {
             camera.position.set(GameManager.getInstance().getPlayer().getPosition().x, GameManager.getInstance().getPlayer().getPosition().y, 1);
         }
-        //camera.rotate(camera. , 0, 0, 1);
+        if (GameManager.getInstance().getSpectator() != null){
+            camera.position.set(GameManager.getInstance().getSpectator().getSpectatedPlayer().getPosition().x, GameManager.getInstance().getSpectator().getSpectatedPlayer().getPosition().y, 1);
+        }
+        
         camera.update();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -114,7 +116,7 @@ public class GameSceneScreen extends AbstractScreen
             }
             catch (RemoteException e)
             {
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING, e.getMessage(), e );
             }
         }
         shapeRenderer.set(ShapeRenderer.ShapeType.Line);
@@ -134,7 +136,7 @@ public class GameSceneScreen extends AbstractScreen
         font.draw(batch, layout, padding, height);
 
         int i = (int) (height + height);
-        float start = (height + height);
+        float start = (int) (height + height);
         float maxitmes = height * 15;
 
         for (Iterator<Chat> iterator = GameManager.getInstance().getChats().iterator(); iterator.hasNext(); )
@@ -143,7 +145,7 @@ public class GameSceneScreen extends AbstractScreen
             i+= c.getLayout().height + 3;
             try
             {
-                //start + maxitems = 100% start = 0;
+                //start is max-items = 100% en start = 0;
                 float alpha = 1f- ( i / (start + maxitmes));
                 c.setTextColor(new Color(0,0,0,alpha));
                 c.setPosition(new Vector2(padding, i));
@@ -151,7 +153,7 @@ public class GameSceneScreen extends AbstractScreen
             }
             catch (RemoteException e)
             {
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING, e.getMessage(), e );
             }
         }
         batch.end();
@@ -161,8 +163,6 @@ public class GameSceneScreen extends AbstractScreen
     public void resize(int width, int height)
     {
         super.resize(width, height);
-        //camera.viewportHeight = cameraSizeY * (height/width);
-        //camera.viewportWidth = cameraSizeX  * (width/height);
     }
 
     @Override
@@ -177,10 +177,12 @@ public class GameSceneScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage(), e );
         }
     }
-
+    /**
+     * update the Game scene.
+     */
     public void update() throws RemoteException
     {
         GameManager.getInstance().Update();

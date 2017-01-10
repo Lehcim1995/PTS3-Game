@@ -1,8 +1,6 @@
 package Scenes;
 
 
-import Classes.Connection;
-
 import Interfaces.IConnection;
 import Interfaces.IUser;
 import com.badlogic.gdx.Gdx;
@@ -13,14 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.sun.media.jfxmedia.logging.Logger;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 
 /**
@@ -39,7 +35,9 @@ public class LoginScreen extends AbstractScreen {
     private TextField txtIP;
     private Skin tfSkin;
     private IUser user;
-
+    /**
+     * LoginScreen Constructor
+     */
     public LoginScreen()
     {
         super();
@@ -86,12 +84,10 @@ public class LoginScreen extends AbstractScreen {
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
-                System.out.println(txtUserName.getText());
-                System.out.println(txtPassword.getText());
                 String email = txtUserName.getText();
                 String ww = txtPassword.getText();
                 String ip = txtIP.getText();
-                if(txtUserName.getText().isEmpty() != true && txtPassword.getText().isEmpty() != true && txtIP.getText().isEmpty() != true){
+                if(!txtUserName.getText().isEmpty() && !txtPassword.getText().isEmpty() && !txtIP.getText().isEmpty()){
                     try
                     {
                         try
@@ -102,24 +98,20 @@ public class LoginScreen extends AbstractScreen {
                             conn = (IConnection) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().Getmeaningofconnection());
                             ScreenManager.getInstance().setConn(conn);
                         }
-                        catch(RemoteException ex)
+                        catch(RemoteException e)
                         {
-                            System.out.println("RemoteException: " + ex.getMessage());
+                            LOGGER.log(Level.WARNING, "RemoteException: " + e.getMessage(), e);
                         }
-                        catch(NotBoundException ex)
+                        catch(NotBoundException e)
                         {
-                            System.out.println("NotBoundException: " + ex.getMessage());
+                            LOGGER.log(Level.WARNING, "NotBoundException: " + e.getMessage(), e);
                         }
-//                        catch(UnknownHostException ex)
-//                        {
-//                            System.out.println("UnknownHostException: " + ex.getMessage());
-//                        }
                         if(conn != null)
                         {
                             user = ScreenManager.getInstance().getConn().LogIn(email, ww);
                         }
                         else{
-                            System.out.println("kon registry niet juist ophalen");
+                            LOGGER.log(Level.INFO, "kon registry niet juist ophalen");
                         }
                         if(user != null)
                         {
@@ -128,14 +120,12 @@ public class LoginScreen extends AbstractScreen {
                         }
                         else
                         {
-                            System.out.println("Niet geregistreerd");
-                            ///TODO: popup fout bij inloggen
+                            LOGGER.log(Level.INFO, "Niet geregistreerd!");
                         }
                     }
                     catch (Exception e)
                     {
-                        e.printStackTrace();
-                        System.out.println("Error: lege strings");
+                        LOGGER.log(Level.WARNING, "Error: lege strings" + e.getMessage(), e);
                     }
                 }
                 return false;
@@ -146,7 +136,7 @@ public class LoginScreen extends AbstractScreen {
             @Override
                     public boolean touchDown(InputEvent event,
             float x, float y, int pointer, int button){
-                System.out.println("Registerbutton klicked");
+                LOGGER.log(Level.INFO, "Registerbutton klicked");
                 ScreenManager.getInstance().showScreen(ScreenEnum.REGISTER);
                 return false;
             }

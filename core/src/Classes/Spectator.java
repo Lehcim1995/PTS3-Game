@@ -8,16 +8,16 @@ import java.util.*;
 public class Spectator extends GameObject
 {
     private String name;
-    private GameManager gm;
+    //private GameManager gm;
     private int playerFromList;
     private Player player;
 
-    public Spectator(String name, GameManager gameManager) throws RemoteException
+    public Spectator(String name) throws RemoteException
     {
         this.name = name;
-        this.gm = gameManager;
+        //this.gm = gameManager;
         this.playerFromList = 0;
-        setSpectatedPlayer();
+        //setSpectatedPlayer();
     }
 
     public String getName() {
@@ -35,7 +35,7 @@ public class Spectator extends GameObject
     }
 
     public void setSpectatedPlayer() {
-        List<Player> playerList = gm.GetSpectatedPlayer();
+        List<Player> playerList = GameManager.getInstance().GetSpectatedPlayer();
         if(!playerList.isEmpty())
         {
             if(playerFromList < 0)
@@ -44,6 +44,7 @@ public class Spectator extends GameObject
                 playerFromList = 0;
             //TODO: if no players in game to view error
             player = playerList.get(playerFromList);
+            GameManager.getInstance().setSpectator(this);
         }
     }
 
@@ -55,5 +56,9 @@ public class Spectator extends GameObject
     public void PrevPlayer() {
         playerFromList--;
         setSpectatedPlayer();
+    }
+
+    public Player getSpectatedPlayer(){
+        return player;
     }
 }

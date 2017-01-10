@@ -12,6 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -26,7 +29,9 @@ public class NewLobbyScreen extends AbstractScreen{
     private TextureRegionDrawable backTrd;
     private TextField txtLobbyName;
     private Skin tfSkin;
-
+    /**
+     * NewLobbyScreen Constructor
+     */
     public NewLobbyScreen(){
         super();
         txrBack = new Texture(Gdx.files.internal("core\\assets\\btn_back.png"));
@@ -72,7 +77,6 @@ public class NewLobbyScreen extends AbstractScreen{
             @Override
             public boolean touchDown(InputEvent event,
                                      float x, float y, int pointer, int button) {
-                // TODO maak game lobby
                 if(!txtLobbyName.getText().isEmpty()){
                     try
                     {
@@ -80,12 +84,12 @@ public class NewLobbyScreen extends AbstractScreen{
                     }
                     catch (RemoteException e)
                     {
-                        e.printStackTrace();
+                        LOGGER.log(Level.WARNING, e.getMessage(), e );
                     }
                     ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                 }
                 else{
-                    System.out.println("Geen lobby naam");
+                    LOGGER.log(Level.INFO, "Geen lobby naam.");
                 }
                 return false;
             }

@@ -31,12 +31,15 @@ public class GameLobbyScreen extends AbstractScreen{
     private Texture txtrLeave;
     private Texture txtrReady;
     private Texture txtrSpec;
+    private Texture txtrRefresh;
     private TextureRegion TrLeave;
     private TextureRegion TrReady;
     private TextureRegion TrSpec;
+    private TextureRegion trRefresh;
     private TextureRegionDrawable TrdLeave;
     private TextureRegionDrawable TrdReady;
     private  TextureRegionDrawable TrdSpec;
+    private TextureRegionDrawable trdRefresh;
     private List listPlayers;
     private List listChat;
     private Skin skin;
@@ -54,6 +57,7 @@ public class GameLobbyScreen extends AbstractScreen{
         txtrLeave = new Texture(Gdx.files.internal("core\\assets\\btn_leave.png"));
         txtrReady = new Texture(Gdx.files.internal("core\\assets\\btn_ready.png"));
         txtrSpec = new Texture(Gdx.files.internal("core\\assets\\btn_spectate.png"));
+        txtrRefresh = new Texture(Gdx.files.internal("core\\assets\\btn_refresh.png"));
     }
 
     @Override
@@ -77,6 +81,12 @@ public class GameLobbyScreen extends AbstractScreen{
         TrdSpec = new TextureRegionDrawable(TrSpec);
         ImageButton btnSpectate = new ImageButton(TrdSpec);
         btnSpectate.setPosition(375.f, 475.f, Align.center);
+
+        //refresh
+        trRefresh = new TextureRegion(txtrRefresh);
+        trdRefresh = new TextureRegionDrawable(trRefresh);
+        ImageButton btnRefresh = new ImageButton(trdRefresh);
+        btnRefresh.setPosition(375.f, 400.f, Align.center);
 
         //List Players
         listPlayers = new List(skin);
@@ -117,6 +127,7 @@ public class GameLobbyScreen extends AbstractScreen{
         addActor(btnLeave);
         addActor(btnReady);
         addActor(btnSpectate);
+        addActor(btnRefresh);
         addActor(scrollPanePlayer);
         addActor(scrollPaneChat);
         addActor(txtChatInput);
@@ -151,13 +162,11 @@ public class GameLobbyScreen extends AbstractScreen{
                 if(!ScreenManager.getInstance().getIsSpectator()){
                     System.out.println("Spectating");
                     ScreenManager.getInstance().setIsSpectator(true);
-                    btnReady.setTouchable(Touchable.disabled);
-
+                    ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 }
                 else {
                     System.out.println("No longer spectating");
                     ScreenManager.getInstance().setIsSpectator(false);
-                    btnReady.setTouchable(Touchable.enabled);
                 }
 
                 return  false;
