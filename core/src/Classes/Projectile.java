@@ -64,6 +64,11 @@ public class Projectile extends GameObject
         hitbox.setPosition(position.x, position.y);
         hitbox.setRotation(-rotation);
 
+        if (position.x > Classes.Level.LevelSizeX || position.x < 0 || position.y > Classes.Level.LevelSizeY || position.y < 0)
+        {
+            GameManager.getInstance().ClearProjectile(this);
+        }
+
         if (millis() - born > lifeTime)
         {
             GameManager.getInstance().ClearProjectile(this);
