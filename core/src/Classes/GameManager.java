@@ -148,7 +148,7 @@ public class GameManager extends UnicastRemoteObject
             if (tick > 0.005f) //doe het elke zoveel seconden
             {
                 tick = 0;
-                List<IGameObject> tmp = Server.GetTick(name);
+                List<IGameObject> tmp = new ArrayList<>(Server.GetTick(name));
 
                 for (IGameObject i : tmp) //add if absent
                 {
@@ -244,6 +244,10 @@ public class GameManager extends UnicastRemoteObject
             {
                 System.out.println("Cast Error " + e.getMessage());
             }
+            catch (NullPointerException e)
+            {
+
+            }
         }
 
         return returnList;
@@ -264,6 +268,15 @@ public class GameManager extends UnicastRemoteObject
     {
         //level = new Level();
         gen = true;
+        if(spectatorMe != null)
+        {
+            spectatorMe.setSpectatedPlayer();
+        }
+        else
+        {
+            logger.info("Geen spectator");
+        }
+
     }
 
     public void ClearProjectile(Projectile p) throws RemoteException
@@ -296,7 +309,8 @@ public class GameManager extends UnicastRemoteObject
     {
         System.out.println("Spawn Spectator");
         spectatorMe = s;
-        addGameObject(s);
+        objects.add(s);
+        name = "Spectator";
     }
 
     public synchronized void addGameObject(GameObject go) throws RemoteException

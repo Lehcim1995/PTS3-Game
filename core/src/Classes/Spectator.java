@@ -8,7 +8,7 @@ import java.util.*;
 public class Spectator extends GameObject
 {
     private String name;
-    private GameManager gm;
+    //private GameManager gm;
     private int playerFromList;
     private Player player;
 
@@ -17,7 +17,7 @@ public class Spectator extends GameObject
         this.name = name;
         //this.gm = gameManager;
         this.playerFromList = 0;
-        setSpectatedPlayer();
+        //setSpectatedPlayer();
     }
 
     public String getName() {

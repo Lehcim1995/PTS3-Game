@@ -69,6 +69,10 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public List<IGameObject> GetTick(String id)
     {
+        if(id.equals("Spectator"))
+        {
+            return everything;
+        }
         return idObjects.get(id);
     }
 
