@@ -27,8 +27,8 @@ public class Chat extends GameObject
     private transient GlyphLayout layout = new GlyphLayout();
     /**
      * Chat constructor
-     * @param String Message - text message from a player
-     * @param Player fromPlayer - player that send the message
+     * @param message - text message from a player
+     * @param fromPlayer - player that send the message
      */
     public Chat(String message, Player fromPlayer) throws RemoteException
     {
@@ -46,7 +46,7 @@ public class Chat extends GameObject
     }
     /**
      * DrawChat
-     * @param Batch batch - Idk
+     * @param batch - Idk
      */
     public void DrawChat(Batch batch) throws RemoteException
     {
@@ -78,7 +78,7 @@ public class Chat extends GameObject
     }
     /**
      * setTextColor
-     * @parm Color c - The color of the text
+     * @param c - The color of the text
      */
     public void setTextColor(Color c)
     {
