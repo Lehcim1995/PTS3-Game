@@ -322,7 +322,7 @@ public class GameManager extends UnicastRemoteObject
     {
         return objects;
     }
-w
+
     public String getName()
     {
         return name;
@@ -358,6 +358,12 @@ w
         chats.remove(chat);
         if (online) removeGameObject(chat);
     }
+
+    public List<IGameObject> getAllObjects()
+    {
+        return notMine;
+    }
+
 
     public List<Player> GetSpectatedPlayer()
     {
