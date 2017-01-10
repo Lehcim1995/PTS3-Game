@@ -147,6 +147,7 @@ public class LobbyListScreen extends AbstractScreen{
 
                             ScreenManager.getInstance().setGameManager(sgm);
                             sgm.addUser(ScreenManager.getInstance().getUser());
+                            ScreenManager.getInstance().setLobbyName(txtLobbyName.getText());
                             ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
                         }
                     }

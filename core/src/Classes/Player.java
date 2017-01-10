@@ -139,10 +139,12 @@ public class Player extends GameObject
         position = new Vector2(r.nextInt(610) + 17, r.nextInt(450) + 17);
     }
 
-    public void Die()
+    public void Die(Projectile projectile)
     {
         health = 0;
         deaths++;
+        KillLog kl = new KillLog(projectile, this);
+        GameManager.getInstance().AddKillLog(kl);
         GameManager.getInstance().SpawnPlayer(this);
     }
 
@@ -181,6 +183,7 @@ public class Player extends GameObject
             font.draw(bc, layout, GameManager.getInstance().getCamera().viewportWidth - width, height);
             bc.end();
         }
+
     }
 
     public Gun getGunEquipped()

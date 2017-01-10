@@ -76,7 +76,10 @@ public class GameManager extends UnicastRemoteObject
             String ServerManger = "serermanager";
             //Server = (IGameManager) registry.lookup(ServerManger); //TODO dit geeft een IServer terug geen IGamemanger
             IServer tempserver = (IServer) registry.lookup(ServerManger);
-            Server = tempserver.JoinLobby("lol", ScreenManager.getInstance().getUser());
+            //not bound exception
+            String servername = ScreenManager.getInstance().getLobbyname();
+            System.out.println("ServerName: " + servername);
+            Server = tempserver.JoinLobby(servername, ScreenManager.getInstance().getUser());
 
 
         }
@@ -303,9 +306,9 @@ public class GameManager extends UnicastRemoteObject
         //    chats.add((Chat) go);
         //}
         //else
-        {
+        //{
             objects.add(go);
-        }
+        //}
         if (online) Server.SetTick(name, go);
     }
 
@@ -318,11 +321,6 @@ public class GameManager extends UnicastRemoteObject
     public List<IGameObject> getObjects()
     {
         return objects;
-    }
-
-    public List<IGameObject> getAllObjects()
-    {
-        return notMine;
     }
 
     public String getName()
@@ -361,6 +359,12 @@ public class GameManager extends UnicastRemoteObject
         if (online) removeGameObject(chat);
     }
 
+    public List<IGameObject> getAllObjects()
+    {
+        return notMine;
+    }
+
+
     public List<Player> GetSpectatedPlayer()
     {
         ArrayList<Player> playerList = new ArrayList<>();
@@ -371,5 +375,10 @@ public class GameManager extends UnicastRemoteObject
             }
         return playerList;
 
+    }
+
+    public void AddKillLog(KillLog kl)
+    {
+        killLogs.add(kl);
     }
 }

@@ -36,6 +36,7 @@ public class ScreenManager {
     private String Server = "serermanager";
     private IServer pgm;
     private IGameManager gameManager;
+    private String lobbyname;
 
     // Singleton: private constructor
     private ScreenManager() {
@@ -186,5 +187,15 @@ public class ScreenManager {
     public boolean getIsSpectator()
     {
         return isSpectator;
+    }
+
+    public void setLobbyName(String name)
+    {
+        this.lobbyname = name;
+    }
+
+    public String getLobbyname()
+    {
+        return lobbyname;
     }
 }
