@@ -121,15 +121,14 @@ public class RegisterScreen extends AbstractScreen{
                             ScreenManager.getInstance().setUser(ScreenManager.getInstance().getConn().LogIn(email, password));
                             ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                         }
-                } catch (RemoteException e) {
+                } catch (RemoteException | SQLException e) {
                     e.printStackTrace();
                 }catch(NotBoundException ex)
                 {
                     System.out.println("NotBoundException: " + ex.getMessage());
-                }
-                catch (SQLException e)
+                }catch (Exception err)
                 {
-                    e.printStackTrace();
+                    System.out.println("error");
                 }
                 return false;
             }

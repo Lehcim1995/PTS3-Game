@@ -9,7 +9,10 @@ import java.sql.Connection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.*;
+import java.util.logging.Level;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 /**
@@ -20,11 +23,11 @@ public class Database
 
 
     private static Database instance;
-    private final String serverNameSchool = "localhost";
-    private final String mydatabase = "asom";
-    private final String username = "root";
-    private final String password = "";
-    private final String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase + "?&relaxAutoCommit=true";
+    private final static String serverNameSchool = "localhost";
+    private final static String mydatabase = "asom";
+    private final static String username = "root";
+    private final static String password = "";
+    private final static String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase + "?&relaxAutoCommit=true";
     private DatabaseReturn<User> UserReturn = (set) -> //Lambda voor het ophalen van user
     {
         String name = set.getString("username");
@@ -47,16 +50,16 @@ public class Database
         {
             if (DatabaseConnection(url))
             {
-                System.out.println("School db connected");
+                LOGGER.log(Level.INFO, "School db connected");
             }
             else
             {
-                System.out.println("Cannot connect to any database");
+                LOGGER.log(Level.INFO, "Cannot connect to any database");
             }
         }
-        catch (SQLException ex)
+        catch (SQLException e)
         {
-            System.out.println("SQLError in Constructor : " + ex);
+            LOGGER.log(Level.WARNING, "SQLError in Constructor: " + e.getMessage(), e);
         }
     }
 
@@ -106,28 +109,24 @@ public class Database
 
             psta.executeUpdate();
             rs = psta.getGeneratedKeys();
-            if (rs != null)
+            if (rs != null && rs.next())
             {
-                if (rs.next())
-                {
-                    if (rs.getInt(1) == 0)
-                    { //maybe errors
-                        return -1;
-                    }
-                    return rs.getInt(1);
+                if (rs.getInt(1) == 0)
+                { //maybe errors
+                    return -1;
                 }
+                return rs.getInt(1);
             }
             return -1;
         }
         catch (SQLException e)
         {
-            System.out.println("SQL Error " + e.getMessage());
-            System.out.println("SQL Error " + e.getErrorCode());
+            LOGGER.log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
             return -1;
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println("Class Error " + e.getMessage());
+            LOGGER.log(Level.WARNING, "Class Error " + e.getMessage(), e);
             return -1;
         }
         finally
@@ -135,14 +134,14 @@ public class Database
             if (conn != null)
             {
                 //close and commit
-                System.out.println("commit " + sql);
+                LOGGER.log(Level.INFO, "Commit" + sql);
                 try
                 {
                     conn.commit();
                 }
                 catch (SQLException e)
                 {
-                    e.printStackTrace();
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
                 try
                 {
@@ -150,7 +149,7 @@ public class Database
                 }
                 catch (SQLException e)
                 {
-                    e.printStackTrace();
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
             }
 
@@ -162,7 +161,7 @@ public class Database
                 }
                 catch (SQLException e)
                 {
-                    e.printStackTrace();
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
             }
 
@@ -174,7 +173,7 @@ public class Database
                 }
                 catch (SQLException e)
                 {
-                    e.printStackTrace();
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
             }
         }
@@ -185,10 +184,10 @@ public class Database
         return setDatabase(sql);
     }
 
-    private void EscapeSQL(PreparedStatement preparedStatement, Object... Arguments) throws SQLException
+    private void EscapeSQL(PreparedStatement preparedStatement, Object... arguments) throws SQLException
     {
         int i = 0;
-        for (Object obj : Arguments)
+        for (Object obj : arguments)
         {
             i++;
 
@@ -215,12 +214,11 @@ public class Database
      * @return
      * @throws SQLException
      */
-    private <T> ArrayList<T> getDatabase(String sql, DatabaseReturn<T> returnfunction, Object... Arguments) throws SQLException
+    private <T> ArrayList<T> getDatabase(String sql, DatabaseReturn<T> returnfunction, Object... arguments) throws SQLException
     {
-        ArrayList<T> objList = new ArrayList<T>();
+        ArrayList<T> objList = new ArrayList<>();
 
         Connection conn = null;
-        Statement sta = null;
         PreparedStatement psta = null;
         ResultSet rs = null;
 
@@ -230,7 +228,7 @@ public class Database
             conn = DriverManager.getConnection(url, username, password);
             psta = conn.prepareStatement(sql);
 
-            EscapeSQL(psta, Arguments);
+            EscapeSQL(psta, arguments);
 
             rs = psta.executeQuery();
 
@@ -241,11 +239,11 @@ public class Database
         }
         catch (SQLException e)
         {
-            System.out.println("SQL Error " + e.getMessage());
+            LOGGER.log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println("Class Error " + e.getMessage());
+            LOGGER.log(Level.WARNING, "Class Error: " + e.getMessage(), e);
         }
         finally
         {
@@ -253,12 +251,6 @@ public class Database
             {
                 conn.close();
             }
-
-            if (sta != null)
-            {
-                sta.close();
-            }
-
             if (rs != null)
             {
                 rs.close();
@@ -267,18 +259,10 @@ public class Database
 
         return objList;
     }
-
-    private <T> ArrayList<T> getDatabaseNoPsts(String sql, DatabaseReturn<T> returnfunction) throws SQLException
-    {
-        return getDatabase(sql, returnfunction);
-    }
-
     private boolean DatabaseConnection(String connection) throws SQLException
     {
         Connection conn = null;
         Statement sta = null;
-        ResultSet rs = null;
-
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
@@ -293,12 +277,12 @@ public class Database
         }
         catch (SQLException e)
         {
-            System.out.println("SQL Error " + e.getMessage());
+            LOGGER.log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
             return false;
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println("Class Error " + e.getMessage());
+            LOGGER.log(Level.WARNING, "Class Error: " + e.getMessage(), e);
             return false;
         }
         finally
@@ -312,11 +296,6 @@ public class Database
             {
                 sta.close();
             }
-
-            if (rs != null)
-            {
-                rs.close();
-            }
         }
     }
 
@@ -328,23 +307,9 @@ public class Database
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
-        return null;
-    }
-
-    public ArrayList<User> LogInNoArgs(String query)
-    {
-        try
-        {
-            ///TODO: Ophalen van User uit database gaat verkeerd
-            return LogIn(query);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
+        return new ArrayList<>();
     }
 
     /**

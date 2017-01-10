@@ -8,22 +8,29 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.rmi.RemoteException;
+import java.util.logging.*;
+import java.util.logging.Level;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 11-10-2016.
  */
 public class Projectile extends GameObject
 {
-    private GameObject gameObject;
     private float bulletSpeed;
     private int damage = 1;
     private Gun gun;
     private long lifeTime = 10000; // in millisec
     private long born; //in millisec
     private float size = 5;
-
+    /**
+     * Projectile Constructor
+     * @parm Gun - The gun where the projectile belongs to.
+     * @parm Position - Location Where the projectile begins.
+     * @parm Rotation - The orientation the bullet is going to.
+     */
     public Projectile(Gun gun, Vector2 position, float rotation) throws RemoteException
     {
         super(position, rotation);
@@ -33,7 +40,6 @@ public class Projectile extends GameObject
 
         setHitbox(DEFAULTHITBOX(size));
         born = millis();
-
     }
 
     public Gun getGun()
@@ -80,7 +86,7 @@ public class Projectile extends GameObject
                     }
                     catch (RemoteException e)
                     {
-                        e.printStackTrace();
+                        LOGGER.log(Level.WARNING, e.getMessage(), e );
                     }
                 }
             }
@@ -93,58 +99,53 @@ public class Projectile extends GameObject
             }
             catch (RemoteException e)
             {
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING, e.getMessage(), e );
             }
 
         }
         else if (other instanceof Player)
         {
-            if (gun != null)
+            if (gun != null && gun.getOwner().getID() != other.getID())
             {
+                LOGGER.log(Level.INFO, "Gun owner : " + gun.getOwner().getID());
+                LOGGER.log(Level.INFO, "Target : " + other.getID());
+                LOGGER.log(Level.INFO, "GameManager Player " + GameManager.getInstance().getPlayer().getID());
 
-                if (gun.getOwner().getID() != other.getID())
+                if (other.getID() == GameManager.getInstance().getPlayer().getID()) //geraakte speler moet weg gaan
                 {
+                    LOGGER.log(Level.INFO, new KillLog(this, (Player) other).toString());
+                    ((Player) other).Die(this);
+                    gun.getOwner().Hit();
+                }
 
-                    System.out.println("Gun owner : " + gun.getOwner().getID());
-                    System.out.println("Target : " + other.getID());
-                    System.out.println("GameManager Player " + GameManager.getInstance().getPlayer().getID());
-
-                    if (other.getID() == GameManager.getInstance().getPlayer().getID()) //geraakte speler moet weg gaan
+                if (gun.getOwner().getID() == GameManager.getInstance().getPlayer().getID()) // Schieter moet zijn kogel weg halen
+                {
+                    Projectile meProjectile = this;
+                    new Thread()
                     {
-                        System.out.println(new KillLog(this, (Player) other));
-                        ((Player) other).Die(this);
-                        gun.getOwner().Hit();
-                    }
-
-                    if (gun.getOwner().getID() == GameManager.getInstance().getPlayer().getID()) // Schieter moet zijn kogel weg halen
-                    {
-                        Projectile meProjectile = this;
-                        new Thread()
+                        @Override
+                        public void run()
                         {
-                            @Override
-                            public void run()
+                            super.run();
+                            try
                             {
-                                super.run();
+                                Thread.sleep(10);
                                 try
                                 {
-                                    Thread.sleep(10);
-                                    try
-                                    {
-                                        GameManager.getInstance().ClearProjectile(meProjectile);
-                                    }
-                                    catch (RemoteException e)
-                                    {
-                                        e.printStackTrace();
-                                    }
+                                    GameManager.getInstance().ClearProjectile(meProjectile);
                                 }
-                                catch (InterruptedException e)
+                                catch (RemoteException e)
                                 {
-                                    e.printStackTrace();
+                                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                                 }
-
                             }
-                        }.run();
-                    }
+                            catch (InterruptedException e)
+                            {
+                                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                            }
+
+                        }
+                    }.run();
                 }
             }
         }
