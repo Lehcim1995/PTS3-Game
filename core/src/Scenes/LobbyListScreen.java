@@ -25,16 +25,19 @@ public class LobbyListScreen extends AbstractScreen{
 
     private Texture txtrLogout;
     private Texture txtrJoin;
+    private Texture txtrRefresh;
     private Texture txtrStats;
     private Texture txtrCreate;
     private TextureRegion TrLogout;
     private TextureRegion TrJoin;
     private TextureRegion TrStats;
     private TextureRegion TrCreate;
+    private TextureRegion TrRefresh;
     private TextureRegionDrawable TrdLogout;
     private TextureRegionDrawable TrdJoin;
     private TextureRegionDrawable TrdStats;
     private TextureRegionDrawable TrdCreate;
+    private TextureRegionDrawable TrdRefresh;
     private List listServers;
     private ScrollPane scrollPaneServers;
     private TextField txtLobbyName;
@@ -50,6 +53,8 @@ public class LobbyListScreen extends AbstractScreen{
         txtrJoin = new Texture(Gdx.files.internal("core\\assets\\btn_join.png"));
         txtrStats = new Texture(Gdx.files.internal("core\\assets\\btn_stats.png"));
         txtrCreate = new Texture(Gdx.files.internal("core\\assets\\btn_create.png"));
+        txtrRefresh = new Texture(Gdx.files.internal("core\\assets\\btn_refresh.png"));
+
         try
         {
             pgm =  (IServer) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().GetMeaningOfServer());
@@ -96,6 +101,12 @@ public class LobbyListScreen extends AbstractScreen{
         ImageButton btnCreate = new ImageButton(TrdCreate);
         btnCreate.setPosition(375.f, 475.f, Align.center);
 
+        //refresh
+        TrRefresh = new TextureRegion(txtrRefresh);
+        TrdRefresh = new TextureRegionDrawable(TrRefresh);
+        ImageButton btnRefresh = new ImageButton(TrdRefresh);
+        btnRefresh.setPosition(375.f, 400.f, Align.center);
+
         //textfieldlobby
         txtLobbyName = new TextField("",tfSkin);
         txtLobbyName.setMessageText("Enter Lobby Name");
@@ -120,6 +131,7 @@ public class LobbyListScreen extends AbstractScreen{
         addActor(btnStats);
         addActor(scrollPaneServers);
         addActor(btnCreate);
+        addActor(btnRefresh);
         addActor(txtLobbyName);
 
 
