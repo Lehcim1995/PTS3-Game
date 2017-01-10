@@ -3,7 +3,6 @@ package Classes;
 import Interfaces.IGameObject;
 import LibGDXSerialzableClasses.SerializablePolygon;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -33,7 +32,7 @@ public class GameObject implements IGameObject, Serializable
         id = this.hashCode();
         position = new Vector2();
         rotation = 0;
-        hitbox = VerticisToPolygon(CIRCLEHITBOX(5));
+        hitbox = VerticisToPolygon(CircleHitbox(5));
     }
 
     protected GameObject(Vector2 position, float rotation, SerializablePolygon hitbox) throws RemoteException
@@ -49,23 +48,23 @@ public class GameObject implements IGameObject, Serializable
         id = this.hashCode();
         this.position = position;
         this.rotation = rotation;
-        setHitbox(DEFAULTHITBOX(10));
+        setHitbox(DefaultHitbox(10));
     }
 
-    public final static Vector2[] DEFAULTHITBOX(float size)
+    public static final Vector2[] DefaultHitbox(float size)
     {
-        return DEFAULTHITBOX(size, size);
+        return DefaultHitbox(size, size);
     }
 
-    public final static Vector2[] CIRCLEHITBOX(float size)
+    public static final Vector2[] CircleHitbox(float size)
     {
-        return CIRCLEHITBOX(size, 18);
+        return CircleHitbox(size, 18);
     }
 
-    public final static Vector2[] CIRCLEHITBOX(float size, int vertices)
+    public static final Vector2[] CircleHitbox(float size, int vertices)
     {
         Vector2[] vList = new Vector2[vertices];
-        double rad = Math.toRadians(360 / vertices);
+        double rad = Math.toRadians((double)360 / vertices);
 
         for (int i = 0; i < vertices; i++)
         {
@@ -79,7 +78,7 @@ public class GameObject implements IGameObject, Serializable
         return vList;
     }
 
-    public final static Vector2[] DEFAULTHITBOX(float height, float width)
+    public static final Vector2[] DefaultHitbox(float height, float width)
     {
         float y = height / 2;
         float x = width / 2;
@@ -89,9 +88,7 @@ public class GameObject implements IGameObject, Serializable
         Vector2 v3 = new Vector2(x, -y);
         Vector2 v4 = new Vector2(-x, -y);
 
-        Vector2[] v5 = {v1, v2, v4, v3};
-
-        return v5;
+        return new Vector2[] {v1, v2, v4, v3};
     }
 
     public Polygon getHitbox()
@@ -109,24 +106,26 @@ public class GameObject implements IGameObject, Serializable
         hitbox = VerticisToPolygon(verticis);
         hitbox.setOrigin(0, 0);
     }
-
-    public SerializablePolygon VerticisToPolygon(Vector2[] verticis)
+    /**
+     * Converts Vector2 Array to SerializablePolygon
+     *
+     * @param vertices Vector2 vertices array
+     * @return Polygon
+     */
+    public SerializablePolygon VerticisToPolygon(Vector2[] vertices)
     {
-        if (verticis.length < 3)
+        if (vertices.length < 3)
         {
             throw new IllegalArgumentException("Need atleast 3 or more verticies");
         }
 
-        float[] verticisList = new float[verticis.length * 2];
+        float[] verticisList = new float[vertices.length * 2];
 
-        for (int i = 0, j = 0; i < verticis.length; i++, j += 2)
+        for (int i = 0, j = 0; i < vertices.length; i++, j += 2)
         {
-            verticisList[j] = verticis[i].x;
-            verticisList[j + 1] = verticis[i].y;
+            verticisList[j] = vertices[i].x;
+            verticisList[j + 1] = vertices[i].y;
         }
-
-        //hitbox.setOrigin(0, 0);
-        //hitbox.setVertices(verticisList);
 
         return new SerializablePolygon(verticisList);
     }
@@ -145,7 +144,8 @@ public class GameObject implements IGameObject, Serializable
 
         float dis = position.dst(other);
 
-        if (dis > 100) return false;
+        if (dis > 100)
+            return false;
         return isOverlap(hitbox.getLIBGDXPolygon(), go.getHitbox());
     }
 
@@ -155,36 +155,46 @@ public class GameObject implements IGameObject, Serializable
         return id;
     }
 
-    //Static Methode to check if 2 polygons are intersecting
+
+    /**
+     * Static Methode to check if 2 polygons are intersecting
+     *
+     * @param A Polygon
+     * @param B Polygon
+     * @return Is overlapping or not.
+     */
     public boolean isOverlap(Polygon A, Polygon B)
     {
-        float[] VerticesA = A.getTransformedVertices();
-        float[] VerticesB = B.getTransformedVertices();
-
-        for (int i = 0; i < VerticesB.length; i += 2)
+        float[] verticesA = A.getTransformedVertices();
+        float[] verticesB = B.getTransformedVertices();
+        //Check vertices B
+        for (int i = 0; i < verticesB.length; i += 2)
         {
-            float x = VerticesB[i];
-            float y = VerticesB[i + 1];
+            float x = verticesB[i];
+            float y = verticesB[i + 1];
 
-            if (isInside(x, y, A)) return true;
+            if (isInside(x, y, A))
+                return true;
         }
-
-        for (int i = 0; i < VerticesA.length; i += 2)
+        //Check vertices A
+        for (int i = 0; i < verticesA.length; i += 2)
         {
-            float x = VerticesA[i];
-            float y = VerticesA[i + 1];
+            float x = verticesA[i];
+            float y = verticesA[i + 1];
 
-            if (isInside(x, y, B)) return true;
+            if (isInside(x, y, B))
+                return true;
         }
         return false;
     }
 
     private boolean isInside(float x, float y, Polygon p)
     {
-        int i, j;
+        int i;
+        int j;
         boolean c = false;
 
-        ArrayList<Vector2> verList = new ArrayList<Vector2>();
+        ArrayList<Vector2> verList = new ArrayList<>();
 
         for (int ver = 0; ver < p.getTransformedVertices().length; ver += 2)
         {
@@ -246,38 +256,51 @@ public class GameObject implements IGameObject, Serializable
     @Override
     public void onCollisionEnter(IGameObject other)
     {
-
+        // Has to have a Override.
     }
 
     @Override
     public void onCollisionExit(IGameObject other)
     {
-
+        // Has to have a Override.
     }
 
     @Override
     public void onCollisionStay(IGameObject other)
     {
-
+        // Has to have a Override.
     }
 
     @Override
     public void update() throws RemoteException
     {
-
+        // Has to have a Override.
     }
 
     @Override
     public void Draw(ShapeRenderer shapeRenderer)
     {
-
+        // Has to have a Override.
     }
-
+    /**
+     * Draw objects
+     *
+     * @param shapeRenderer Shape
+     * @param batch Batch
+     */
     public void Draw(ShapeRenderer shapeRenderer, Batch batch)
     {
         Draw(shapeRenderer);
     }
-
+    /**
+     * DrawText on screen
+     *
+     * @param batch
+     * @param font Font used
+     * @param layout Layout used
+     * @param text Text to draw
+     * @param position Position to draw
+     */
     public void DrawText(Batch batch, BitmapFont font, GlyphLayout layout, String text, Vector2 position)
     {
         //font.setColor(Color.BLACK);

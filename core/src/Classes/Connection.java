@@ -6,10 +6,10 @@ import Interfaces.IUser;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.logging.*;
-import java.util.logging.Level;
 
+import java.util.logging.Level;
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 
 /**
  * Created by Jasper on 19-11-2016.
@@ -52,7 +52,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
 
             try
             {
-                System.out.println(logInQuery);
+                LOGGER.log(Level.INFO, "Querry: " + logInQuery);
                 ArrayList<User> resultSet = database.LogIn(logInQuery, email, password);
                 if (resultSet.size() == 1)
                 {
@@ -69,7 +69,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
     }
     /**
      * Update Stats of a User.
-     * @parm User - User object that contains the new stats.
+     * @param user - object that contains the new stats.
      */
     public void UpdateStats(User user)
     {
@@ -79,7 +79,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
     }
     /**
      * Ban the user by User.
-     * @parm User - User object that is getting banned.
+     * @param user - object that is getting banned.
      */
     public void BanUser(User user)
     {

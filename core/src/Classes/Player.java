@@ -51,7 +51,7 @@ public class Player extends GameObject
     public Player(Vector2 position, float rotation) throws RemoteException
     {
         super(position, rotation);
-        setHitbox(CIRCLEHITBOX(halfWidth));
+        setHitbox(CircleHitbox(halfWidth));
     }
 
     public Player() throws RemoteException
@@ -65,7 +65,7 @@ public class Player extends GameObject
         this.getGunEquipped().setOwner(this);
 
         Gdx.input.setInputProcessor(ic);
-        setHitbox(CIRCLEHITBOX(halfWidth));
+        setHitbox(CircleHitbox(halfWidth));
 
     }
 
@@ -77,7 +77,7 @@ public class Player extends GameObject
         speed = 125.1248f;
         this.gunEquipped = Gun.CZ75;
         this.getGunEquipped().setOwner(this);
-        setHitbox(CIRCLEHITBOX(halfWidth));
+        setHitbox(CircleHitbox(halfWidth));
     }
 
     public Player(Player p, boolean PlayerInput) throws RemoteException
@@ -98,7 +98,7 @@ public class Player extends GameObject
             Gdx.input.setInputProcessor(ic);
         }
 
-        setHitbox(CIRCLEHITBOX(halfWidth));
+        setHitbox(CircleHitbox(halfWidth));
     }
 
     public Player(boolean PlayerInput) throws RemoteException
@@ -115,7 +115,7 @@ public class Player extends GameObject
         {
             Gdx.input.setInputProcessor(ic);
         }
-        setHitbox(CIRCLEHITBOX(halfWidth));
+        setHitbox(CircleHitbox(halfWidth));
     }
 
     public void Shoot() throws RemoteException

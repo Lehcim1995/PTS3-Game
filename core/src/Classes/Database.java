@@ -22,13 +22,13 @@ public class Database
 {
 
 
+    private static final String serverNameSchool = "localhost";
+    private static final String mydatabase = "asom";
+    private static final String username = "root";
+    private static final String password = "";
+    private static final String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase + "?&relaxAutoCommit=true";
     private static Database instance;
-    private final static String serverNameSchool = "localhost";
-    private final static String mydatabase = "asom";
-    private final static String username = "root";
-    private final static String password = "";
-    private final static String url = "jdbc:mysql://" + serverNameSchool + ":3306/" + mydatabase + "?&relaxAutoCommit=true";
-    private DatabaseReturn<User> UserReturn = (set) -> //Lambda voor het ophalen van user
+    private DatabaseReturn<User> userReturn = (set) -> //Lambda voor het ophalen van user
     {
         String name = set.getString("username");
         String email = set.getString("email");
@@ -89,11 +89,11 @@ public class Database
      *
      * @param sql       The query, use an "?" at the place of a input. Like this:
      *                  INSERT INTO TABLE('name', 'lastname' , enz ) VALUES(?,?, enz);
-     * @param Arguments The arguments correspont to same questionmark.
+     * @param arguments The arguments correspont to same questionmark.
      * @return The generated key
      * @throws SQLException
      */
-    public Integer setDatabase(String sql, Object... Arguments)
+    public Integer setDatabase(String sql, Object... arguments)
     {
         Connection conn = null;
         PreparedStatement psta = null;
@@ -105,7 +105,7 @@ public class Database
             conn = DriverManager.getConnection(url, username, password);
             psta = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            EscapeSQL(psta, Arguments);
+            EscapeSQL(psta, arguments);
 
             psta.executeUpdate();
             rs = psta.getGeneratedKeys();
@@ -259,6 +259,7 @@ public class Database
 
         return objList;
     }
+
     private boolean DatabaseConnection(String connection) throws SQLException
     {
         Connection conn = null;
@@ -298,12 +299,17 @@ public class Database
             }
         }
     }
-
+    /**
+     * Login check in database.
+     *
+     * @param query The querry used
+     * @param arguments Login Data
+     */
     public ArrayList<User> LogIn(String query, Object... arguments)
     {
         try
         {
-            return getDatabase(query, UserReturn, arguments);
+            return getDatabase(query, userReturn, arguments);
         }
         catch (SQLException e)
         {

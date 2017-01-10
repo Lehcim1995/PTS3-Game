@@ -1,14 +1,8 @@
 package Classes;
 
 import LibGDXSerialzableClasses.SerializableColor;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Shape;
 
 import java.rmi.RemoteException;
 
@@ -31,7 +25,7 @@ public class LevelBlock extends GameObject
     public LevelBlock(Vector2 position, float rotation) throws RemoteException
     {
         super (position, rotation);
-        this.setHitbox(VerticisToPolygon(DEFAULTHITBOX(size)));
+        this.setHitbox(VerticisToPolygon(DefaultHitbox(size)));
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.rmi.RemoteException;
-import java.util.logging.*;
 import java.util.logging.Level;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
@@ -27,9 +26,9 @@ public class Projectile extends GameObject
     private float size = 5;
     /**
      * Projectile Constructor
-     * @parm Gun - The gun where the projectile belongs to.
-     * @parm Position - Location Where the projectile begins.
-     * @parm Rotation - The orientation the bullet is going to.
+     * @param gun - The gun where the projectile belongs to.
+     * @param position - Location Where the projectile begins.
+     * @param rotation - The orientation the bullet is going to.
      */
     public Projectile(Gun gun, Vector2 position, float rotation) throws RemoteException
     {
@@ -38,7 +37,7 @@ public class Projectile extends GameObject
         bulletSpeed = gun.getBulletSpeed();
         damage = gun.getProjectileDamage();
 
-        setHitbox(DEFAULTHITBOX(size));
+        setHitbox(DefaultHitbox(size));
         born = millis();
     }
 
