@@ -44,6 +44,7 @@ public class Spectator extends GameObject
                 playerFromList = 0;
             //TODO: if no players in game to view error
             player = playerList.get(playerFromList);
+            GameManager.getInstance().setSpectator(this);
         }
     }
 
@@ -55,5 +56,9 @@ public class Spectator extends GameObject
     public void PrevPlayer() {
         playerFromList--;
         setSpectatedPlayer();
+    }
+
+    public Player getSpectatedPlayer(){
+        return player;
     }
 }
