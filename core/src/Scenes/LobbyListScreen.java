@@ -189,7 +189,16 @@ public class LobbyListScreen extends AbstractScreen{
                 return false;
             }
         });
-    }
+
+        btnRefresh.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event,
+                                     float x, float y, int pointer, int button) {
+                ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                return false;
+            }
+        });
+        }
 
     @Override
     public void dispose() {
