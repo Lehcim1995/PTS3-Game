@@ -16,7 +16,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 {
     private String name;
     private List<IGameObject> everything;
-    private Map<String, List<IGameObject>> idObjects;
+    private Map<String, List<IGameObject>> idObjects; //TODO gebruik list voor het opslaan voor eigen objecten niet voor opslaan van objecten die voor mij bedoelt zijn.
     private ArrayList<User> userList;
     private ArrayList<String> stringUserList;
 
