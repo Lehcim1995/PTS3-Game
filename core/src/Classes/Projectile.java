@@ -24,9 +24,11 @@ public class Projectile extends GameObject
     private long lifeTime = 10000; // in millisec
     private long born; //in millisec
     private float size = 5;
+
     /**
      * Projectile Constructor
-     * @param gun - The gun where the projectile belongs to.
+     *
+     * @param gun      - The gun where the projectile belongs to.
      * @param position - Location Where the projectile begins.
      * @param rotation - The orientation the bullet is going to.
      */
@@ -90,7 +92,7 @@ public class Projectile extends GameObject
                     }
                     catch (RemoteException e)
                     {
-                        LOGGER.log(Level.WARNING, e.getMessage(), e );
+                        LOGGER.log(Level.WARNING, e.getMessage(), e);
                     }
                 }
             }
@@ -103,7 +105,7 @@ public class Projectile extends GameObject
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e );
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
 
         }
@@ -133,7 +135,7 @@ public class Projectile extends GameObject
                             super.run();
                             try
                             {
-                                Thread.sleep(10);
+                                Thread.sleep(20);
                                 try
                                 {
                                     GameManager.getInstance().ClearProjectile(meProjectile);
