@@ -1,9 +1,14 @@
 package com.asom.mygame;
 
-import Classes.*;
+import Classes.GameManager;
 import Interfaces.IGameObject;
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -13,7 +18,8 @@ import java.util.logging.Level;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
-public class MainClass extends Game implements ApplicationListener{
+public class MainClass extends Game implements ApplicationListener
+{
     SpriteBatch batch;
     private Camera camera;
     private ShapeRenderer shapeRenderer;
@@ -22,7 +28,8 @@ public class MainClass extends Game implements ApplicationListener{
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void create() {
+    public void create()
+    {
         batch = new SpriteBatch();
 
         float w = Gdx.graphics.getWidth();
@@ -36,20 +43,23 @@ public class MainClass extends Game implements ApplicationListener{
     }
 
 
-
     @Override
-    public void render() {
-        try {
+    public void render()
+    {
+        try
+        {
             synchronized (this)
             {
                 update();
             }
         }
-        catch (RemoteException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e );
+        catch (RemoteException e)
+        {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
 
-        if (GameManager.getInstance().getPlayer() != null) {
+        if (GameManager.getInstance().getPlayer() != null)
+        {
             camera.position.set(GameManager.getInstance().getPlayer().getPosition().x, GameManager.getInstance().getPlayer().getPosition().y, 1);
         }
         camera.update();
@@ -59,7 +69,8 @@ public class MainClass extends Game implements ApplicationListener{
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (Iterator<IGameObject> iterator = GameManager.getInstance().getAllObjects().iterator(); iterator.hasNext(); ) {
+        for (Iterator<IGameObject> iterator = GameManager.getInstance().getAllObjects().iterator(); iterator.hasNext(); )
+        {
             IGameObject go = iterator.next();
             try
             {
@@ -67,51 +78,58 @@ public class MainClass extends Game implements ApplicationListener{
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e );
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
         }
 
         shapeRenderer.end();
 
 
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
-        for(IGameObject go :  GameManager.getInstance().getAllObjects())
+        for (IGameObject go : GameManager.getInstance().getAllObjects())
         {
             shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
         }
         shapeRenderer.end();
     }
+
     /**
      * Pauze moet overwrite worden.
      */
     @Override
-    public void pause() {
+    public void pause()
+    {
 
     }
+
     /**
      * Resume moet overwrite worden.
      */
     @Override
-    public void resume() {
+    public void resume()
+    {
 
     }
+
     /**
      * Update the scene.
      */
-    public void update() throws RemoteException {
+    public void update() throws RemoteException
+    {
         GameManager.getInstance().Update();
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         batch.dispose();
         shapeRenderer.dispose();
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         camera.viewportHeight = height * zoom;
         camera.viewportWidth = width * zoom;
     }

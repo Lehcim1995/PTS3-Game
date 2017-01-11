@@ -4,7 +4,6 @@ import Interfaces.IConnection;
 import Interfaces.IGameManager;
 import Interfaces.IServer;
 import Interfaces.IUser;
-import Scenes.ScreenManager;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -23,6 +22,16 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
     private IConnection connectionInstance = new Connection();
     private ArrayList<ServerGameManger> lobbies;
 
+    public PreGameManager() throws RemoteException, UnknownHostException
+    {
+        this.lobbies = new ArrayList<>();
+
+        registry = LocateRegistry.createRegistry(portNumber);
+        registry.rebind(ServerManger, this);
+        registry.rebind(connection, connectionInstance);
+        System.out.println(InetAddress.getLocalHost().getHostAddress());
+    }
+
     public static void main(String[] args)
     {
         try
@@ -39,22 +48,13 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
         }
     }
 
-    public PreGameManager() throws RemoteException, UnknownHostException
-    {
-        this.lobbies = new ArrayList<>();
-
-        registry = LocateRegistry.createRegistry(portNumber);
-        registry.rebind(ServerManger, this);
-        registry.rebind(connection, connectionInstance);
-        System.out.println(InetAddress.getLocalHost().getHostAddress());
-    }
-
     @Override
     public ArrayList<String> getLobbies() throws RemoteException
     {
         ArrayList<String> lobbylist = new ArrayList<>();
 
-        for (ServerGameManger lobby : lobbies) {
+        for (ServerGameManger lobby : lobbies)
+        {
             lobbylist.add(lobby.getName());
         }
         return lobbylist;
@@ -80,9 +80,9 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
     @Override
     public IGameManager JoinLobby(String name, IUser user) throws RemoteException
     {
-        for(ServerGameManger sgm : lobbies)
+        for (ServerGameManger sgm : lobbies)
         {
-            if(sgm.getName().equals(name))
+            if (sgm.getName().equals(name))
             {
                 ///TODO: Client side player toevoegen aan sgm
                 return sgm;

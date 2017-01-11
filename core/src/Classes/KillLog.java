@@ -29,7 +29,8 @@ public class KillLog extends GameObject
     private boolean dead;
     private Vector2 position;
 
-    public KillLog(Projectile projectile, Player player) throws RemoteException {
+    public KillLog(Projectile projectile, Player player) throws RemoteException
+    {
         this.projectile = projectile;
         this.player = player;
         born = nanoTime();
@@ -48,8 +49,7 @@ public class KillLog extends GameObject
 
     public GlyphLayout getLayout()
     {
-        if (layout == null)
-            layout = new GlyphLayout();
+        if (layout == null) layout = new GlyphLayout();
         return layout;
     }
 
@@ -80,6 +80,6 @@ public class KillLog extends GameObject
     @Override
     public String toString()
     {
-        return projectile.getGun().getOwner().getName() + " " + projectile.getGun().getName() + " " + player.getName() ;
+        return projectile.getGun().getOwner().getName() + " " + projectile.getGun().getName() + " " + player.getName();
     }
 }

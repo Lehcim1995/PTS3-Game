@@ -34,7 +34,8 @@ public class User implements IUser
         {
             this.isBanned = false;
         }
-        else {
+        else
+        {
             this.isBanned = true;
         }
 
@@ -47,7 +48,7 @@ public class User implements IUser
         this.deaths += deaths;
         this.shotsHit += shotsHit;
         this.shots += shots;
-        if(matchWon)
+        if (matchWon)
         {
             this.matchesWon++;
         }
@@ -57,31 +58,83 @@ public class User implements IUser
         }
         this.matchesPlayed++;
     }
+
     @Override
-    public String getName() { return name; }
+    public String getName()
+    {
+        return name;
+    }
+
     @Override
-    public String getEmail() { return email; }
+    public String getEmail()
+    {
+        return email;
+    }
+
     @Override
-    public int getKills() { return  kills; }
+    public int getKills()
+    {
+        return kills;
+    }
+
     @Override
-    public int getDeaths() { return deaths; }
+    public int getDeaths()
+    {
+        return deaths;
+    }
+
     @Override
-    public int getShots() { return shots; }
+    public int getShots()
+    {
+        return shots;
+    }
+
     @Override
-    public int getShotsHit() { return shotsHit; }
+    public int getShotsHit()
+    {
+        return shotsHit;
+    }
+
     @Override
-    public int getMatchesPlayed() { return matchesPlayed; }
+    public int getMatchesPlayed()
+    {
+        return matchesPlayed;
+    }
+
     @Override
-    public int getMatchesWon() { return matchesWon; }
+    public int getMatchesWon()
+    {
+        return matchesWon;
+    }
+
     @Override
-    public int getMatchesLost() { return matchesLost; }
+    public int getMatchesLost()
+    {
+        return matchesLost;
+    }
+
     @Override
-    public float getKDRatio() { return (float) kills / deaths; }
+    public float getKDRatio()
+    {
+        return (float) kills / deaths;
+    }
+
     @Override
-    public float getAccuracyPercentage() { return (float) shotsHit / shots * 100; }
+    public float getAccuracyPercentage()
+    {
+        return (float) shotsHit / shots * 100;
+    }
+
     @Override
-    public float getWinPercentage() { return (float) matchesWon / matchesPlayed * 100; }
+    public float getWinPercentage()
+    {
+        return (float) matchesWon / matchesPlayed * 100;
+    }
+
     @Override
-    public boolean getBanned() { return isBanned; }
+    public boolean getBanned()
+    {
+        return isBanned;
+    }
 
 }

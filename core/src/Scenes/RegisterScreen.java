@@ -23,7 +23,8 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 /**
  * Created by Nick on 22-11-2016.
  */
-public class RegisterScreen extends AbstractScreen{
+public class RegisterScreen extends AbstractScreen
+{
 
     private Texture txtrRegister;
     private Texture txtrCancel;
@@ -38,6 +39,7 @@ public class RegisterScreen extends AbstractScreen{
     private TextField tfPassword;
     private TextField tfIP;
     private Skin tfSkin;
+
     /**
      * RegisterScreen Constructor
      */
@@ -49,19 +51,20 @@ public class RegisterScreen extends AbstractScreen{
     }
 
     @Override
-    public void buildStage() {
+    public void buildStage()
+    {
         tfSkin = new Skin(Gdx.files.internal("uiskin.json"));
-        tfName = new TextField("",tfSkin);
+        tfName = new TextField("", tfSkin);
         tfName.setMessageText("First name");
-        tfLastName = new TextField("",tfSkin);
+        tfLastName = new TextField("", tfSkin);
         tfLastName.setMessageText("Last name");
-        tfEmail = new TextField("",tfSkin);
+        tfEmail = new TextField("", tfSkin);
         tfEmail.setMessageText("Email");
-        tfUsername = new TextField("",tfSkin);
+        tfUsername = new TextField("", tfSkin);
         tfUsername.setMessageText("Username");
-        tfPassword = new TextField("",tfSkin);
+        tfPassword = new TextField("", tfSkin);
         tfPassword.setMessageText("Password");
-        tfIP = new TextField("",tfSkin);
+        tfIP = new TextField("", tfSkin);
         tfIP.setMessageText("Server IP");
 
         myTrRegister = new TextureRegion(txtrRegister);
@@ -92,19 +95,21 @@ public class RegisterScreen extends AbstractScreen{
         addActor(tfIP);
 
 
-        btnBack.addListener(new InputListener() {
+        btnBack.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
                 return false;
             }
         });
 
-        btnRegister.addListener(new InputListener() {
+        btnRegister.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 String name = tfName.getText();
                 String lastName = tfLastName.getText();
                 String email = tfEmail.getText();
@@ -113,23 +118,25 @@ public class RegisterScreen extends AbstractScreen{
                 String IP = tfIP.getText();
 
                 LOGGER.log(Level.INFO, "Empty string: " + name.isEmpty());
-                try {
-                        ScreenManager.getInstance().setIp(IP);
-                        registry =  LocateRegistry.getRegistry(ScreenManager.getInstance().getIp(), ScreenManager.getInstance().getPortNumber());
-                        ScreenManager.getInstance().setRegistry(registry);
-                        conn = (IConnection) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().Getmeaningofconnection());
-                        ScreenManager.getInstance().setConn(conn);
+                try
+                {
+                    ScreenManager.getInstance().setIp(IP);
+                    registry = LocateRegistry.getRegistry(ScreenManager.getInstance().getIp(), ScreenManager.getInstance().getPortNumber());
+                    ScreenManager.getInstance().setRegistry(registry);
+                    conn = (IConnection) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().Getmeaningofconnection());
+                    ScreenManager.getInstance().setConn(conn);
 
-                        if (ScreenManager.getInstance().getConn().CreateUser(name, lastName, email, username, password)) {
-                            ScreenManager.getInstance().setUser(ScreenManager.getInstance().getConn().LogIn(email, password));
-                            ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
-                        }
+                    if (ScreenManager.getInstance().getConn().CreateUser(name, lastName, email, username, password))
+                    {
+                        ScreenManager.getInstance().setUser(ScreenManager.getInstance().getConn().LogIn(email, password));
+                        ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                    }
                 }
                 catch (RemoteException | SQLException e)
                 {
                     LOGGER.log(Level.WARNING, "Remote / SQL Exception: " + e.getMessage(), e);
                 }
-                catch(NotBoundException e)
+                catch (NotBoundException e)
                 {
                     LOGGER.log(Level.WARNING, "NotBoundException: " + e.getMessage(), e);
                 }

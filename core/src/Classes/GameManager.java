@@ -170,6 +170,7 @@ public class GameManager extends UnicastRemoteObject
 
                 //Werkt dit?
                 //notMineMap.entrySet().retainAll(tmp);
+                //notMineMap.entrySet().removeIf(longIGameObjectEntry -> tmp.stream().anyMatch(iGameObject -> iGameObject.getID() != longIGameObjectEntry.getValue().getID()));
 
                 for (Iterator iterator = notMineMap.entrySet().iterator(); iterator.hasNext(); ) // remove when extra
                 {
@@ -292,10 +293,12 @@ public class GameManager extends UnicastRemoteObject
         playerMe.setName(name);
         addGameObject(p);
     }
+
     public Spectator getSpectator()
     {
         return spectatorMe;
     }
+
     public void setSpectator(Spectator spectator)
     {
         this.spectatorMe = spectator;
@@ -317,7 +320,7 @@ public class GameManager extends UnicastRemoteObject
         //}
         //else
         //{
-            objects.add(go);
+        objects.add(go);
         //}
         if (online) Server.SetTick(name, go);
     }
@@ -363,7 +366,10 @@ public class GameManager extends UnicastRemoteObject
         return chatsOnline;
     }
 
-    public List<KillLog> getKillLogs() { return killLogs; }
+    public List<KillLog> getKillLogs()
+    {
+        return killLogs;
+    }
 
     public void clearChat(Chat chat) throws RemoteException
     {

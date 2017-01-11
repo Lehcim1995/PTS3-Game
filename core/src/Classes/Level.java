@@ -21,8 +21,8 @@ public class Level implements Serializable
     private int row = 1;
     private int block = 1;
     private int blockSize = 26;
-    private int levelBlockSizeX = (int) (LevelSizeX/blockSize);
-    private int levelBlockSizeY = (int) (LevelSizeY/blockSize);
+    private int levelBlockSizeX = (int) (LevelSizeX / blockSize);
+    private int levelBlockSizeY = (int) (LevelSizeY / blockSize);
 
 
     //<editor-fold desc="Getters & Setters">
@@ -71,30 +71,30 @@ public class Level implements Serializable
         switch (mode)
         {
             case 0:
-                for(int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     Vector2 renvec = new Vector2(r.nextFloat() * LevelSizeX, r.nextFloat() * LevelSizeY);
-                    blockList.addAll(GenerateCircle(false, r.nextInt(5) + 5 , renvec));
+                    blockList.addAll(GenerateCircle(false, r.nextInt(5) + 5, renvec));
                 }
                 break;
             case 1:
-                for(int i = 0; i < 15; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     blockList.addAll(GenerateLine(r.nextInt(levelBlockSizeX), r.nextInt(levelBlockSizeY), r.nextInt(levelBlockSizeX), r.nextInt(levelBlockSizeY), 0));
                 }
                 break;
             case 2:
-                for(int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     Vector2 renvec = new Vector2(r.nextFloat() * LevelSizeX, r.nextFloat() * LevelSizeY);
-                    blockList.addAll(GenerateSquare(true, r.nextInt(4) + 2,  renvec));
+                    blockList.addAll(GenerateSquare(true, r.nextInt(4) + 2, renvec));
                 }
                 break;
             case 3:
-                for(int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     Vector2 renvec = new Vector2(r.nextFloat() * LevelSizeX, r.nextFloat() * LevelSizeY);
-                    blockList.addAll(GenerateSquare(false, r.nextInt(4) + 3,  renvec));
+                    blockList.addAll(GenerateSquare(false, r.nextInt(4) + 3, renvec));
                 }
                 break;
             default:
@@ -147,10 +147,10 @@ public class Level implements Serializable
     private ArrayList<LevelBlock> GenerateCircle(boolean filled, int size, Vector2 position) throws RemoteException
     {
         ArrayList<LevelBlock> blockList = new ArrayList<>();
-        int halfsize = size/2;
-        for (int x = -halfsize; x < halfsize+1; x++)
+        int halfsize = size / 2;
+        for (int x = -halfsize; x < halfsize + 1; x++)
         {
-            for (int y = -halfsize; y < halfsize+1; y++)
+            for (int y = -halfsize; y < halfsize + 1; y++)
             {
                 //TODO add non - filled to code
                 if (filled)
@@ -193,14 +193,14 @@ public class Level implements Serializable
                 else
                 {
                     if (x == 0 || x == size - 1 || y == 0 || y == size - 1)
-                        {
-                            Vector2 addpos = new Vector2(x, y).scl(blockSize);
-                            LevelBlock bl = new LevelBlock(addpos.add(offset), 0);
-                            blockList.add(bl);
-                        }
+                    {
+                        Vector2 addpos = new Vector2(x, y).scl(blockSize);
+                        LevelBlock bl = new LevelBlock(addpos.add(offset), 0);
+                        blockList.add(bl);
                     }
                 }
             }
+        }
 
         System.out.println("Size = " + blockList.size());
         return blockList;
@@ -211,11 +211,11 @@ public class Level implements Serializable
     {
         ArrayList<LevelBlock> newLevelBlockList = new ArrayList<LevelBlock>();
         Random random = new Random(seed);
-        for(int i = 0; i < (levelSize * levelSize); i++)
+        for (int i = 0; i < (levelSize * levelSize); i++)
         {
-            LevelBlock levelBlock = new LevelBlock(new Vector2(0,0),0); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
+            LevelBlock levelBlock = new LevelBlock(new Vector2(0, 0), 0); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
             //GetNewBlockLocation(i)
-            levelBlock.setPosition(new Vector2(random.nextInt((int)LevelSizeX), random.nextInt((int)LevelSizeY)));
+            levelBlock.setPosition(new Vector2(random.nextInt((int) LevelSizeX), random.nextInt((int) LevelSizeY)));
             newLevelBlockList.add(levelBlock);
 
             //GameManager.getInstance().addGameObject(levelBlock);

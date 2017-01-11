@@ -8,9 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,7 +25,8 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 /**
  * Created by Nick on 22-11-2016.
  */
-public class LoginScreen extends AbstractScreen {
+public class LoginScreen extends AbstractScreen
+{
 
     private Texture txtrLogin;
     private Texture txtrRegister;
@@ -35,6 +39,7 @@ public class LoginScreen extends AbstractScreen {
     private TextField txtIP;
     private Skin tfSkin;
     private IUser user;
+
     /**
      * LoginScreen Constructor
      */
@@ -46,23 +51,24 @@ public class LoginScreen extends AbstractScreen {
     }
 
     @Override
-    public void buildStage() {
+    public void buildStage()
+    {
 
         // set textfield skin
         tfSkin = new Skin(Gdx.files.internal("uiskin.json"));
         // maak username textfield
-        txtUserName = new TextField("",tfSkin);
+        txtUserName = new TextField("", tfSkin);
         txtUserName.setMessageText("EMAIL");
         txtUserName.setPosition(260.f, 300.f, Align.center);
         // maak password textfield
-        txtPassword = new TextField("",tfSkin);
+        txtPassword = new TextField("", tfSkin);
         txtPassword.setPasswordMode(true);
         txtPassword.setMessageText("Password");
-        txtPassword.setPosition(260.f,250.f, Align.center);
+        txtPassword.setPosition(260.f, 250.f, Align.center);
         //maak ip textfield
-        txtIP = new TextField("",tfSkin);
+        txtIP = new TextField("", tfSkin);
         txtIP.setMessageText("Server IP");
-        txtIP.setPosition(260.f,200.f,Align.center);
+        txtIP.setPosition(260.f, 200.f, Align.center);
         // maak login button
         myTextureRegion = new TextureRegion(txtrLogin);
         myTrd = new TextureRegionDrawable(myTextureRegion);
@@ -72,7 +78,7 @@ public class LoginScreen extends AbstractScreen {
         registerTextureregion = new TextureRegion(txtrRegister);
         registerTrd = new TextureRegionDrawable(registerTextureregion);
         ImageButton btnRegister = new ImageButton(registerTrd);
-        btnRegister.setPosition(260.f,90.f,Align.center);
+        btnRegister.setPosition(260.f, 90.f, Align.center);
         // voeg componenten toe aan de scene
         addActor(txtUserName);
         addActor(txtPassword);
@@ -80,40 +86,43 @@ public class LoginScreen extends AbstractScreen {
         addActor(btnRegister);
         addActor(txtIP);
 
-        btnLogin.addListener(new InputListener() {
+        btnLogin.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 String email = txtUserName.getText();
                 String ww = txtPassword.getText();
                 String ip = txtIP.getText();
-                if(!txtUserName.getText().isEmpty() && !txtPassword.getText().isEmpty() && !txtIP.getText().isEmpty()){
+                if (!txtUserName.getText().isEmpty() && !txtPassword.getText().isEmpty() && !txtIP.getText().isEmpty())
+                {
                     try
                     {
                         try
                         {
                             ScreenManager.getInstance().setIp(ip);
-                            registry =  LocateRegistry.getRegistry(ScreenManager.getInstance().getIp(), ScreenManager.getInstance().getPortNumber());
+                            registry = LocateRegistry.getRegistry(ScreenManager.getInstance().getIp(), ScreenManager.getInstance().getPortNumber());
                             ScreenManager.getInstance().setRegistry(registry);
                             conn = (IConnection) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().Getmeaningofconnection());
                             ScreenManager.getInstance().setConn(conn);
                         }
-                        catch(RemoteException e)
+                        catch (RemoteException e)
                         {
                             LOGGER.log(Level.WARNING, "RemoteException: " + e.getMessage(), e);
                         }
-                        catch(NotBoundException e)
+                        catch (NotBoundException e)
                         {
                             LOGGER.log(Level.WARNING, "NotBoundException: " + e.getMessage(), e);
                         }
-                        if(conn != null)
+                        if (conn != null)
                         {
                             user = ScreenManager.getInstance().getConn().LogIn(email, ww);
                         }
-                        else{
+                        else
+                        {
                             LOGGER.log(Level.INFO, "kon registry niet juist ophalen");
                         }
-                        if(user != null)
+                        if (user != null)
                         {
                             ScreenManager.getInstance().setUser(user);
                             ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
@@ -132,10 +141,11 @@ public class LoginScreen extends AbstractScreen {
             }
         });
 
-        btnRegister.addListener(new InputListener(){
+        btnRegister.addListener(new InputListener()
+        {
             @Override
-                    public boolean touchDown(InputEvent event,
-            float x, float y, int pointer, int button){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 LOGGER.log(Level.INFO, "Registerbutton klicked");
                 ScreenManager.getInstance().showScreen(ScreenEnum.REGISTER);
                 return false;
@@ -144,7 +154,8 @@ public class LoginScreen extends AbstractScreen {
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         super.dispose();
     }
 }

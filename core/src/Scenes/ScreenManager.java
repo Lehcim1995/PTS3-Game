@@ -8,16 +8,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 /**
  * Created by Nick on 22-11-2016.
  */
-public class ScreenManager {
+public class ScreenManager
+{
     // Singleton: unique instance
     private static ScreenManager instance;
     private String lobby;
@@ -37,25 +34,23 @@ public class ScreenManager {
     private IServer pgm;
     private IGameManager gameManager;
     private String lobbyname;
+    //Player is spectator
+    private boolean isSpectator = false;
 
     // Singleton: private constructor
-    private ScreenManager() {
+    private ScreenManager()
+    {
         super();
     }
 
     // Singleton: retrieve instance
-    public static ScreenManager getInstance() {
-        if (instance == null) {
+    public static ScreenManager getInstance()
+    {
+        if (instance == null)
+        {
             instance = new ScreenManager();
         }
         return instance;
-    }
-    //Player is spectator
-    private boolean isSpectator = false;
-
-    public void setLobby(String lobby)
-    {
-        this.lobby = lobby;
     }
 
     public String getLobby()
@@ -63,18 +58,20 @@ public class ScreenManager {
         return lobby;
     }
 
-    public void setUser(IUser user)
+    public void setLobby(String lobby)
     {
-        this.user = user;
+        this.lobby = lobby;
     }
 
     // Initialization with the game class
-    public void initialize(Game game) {
+    public void initialize(Game game)
+    {
         this.game = game;
     }
 
     // Show in the game the screen which enum type is received
-    public void showScreen(ScreenEnum screenEnum, Object... params) {
+    public void showScreen(ScreenEnum screenEnum, Object... params)
+    {
 
         // Get current screen to dispose it
         Screen currentScreen = game.getScreen();
@@ -85,22 +82,27 @@ public class ScreenManager {
         game.setScreen(newScreen);
 
         // Dispose previous screen
-        if (currentScreen != null) {
+        if (currentScreen != null)
+        {
             currentScreen.dispose();
         }
     }
+
     public Registry GetRegistry()
     {
         return registry;
     }
+
     public IConnection GetConnection()
     {
         return conn;
     }
+
     public String Getmeaningofconnection()
     {
         return connection;
     }
+
     public String GetMeaningOfServer()
     {
         return Server;
@@ -111,29 +113,14 @@ public class ScreenManager {
         return ip;
     }
 
-    public int getPortNumber()
-    {
-        return portNumber;
-    }
-
-    public String getConnection()
-    {
-        return connection;
-    }
-
-    public Registry getRegistry()
-    {
-        return registry;
-    }
-
-    public IConnection getConn()
-    {
-        return conn;
-    }
-
     public void setIp(String ip)
     {
         this.ip = ip;
+    }
+
+    public int getPortNumber()
+    {
+        return portNumber;
     }
 
     public void setPortNumber(int portNumber)
@@ -141,14 +128,29 @@ public class ScreenManager {
         this.portNumber = portNumber;
     }
 
+    public String getConnection()
+    {
+        return connection;
+    }
+
     public void setConnection(String connection)
     {
         this.connection = connection;
     }
 
+    public Registry getRegistry()
+    {
+        return registry;
+    }
+
     public void setRegistry(Registry registry)
     {
         this.registry = registry;
+    }
+
+    public IConnection getConn()
+    {
+        return conn;
     }
 
     public void setConn(IConnection conn)
@@ -161,7 +163,13 @@ public class ScreenManager {
         return user;
     }
 
-    public void setpgm(IServer pgm){
+    public void setUser(IUser user)
+    {
+        this.user = user;
+    }
+
+    public void setpgm(IServer pgm)
+    {
         this.pgm = pgm;
     }
 
@@ -170,23 +178,24 @@ public class ScreenManager {
         return pgm;
     }
 
-    public void setGameManager(IGameManager gameManager)
-    {
-        this.gameManager = gameManager;
-    }
-
     public IGameManager getGameManager()
     {
         return gameManager;
     }
 
-    public void setIsSpectator(boolean spectator)
+    public void setGameManager(IGameManager gameManager)
     {
-        isSpectator = spectator;
+        this.gameManager = gameManager;
     }
+
     public boolean getIsSpectator()
     {
         return isSpectator;
+    }
+
+    public void setIsSpectator(boolean spectator)
+    {
+        isSpectator = spectator;
     }
 
     public void setLobbyName(String name)

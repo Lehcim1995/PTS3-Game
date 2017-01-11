@@ -1,7 +1,7 @@
 package Classes;
 
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -23,7 +23,8 @@ public class Spectator extends GameObject
         this.playerFromList = 0;
 
         ///TODO: Fix REcursive call of gamemanager.Getistance in constructor of spectator
-        new Thread(){
+        new Thread()
+        {
             @Override
             public void run()
             {
@@ -42,52 +43,56 @@ public class Spectator extends GameObject
 
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public String GetSpectatedName() {
+    public String GetSpectatedName()
+    {
         String spectatedName = "No player available to spectate";
 
-        if (player != null) {
+        if (player != null)
+        {
             spectatedName = player.getName();
         }
 
         return spectatedName;
     }
 
-    public void setSpectatedPlayer() {
+    public void setSpectatedPlayer()
+    {
         List<Player> playerList = GameManager.getInstance().GetSpectatedPlayer();
-        if(!playerList.isEmpty())
+        if (!playerList.isEmpty())
         {
-            if(playerFromList < 0)
-                playerFromList =  playerList.size()-1;
-            if(playerFromList > playerList.size() -1)
-                playerFromList = 0;
+            if (playerFromList < 0) playerFromList = playerList.size() - 1;
+            if (playerFromList > playerList.size() - 1) playerFromList = 0;
             //TODO: if no players in game to view error
             player = playerList.get(playerFromList);
             GameManager.getInstance().setSpectator(this);
         }
-        else{
+        else
+        {
             logger.info("er zijn nog geen spelers om naar te kijken.");
         }
     }
 
-    public void NextPlayer() {
+    public void NextPlayer()
+    {
         playerFromList++;
         setSpectatedPlayer();
     }
 
-    public void PrevPlayer() {
+    public void PrevPlayer()
+    {
         playerFromList--;
         setSpectatedPlayer();
     }
 
-    public Player getSpectatedPlayer(){
+    public Player getSpectatedPlayer()
+    {
         return player;
     }
-
-
 
 
 }

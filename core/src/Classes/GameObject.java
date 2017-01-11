@@ -64,7 +64,7 @@ public class GameObject implements IGameObject, Serializable
     public static final Vector2[] CircleHitbox(float size, int vertices)
     {
         Vector2[] vList = new Vector2[vertices];
-        double rad = Math.toRadians((double)360 / vertices);
+        double rad = Math.toRadians((double) 360 / vertices);
 
         for (int i = 0; i < vertices; i++)
         {
@@ -88,7 +88,7 @@ public class GameObject implements IGameObject, Serializable
         Vector2 v3 = new Vector2(x, -y);
         Vector2 v4 = new Vector2(-x, -y);
 
-        return new Vector2[] {v1, v2, v4, v3};
+        return new Vector2[]{v1, v2, v4, v3};
     }
 
     public Polygon getHitbox()
@@ -96,16 +96,17 @@ public class GameObject implements IGameObject, Serializable
         return hitbox.getLIBGDXPolygon();
     }
 
-    public void setHitbox(SerializablePolygon hitbox)
-    {
-        this.hitbox = hitbox;
-    }
-
     public void setHitbox(Vector2[] verticis)
     {
         hitbox = VerticisToPolygon(verticis);
         hitbox.setOrigin(0, 0);
     }
+
+    public void setHitbox(SerializablePolygon hitbox)
+    {
+        this.hitbox = hitbox;
+    }
+
     /**
      * Converts Vector2 Array to SerializablePolygon
      *
@@ -144,8 +145,7 @@ public class GameObject implements IGameObject, Serializable
 
         float dis = position.dst(other);
 
-        if (dis > 100)
-            return false;
+        if (dis > 100) return false;
         return isOverlap(hitbox.getLIBGDXPolygon(), go.getHitbox());
     }
 
@@ -173,8 +173,7 @@ public class GameObject implements IGameObject, Serializable
             float x = verticesB[i];
             float y = verticesB[i + 1];
 
-            if (isInside(x, y, A))
-                return true;
+            if (isInside(x, y, A)) return true;
         }
         //Check vertices A
         for (int i = 0; i < verticesA.length; i += 2)
@@ -182,8 +181,7 @@ public class GameObject implements IGameObject, Serializable
             float x = verticesA[i];
             float y = verticesA[i + 1];
 
-            if (isInside(x, y, B))
-                return true;
+            if (isInside(x, y, B)) return true;
         }
         return false;
     }
@@ -282,23 +280,25 @@ public class GameObject implements IGameObject, Serializable
     {
         // Has to have a Override.
     }
+
     /**
      * Draw objects
      *
      * @param shapeRenderer Shape
-     * @param batch Batch
+     * @param batch         Batch
      */
     public void Draw(ShapeRenderer shapeRenderer, Batch batch)
     {
         Draw(shapeRenderer);
     }
+
     /**
      * DrawText on screen
      *
      * @param batch
-     * @param font Font used
-     * @param layout Layout used
-     * @param text Text to draw
+     * @param font     Font used
+     * @param layout   Layout used
+     * @param text     Text to draw
      * @param position Position to draw
      */
     public void DrawText(Batch batch, BitmapFont font, GlyphLayout layout, String text, Vector2 position)

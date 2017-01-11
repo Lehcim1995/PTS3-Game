@@ -15,7 +15,8 @@ import com.badlogic.gdx.utils.Align;
 /**
  * Created by Nick on 22-11-2016.
  */
-public class StatsScreen extends AbstractScreen{
+public class StatsScreen extends AbstractScreen
+{
 
     IUser user;
     Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -29,7 +30,8 @@ public class StatsScreen extends AbstractScreen{
     }
 
     @Override
-    public void buildStage() {
+    public void buildStage()
+    {
 
         Label stats = new Label("Stats", skin);
 
@@ -74,18 +76,20 @@ public class StatsScreen extends AbstractScreen{
         btnBack.setPosition(260.f, 40.f, Align.center);
         addActor(btnBack);
 
-        btnBack.addListener(new InputListener() {
+        btnBack.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                 return false;
             }
         });
-}
+    }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         super.dispose();
     }
 }

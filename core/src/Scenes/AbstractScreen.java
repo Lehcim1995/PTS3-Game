@@ -1,7 +1,6 @@
 package Scenes;
 
 import Interfaces.IConnection;
-import Interfaces.IGameManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,8 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import java.net.InetAddress;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 /**
@@ -22,21 +19,24 @@ public abstract class AbstractScreen extends Stage implements Screen
     Registry registry;
     IConnection conn;
 
-    public abstract void buildStage();
-
-    protected AbstractScreen() {
-        super( new StretchViewport(500.0f, 500.0f, new OrthographicCamera()) );
+    protected AbstractScreen()
+    {
+        super(new StretchViewport(500.0f, 500.0f, new OrthographicCamera()));
         registry = ScreenManager.getInstance().GetRegistry();
         conn = ScreenManager.getInstance().GetConnection();
     }
 
+    public abstract void buildStage();
+
     @Override
-    public void show() {
+    public void show()
+    {
         Gdx.input.setInputProcessor(this);
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float delta)
+    {
         // Clear screen
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -47,22 +47,26 @@ public abstract class AbstractScreen extends Stage implements Screen
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         getViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
+    public void pause()
+    {
 
     }
 
     @Override
-    public void resume() {
+    public void resume()
+    {
 
     }
 
     @Override
-    public void hide() {
+    public void hide()
+    {
 
     }
 }

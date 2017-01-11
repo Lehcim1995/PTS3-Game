@@ -10,5 +10,6 @@ import java.sql.SQLException;
 public interface IConnection extends Remote
 {
     boolean CreateUser(String name, String lastname, String email, String username, String password) throws RemoteException;
+
     IUser LogIn(String email, String password) throws SQLException, RemoteException;
 }

@@ -8,16 +8,28 @@ import java.io.Serializable;
 public interface IUser extends Serializable
 {
     String getName();
+
     String getEmail();
+
     int getKills();
+
     int getDeaths();
+
     int getShots();
+
     int getShotsHit();
+
     int getMatchesPlayed();
+
     int getMatchesWon();
+
     int getMatchesLost();
+
     float getKDRatio();
+
     float getAccuracyPercentage();
+
     float getWinPercentage();
+
     boolean getBanned();
 }

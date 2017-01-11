@@ -121,7 +121,7 @@ public class Player extends GameObject
     public void Shoot() throws RemoteException
     {
         this.gunEquipped.Shoot();
-        shots ++;
+        shots++;
     }
 
     public void Reload()
@@ -151,8 +151,8 @@ public class Player extends GameObject
 
     public void Hit()
     {
-        kills ++;
-        shotsHit ++;
+        kills++;
+        shotsHit++;
         System.out.println("Hit player killed by: " + name + " Kills: " + kills + " shotsHit: " + shotsHit);
     }
 

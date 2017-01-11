@@ -29,6 +29,7 @@ public interface IGameManager extends Remote, Serializable
     float TICKLENGTH = 1000 / fps; // in milli
 
     List<IGameObject> GetTick(String id) throws RemoteException;
+
     void SetTick(String id, IGameObject object) throws RemoteException;
 
     void UpdateTick(String id, IGameObject object) throws RemoteException;

@@ -87,7 +87,7 @@ public class GameSceneScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e );
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
 
         if (GameManager.getInstance().getScene() == null)
@@ -103,7 +103,7 @@ public class GameSceneScreen extends AbstractScreen
         {
             camera.position.set(GameManager.getInstance().getSpectator().getSpectatedPlayer().getPosition().x, GameManager.getInstance().getSpectator().getSpectatedPlayer().getPosition().y, 1);
         }
-        
+
         camera.update();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -124,7 +124,7 @@ public class GameSceneScreen extends AbstractScreen
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e );
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
         }
         shapeRenderer.set(ShapeRenderer.ShapeType.Line);
@@ -150,18 +150,18 @@ public class GameSceneScreen extends AbstractScreen
         for (Iterator<Chat> iterator = GameManager.getInstance().getChats().iterator(); iterator.hasNext(); )
         {
             Chat c = iterator.next();
-            i+= c.getLayout().height + 3;
+            i += c.getLayout().height + 3;
             try
             {
                 //start is max-items = 100% en start = 0;
-                float alpha = 1f- ( i / (start + maxitmes));
-                c.setTextColor(new Color(0,0,0,alpha));
+                float alpha = 1f - (i / (start + maxitmes));
+                c.setTextColor(new Color(0, 0, 0, alpha));
                 c.setPosition(new Vector2(padding, i));
                 c.DrawChat(batch);
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e );
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
         }
 
@@ -176,21 +176,21 @@ public class GameSceneScreen extends AbstractScreen
         float startKill = (int) (height + height);
         float maxitemsKill = height * 15;
 
-        for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext();)
+        for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext(); )
         {
             KillLog kl = logs.next();
             iKill += kl.getLayout().height + 3;
             try
             {
                 //start is max-items = 100% en start = 0;
-                float alpha = 1f- ( iKill / (startKill + maxitemsKill));
-                kl.setTextColor(new Color(0,0,0,alpha));
+                float alpha = 1f - (iKill / (startKill + maxitemsKill));
+                kl.setTextColor(new Color(0, 0, 0, alpha));
                 kl.setPosition(new Vector2(padding, iKill));
                 kl.DrawChat(killBatch);
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e );
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
         }
         killBatch.end();
@@ -214,9 +214,10 @@ public class GameSceneScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e );
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
     }
+
     /**
      * update the Game scene.
      */

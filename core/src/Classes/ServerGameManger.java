@@ -1,22 +1,13 @@
 package Classes;
 
-import Interfaces.IConnection;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import Interfaces.IUser;
 import LibGDXSerialzableClasses.SerializableColor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.Array;
-import com.mysql.fabric.Server;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by michel on 15-11-2016.
@@ -69,7 +60,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public List<IGameObject> GetTick(String id)
     {
-        if(id.equals("Spectator"))
+        if (id.equals("Spectator"))
         {
             return everything;
         }
@@ -188,7 +179,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     public ArrayList<String> getUsers() throws RemoteException
     {
         stringUserList.clear();
-        for(User u : userList)
+        for (User u : userList)
         {
             stringUserList.add(u.getName());
         }
@@ -198,7 +189,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public void addUser(IUser user) throws RemoteException
     {
-        userList.add((User)user);
+        userList.add((User) user);
     }
 
     public IGameObject CreatePlayer(String name) throws RemoteException
@@ -216,7 +207,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         return name;
     }
 
-    public void addUser(User user){
+    public void addUser(User user)
+    {
         userList.add(user);
     }
 }

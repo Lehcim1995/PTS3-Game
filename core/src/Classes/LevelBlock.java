@@ -14,17 +14,17 @@ public class LevelBlock extends GameObject
 
     private SerializableColor color = SerializableColor.LIGHT_GRAY;
     private float size = 26;
-    private float halfSize = size/2;
+    private float halfSize = size / 2;
 
     public LevelBlock(Vector2 position, float rotation, Vector2[] hitbox) throws RemoteException
     {
-        super (position, rotation);
+        super(position, rotation);
         this.setHitbox(hitbox);
     }
 
     public LevelBlock(Vector2 position, float rotation) throws RemoteException
     {
-        super (position, rotation);
+        super(position, rotation);
         this.setHitbox(VerticisToPolygon(DefaultHitbox(size)));
     }
 

@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.*;
 import java.util.logging.Level;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
@@ -299,10 +298,11 @@ public class Database
             }
         }
     }
+
     /**
      * Login check in database.
      *
-     * @param query The querry used
+     * @param query     The querry used
      * @param arguments Login Data
      */
     public ArrayList<User> LogIn(String query, Object... arguments)

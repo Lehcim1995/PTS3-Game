@@ -15,9 +15,10 @@ public interface IServer extends Remote, Serializable
     String connection = "connection";
 
     ArrayList<String> getLobbies() throws RemoteException;
-    IGameManager CreateLobby(String name) throws RemoteException;
-    IGameManager JoinLobby (String name, IUser user) throws RemoteException;
 
+    IGameManager CreateLobby(String name) throws RemoteException;
+
+    IGameManager JoinLobby(String name, IUser user) throws RemoteException;
 
 
 }

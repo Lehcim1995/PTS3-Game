@@ -1,20 +1,13 @@
 package Scenes;
 
 import Classes.Chat;
-import Classes.GameManager;
-import Classes.Player;
 import Classes.User;
-import Interfaces.IGameManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -22,12 +15,11 @@ import com.badlogic.gdx.utils.Align;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.graphics.g3d.particles.ParticleChannels.Color;
-
 /**
  * Created by Nick on 22-11-2016.
  */
-public class GameLobbyScreen extends AbstractScreen{
+public class GameLobbyScreen extends AbstractScreen
+{
     private Texture txtrLeave;
     private Texture txtrReady;
     private Texture txtrSpec;
@@ -38,7 +30,7 @@ public class GameLobbyScreen extends AbstractScreen{
     private TextureRegion trRefresh;
     private TextureRegionDrawable TrdLeave;
     private TextureRegionDrawable TrdReady;
-    private  TextureRegionDrawable TrdSpec;
+    private TextureRegionDrawable TrdSpec;
     private TextureRegionDrawable trdRefresh;
     private List listPlayers;
     private List listChat;
@@ -61,7 +53,8 @@ public class GameLobbyScreen extends AbstractScreen{
     }
 
     @Override
-    public void buildStage() {
+    public void buildStage()
+    {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         //Button Leave
@@ -99,13 +92,13 @@ public class GameLobbyScreen extends AbstractScreen{
         {
             e.printStackTrace();
         }
-        scrollPanePlayer = new ScrollPane(listPlayers,skin);
+        scrollPanePlayer = new ScrollPane(listPlayers, skin);
         scrollPanePlayer.setSize(200.f, 150.f);
         scrollPanePlayer.setPosition(25.f, 350.f);
 
         //List Chat
         listChat = new List(skin);
-        listChat.setItems("asd","qwe","zxc","fdg","Sibe","Myron");
+        listChat.setItems("asd", "qwe", "zxc", "fdg", "Sibe", "Myron");
         Table textAreaHolder = new Table();
         textAreaHolder.debug();
         scrollPaneChat = new ScrollPane(textAreaHolder);
@@ -115,13 +108,13 @@ public class GameLobbyScreen extends AbstractScreen{
         scrollPaneChat.setSize(200.f, 150.f);
         scrollPaneChat.setPosition(25.f, 110.f);
         //final Table table = new Table();
-       // table.setFillParent(true);
+        // table.setFillParent(true);
         //table.add(scrollPaneChat).fill();
         //scrollPaneChat.setForceScroll(false, true);
         //ChatBoxInput
-        txtChatInput = new TextField("",skin);
+        txtChatInput = new TextField("", skin);
         txtChatInput.setSize(200f, 25f);
-        txtChatInput.setPosition(125.f,85.f, Align.center);
+        txtChatInput.setPosition(125.f, 85.f, Align.center);
 
         //Add all items to scene
         addActor(btnLeave);
@@ -132,19 +125,21 @@ public class GameLobbyScreen extends AbstractScreen{
         addActor(scrollPaneChat);
         addActor(txtChatInput);
 
-        btnLeave.addListener(new InputListener() {
+        btnLeave.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                 return false;
             }
         });
 
-        btnReady.addListener(new InputListener() {
+        btnReady.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 //todo set player to ready
                 System.out.println("Player X is ready");
                 //todo only when all players are ready
@@ -153,31 +148,35 @@ public class GameLobbyScreen extends AbstractScreen{
             }
         });
 
-        
-        btnSpectate.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button){
 
-                if(!ScreenManager.getInstance().getIsSpectator()){
+        btnSpectate.addListener(new InputListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+
+                if (!ScreenManager.getInstance().getIsSpectator())
+                {
                     System.out.println("Spectating");
                     ScreenManager.getInstance().setIsSpectator(true);
                     ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 }
-                else {
+                else
+                {
                     System.out.println("No longer spectating");
                     ScreenManager.getInstance().setIsSpectator(false);
                 }
 
-                return  false;
+                return false;
             }
 
         });
 
-        btnRefresh.addListener(new InputListener() {
+        btnRefresh.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
                 return false;
             }
@@ -185,10 +184,13 @@ public class GameLobbyScreen extends AbstractScreen{
 
         //TODO Check if enter pressed then push text in message to server and add to chatlist
 
-        txtChatInput.setTextFieldListener(new TextField.TextFieldListener() {
+        txtChatInput.setTextFieldListener(new TextField.TextFieldListener()
+        {
             @Override
-            public void keyTyped(TextField textField, char key) {
-                if ((key == '\r' || key == '\n')){
+            public void keyTyped(TextField textField, char key)
+            {
+                if ((key == '\r' || key == '\n'))
+                {
                     textField.next(Gdx.input.isKeyPressed(Input.Keys.ENTER));
                     listChat.setItems(listChat.getItems().toString(System.lineSeparator()) + System.lineSeparator() + textField.getText());
 //                    if (font != null && layout != null)
@@ -208,10 +210,14 @@ public class GameLobbyScreen extends AbstractScreen{
         });
 
     }
-    public void addNewMessage(String message, User user){
+
+    public void addNewMessage(String message, User user)
+    {
         //TODO: add message to the list of messages (may need to update the scrollpane)
     }
-    public void addNewUser(User user){
+
+    public void addNewUser(User user)
+    {
         //TODO: add user to the list of users in the lobby (may need to update the scrollpane)
     }
 }

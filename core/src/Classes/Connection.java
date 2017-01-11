@@ -6,8 +6,8 @@ import Interfaces.IUser;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-
 import java.util.logging.Level;
+
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 
@@ -17,6 +17,7 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 public class Connection extends UnicastRemoteObject implements IConnection
 {
     private transient Database database;
+
     /**
      * Connection Constructor
      */
@@ -31,7 +32,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
 
         if (!name.isEmpty() && !lastname.isEmpty() && email.contains("@"))
         {
-            if(!username.isEmpty() && !password.isEmpty())
+            if (!username.isEmpty() && !password.isEmpty())
             {
                 String query = "INSERT INTO USER_TABLE(NAME, LASTNAME, EMAIL, USERNAME, PASSWORD) VALUES (?,?,?,?,?)";
 
@@ -61,24 +62,28 @@ public class Connection extends UnicastRemoteObject implements IConnection
             }
             catch (Exception e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e );
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
         }
 
         return null;
     }
+
     /**
      * Update Stats of a User.
+     *
      * @param user - object that contains the new stats.
      */
     public void UpdateStats(User user)
     {
         String query = "UPDATE USER_TABLE SET kills = ?, deaths = ?, shotshit = ?, shots = ?, matchesplayed = ?, matcheswon = ?, matcheslost = ? WHERE email = ?";
 
-        database.setDatabase(query, user.getKills(), user.getDeaths(), user.getShotsHit(), user.getShots(), user.getMatchesPlayed(),  user.getMatchesWon(), user.getMatchesLost(), user.getEmail());
+        database.setDatabase(query, user.getKills(), user.getDeaths(), user.getShotsHit(), user.getShots(), user.getMatchesPlayed(), user.getMatchesWon(), user.getMatchesLost(), user.getEmail());
     }
+
     /**
      * Ban the user by User.
+     *
      * @param user - object that is getting banned.
      */
     public void BanUser(User user)

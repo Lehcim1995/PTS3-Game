@@ -15,14 +15,13 @@ import java.util.Timer;
  */
 public class InputClass implements InputProcessor
 {
+    private final float holdDownTimer = 15;
     private Player player;
-    private HashMap<Integer,Boolean> KeymapHold;
-    private HashMap<Integer,Date> KeymapUp;
-    private HashMap<Integer,Date> KeymapDown;
+    private HashMap<Integer, Boolean> KeymapHold;
+    private HashMap<Integer, Date> KeymapUp;
+    private HashMap<Integer, Date> KeymapDown;
     private Timer timer;
     private boolean chating;
-
-    private final float holdDownTimer = 15;
 
     public InputClass(Player p)
     {
@@ -50,15 +49,14 @@ public class InputClass implements InputProcessor
     public boolean keyDown(int keycode)
     {
 
-        if (!chating)
-            KeymapHold.put(keycode, true);
-        if(ScreenManager.getInstance().getIsSpectator())
+        if (!chating) KeymapHold.put(keycode, true);
+        if (ScreenManager.getInstance().getIsSpectator())
         {
-            if(keycode == Input.Keys.LEFT)
+            if (keycode == Input.Keys.LEFT)
             {
                 GameManager.getInstance().getSpectator().NextPlayer();
             }
-            if(keycode == Input.Keys.RIGHT)
+            if (keycode == Input.Keys.RIGHT)
             {
                 GameManager.getInstance().getSpectator().PrevPlayer();
             }
@@ -117,21 +115,23 @@ public class InputClass implements InputProcessor
     @Override
     public boolean keyTyped(char character)
     {
-        if (chating)
-            GameManager.getInstance().chat += character;
+        if (chating) GameManager.getInstance().chat += character;
         return chating;
     }
 
     @Override
-    public boolean touchDown (int x, int y, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
+    public boolean touchDown(int x, int y, int pointer, int button)
+    {
+        if (button == Input.Buttons.LEFT)
+        {
             // Some stuff
             //System.out.println("Pew");
             ///player.Shoot();
             player.setShooting(true);
             return true;
         }
-        if (button == Input.Buttons.RIGHT) {
+        if (button == Input.Buttons.RIGHT)
+        {
             // Some stuff
             //System.out.println("Pew");
             //GameManager.getInstance().ClearProjectiles();
@@ -145,7 +145,8 @@ public class InputClass implements InputProcessor
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
-        if (button == Input.Buttons.LEFT) {
+        if (button == Input.Buttons.LEFT)
+        {
             player.getGunEquipped().setHasShot(false);
             player.setShooting(false);
             return true;
@@ -156,8 +157,8 @@ public class InputClass implements InputProcessor
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
-        float deltaX = (int)player.getScreenPosition().x - screenX;
-        float deltaY = (int)player.getScreenPosition().y - screenY;
+        float deltaX = (int) player.getScreenPosition().x - screenX;
+        float deltaY = (int) player.getScreenPosition().y - screenY;
         Vector2 delta = new Vector2(deltaX, deltaY);
 
         player.rotation = delta.angle();
@@ -167,8 +168,8 @@ public class InputClass implements InputProcessor
     @Override
     public boolean mouseMoved(int screenX, int screenY)
     {
-        float deltaX = (int)player.getScreenPosition().x - screenX;
-        float deltaY = (int)player.getScreenPosition().y - screenY;
+        float deltaX = (int) player.getScreenPosition().x - screenX;
+        float deltaY = (int) player.getScreenPosition().y - screenY;
         Vector2 delta = new Vector2(deltaX, deltaY);
 
         player.rotation = delta.angle();

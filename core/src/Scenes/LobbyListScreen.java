@@ -5,12 +5,12 @@ import Interfaces.IServer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -20,7 +20,8 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 /**
  * Created by Nick on 22-11-2016.
  */
-public class LobbyListScreen extends AbstractScreen{
+public class LobbyListScreen extends AbstractScreen
+{
 
     private Texture txtrLogout;
     private Texture txtrJoin;
@@ -43,6 +44,7 @@ public class LobbyListScreen extends AbstractScreen{
     private Skin skin;
     private IServer pgm;
     private Skin tfSkin;
+
     /**
      * LobbyListScreen constructor
      */
@@ -58,23 +60,24 @@ public class LobbyListScreen extends AbstractScreen{
 
         try
         {
-            pgm =  (IServer) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().GetMeaningOfServer());
+            pgm = (IServer) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().GetMeaningOfServer());
             ScreenManager.getInstance().setpgm(pgm);
         }
         catch (RemoteException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e );
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
         catch (NotBoundException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e );
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
 
 
     }
 
     @Override
-    public void buildStage() {
+    public void buildStage()
+    {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         tfSkin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -109,9 +112,9 @@ public class LobbyListScreen extends AbstractScreen{
         btnRefresh.setPosition(375.f, 400.f, Align.center);
 
         //textfieldlobby
-        txtLobbyName = new TextField("",tfSkin);
+        txtLobbyName = new TextField("", tfSkin);
         txtLobbyName.setMessageText("Enter Lobby Name");
-        txtLobbyName.setPosition(150.f,300.f,Align.center);
+        txtLobbyName.setPosition(150.f, 300.f, Align.center);
 
         //List Lobbies
         listServers = new List(skin);
@@ -123,7 +126,7 @@ public class LobbyListScreen extends AbstractScreen{
         {
             e.printStackTrace();
         }
-        scrollPaneServers = new ScrollPane(listServers,skin);
+        scrollPaneServers = new ScrollPane(listServers, skin);
         scrollPaneServers.setSize(200.f, 150.f);
         scrollPaneServers.setPosition(25.f, 350.f);
 
@@ -141,15 +144,14 @@ public class LobbyListScreen extends AbstractScreen{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
 
-                String servernaam =  (String)listServers.getItems().get(listServers.getSelectedIndex());
+                String servernaam = (String) listServers.getItems().get(listServers.getSelectedIndex());
                 System.out.println(servernaam);
                 try
                 {
                     ScreenManager.getInstance().setLobby(txtLobbyName.getText());
                     IGameManager sgm = pgm.JoinLobby(servernaam, ScreenManager.getInstance().getUser());
-                    if(sgm != null) {
-                        System.out.println("sgm is not null");
-
+                    if (sgm != null)
+                    {
                         ScreenManager.getInstance().setGameManager(sgm);
                         sgm.addUser(ScreenManager.getInstance().getUser());
                         ScreenManager.getInstance().setLobbyName(servernaam);
@@ -159,32 +161,35 @@ public class LobbyListScreen extends AbstractScreen{
                 }
                 catch (RemoteException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e );
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
 
                 return false;
             }
         });
 
-        btnLogout.addListener(new InputListener() {
+        btnLogout.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
                 return false;
             }
         });
-        btnJoin.addListener(new InputListener() {
+        btnJoin.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 try
                 {
-                    if(pgm.getLobbies().contains(txtLobbyName.getText()))
+                    if (pgm.getLobbies().contains(txtLobbyName.getText()))
                     {
                         ScreenManager.getInstance().setLobby(txtLobbyName.getText());
                         IGameManager sgm = pgm.JoinLobby(txtLobbyName.getText(), ScreenManager.getInstance().getUser());
-                        if(sgm != null) {
+                        if (sgm != null)
+                        {
 
                             ScreenManager.getInstance().setGameManager(sgm);
                             sgm.addUser(ScreenManager.getInstance().getUser());
@@ -192,47 +197,52 @@ public class LobbyListScreen extends AbstractScreen{
                             ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
                         }
                     }
-                    else{
+                    else
+                    {
                         LOGGER.log(Level.INFO, "Voer geldige Lobby in!");
                     }
 
                 }
                 catch (RemoteException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e );
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
                 return false;
             }
         });
-        btnStats.addListener(new InputListener() {
+        btnStats.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 ScreenManager.getInstance().showScreen(ScreenEnum.STATS);
                 return false;
             }
         });
-        btnCreate.addListener(new InputListener() {
+        btnCreate.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 ScreenManager.getInstance().showScreen(ScreenEnum.NEWLOBBY);
                 return false;
             }
         });
 
-        btnRefresh.addListener(new InputListener() {
+        btnRefresh.addListener(new InputListener()
+        {
             @Override
-            public boolean touchDown(InputEvent event,
-                                     float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                 return false;
             }
         });
-        }
+    }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         super.dispose();
     }
 }

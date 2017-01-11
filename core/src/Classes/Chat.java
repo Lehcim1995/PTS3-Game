@@ -25,9 +25,11 @@ public class Chat extends GameObject
 
     private transient BitmapFont font = new BitmapFont();
     private transient GlyphLayout layout = new GlyphLayout();
+
     /**
      * Chat constructor
-     * @param message - text message from a player
+     *
+     * @param message    - text message from a player
      * @param fromPlayer - player that send the message
      */
     public Chat(String message, Player fromPlayer) throws RemoteException
@@ -44,8 +46,10 @@ public class Chat extends GameObject
     {
         super.Draw(shapeRenderer, batch);
     }
+
     /**
      * DrawChat
+     *
      * @param batch - Idk
      */
     public void DrawChat(Batch batch) throws RemoteException
@@ -60,24 +64,30 @@ public class Chat extends GameObject
 
         dead = millis() - born > lifeTime;
     }
+
     /**
      * isDead
+     *
      * @return Boolean true or false
      */
     public boolean isDead()
     {
         return dead;
     }
+
     /**
      * getBorn
+     *
      * @return long
      */
     public float getBorn()
     {
         return born;
     }
+
     /**
      * setTextColor
+     *
      * @param c - The color of the text
      */
     public void setTextColor(Color c)
@@ -98,8 +108,7 @@ public class Chat extends GameObject
 
     public GlyphLayout getLayout()
     {
-        if (layout == null)
-            layout = new GlyphLayout();
+        if (layout == null) layout = new GlyphLayout();
         return layout;
     }
 }
