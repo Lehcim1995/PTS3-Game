@@ -49,13 +49,21 @@ public class Player extends GameObject
     private boolean shooting = false;
     private transient BitmapFont font = new BitmapFont();
     private transient GlyphLayout layout = new GlyphLayout();
-
+    /**
+     * Create new instance of Player
+     *
+     * @param position - Location to spawn
+     * @param rotation - Orientation to spawn
+     */
     public Player(Vector2 position, float rotation) throws RemoteException
     {
         super(position, rotation);
         setHitbox(circleHitbox(halfWidth));
     }
-
+    /**
+     * Create new instance of Player
+     *
+     */
     public Player() throws RemoteException
     {
         super();
@@ -70,7 +78,11 @@ public class Player extends GameObject
         setHitbox(circleHitbox(halfWidth));
 
     }
-
+    /**
+     * Create new instance of existing Player
+     *
+     * @param p - the Player
+     */
     public Player(Player p) throws RemoteException
     {
         super();
@@ -81,8 +93,12 @@ public class Player extends GameObject
         this.getGunEquipped().setOwner(this);
         setHitbox(circleHitbox(halfWidth));
     }
-
-    public Player(Player p, boolean PlayerInput) throws RemoteException
+    /**
+     * Create new instance of existing Player
+     *
+     * @param p - the Player
+     */
+    public Player(Player p, boolean playerInput) throws RemoteException
     {
         super();
         //640,480
@@ -95,15 +111,19 @@ public class Player extends GameObject
         this.gunEquipped = Gun.CZ75;
         this.getGunEquipped().setOwner(this);
 
-        if (PlayerInput)
+        if (playerInput)
         {
             Gdx.input.setInputProcessor(ic);
         }
 
         setHitbox(circleHitbox(halfWidth));
     }
-
-    public Player(boolean PlayerInput) throws RemoteException
+    /**
+     * Create new instance of existing Player
+     *
+     * @param playerInput - the Player
+     */
+    public Player(boolean playerInput) throws RemoteException
     {
         super();
         //640,480
@@ -113,7 +133,7 @@ public class Player extends GameObject
         this.gunEquipped = Gun.CZ75;
         this.getGunEquipped().setOwner(this);
 
-        if (PlayerInput)
+        if (playerInput)
         {
             Gdx.input.setInputProcessor(ic);
         }
