@@ -23,7 +23,7 @@ public class KillLog extends GameObject
     private Projectile projectile;
     private Player player;
     private transient GlyphLayout layout = new GlyphLayout();
-    private BitmapFont font;
+    private transient BitmapFont font;
     private float lifeTime = 10000 * 1000; //in milli secondss
     private long born;
     private boolean dead;
