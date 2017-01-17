@@ -18,12 +18,11 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.logging.Logger;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 11-10-2016.
- * @param chat
- * @param killLog
  */
 public class GameManager extends UnicastRemoteObject
 {
@@ -40,18 +39,15 @@ public class GameManager extends UnicastRemoteObject
     private List<Chat> chatsOnline;
     private boolean gen = false;
     private boolean online;
-    private IGameManager Server;
-    private Registry registry;
+    private IGameManager server;
+    private transient Registry registry;
     private Player playerMe;
     private Spectator spectatorMe;
     private AbstractScreen scene;
     private float tick = 0;
-    private Logger logger;
 
     private GameManager() throws RemoteException
     {
-
-        logger = Logger.getAnonymousLogger();
         killLogs = new ArrayList<>();
         objects = new ArrayList<>();
         notMine = new ArrayList<>();
@@ -67,7 +63,7 @@ public class GameManager extends UnicastRemoteObject
         }
         catch (UnknownHostException e)
         {
-            logger.info("Client: UnknownHostException: " + e.getMessage());
+            LOGGER.log(java.util.logging.Level.INFO, "Client: UnknownHostException: " + e.getMessage());
             online = false;
         }
         String ip = ScreenManager.getInstance().getIp();//localhost.getHostAddress();
@@ -77,23 +73,23 @@ public class GameManager extends UnicastRemoteObject
         {
             registry = LocateRegistry.getRegistry(ip, portNumber);
             String ServerManger = "serermanager";
-            //Server = (IGameManager) registry.lookup(ServerManger); //TODO dit geeft een IServer terug geen IGamemanger
+            //server = (IGameManager) registry.lookup(ServerManger); //TODO dit geeft een IServer terug geen IGamemanger
             IServer tempserver = (IServer) registry.lookup(ServerManger);
             //not bound exception
             String servername = ScreenManager.getInstance().getLobbyname();
             System.out.println("ServerName: " + servername);
-            Server = tempserver.JoinLobby(servername, ScreenManager.getInstance().getUser());
+            server = tempserver.JoinLobby(servername, ScreenManager.getInstance().getUser());
 
 
         }
-        catch (RemoteException ex)
+        catch (RemoteException e)
         {
-            logger.info("Client: RemoteExeption " + ex.getMessage());
+            LOGGER.log(java.util.logging.Level.INFO, "Client: RemoteExeption: " + e.getMessage());
             online = false;
         }
         catch (NotBoundException e)
         {
-            logger.info("Client: NotBoundException " + e.getMessage());
+            LOGGER.log(java.util.logging.Level.INFO, "Client: NotBoundException: " + e.getMessage());
             online = false;
         }
         Random r = new Random();
@@ -113,7 +109,7 @@ public class GameManager extends UnicastRemoteObject
             me.setColor(SerializableColor.getRandomColor());
             addPlayer(me);
         }
-        if (online) level = Server.GetLevel();
+        if (online) level = server.GetLevel();
         else level = new Level();
 
         for (GameObject obj : level.getLevelBlocks())
@@ -142,7 +138,7 @@ public class GameManager extends UnicastRemoteObject
             StartMatch();
         }
 
-        //objects.addAll(Server.GetTick());
+        //objects.addAll(server.GetTick());
         notMine.clear();
         chatsOnline.clear();
         killLogs.clear();
@@ -152,7 +148,7 @@ public class GameManager extends UnicastRemoteObject
             if (tick > 0.005f) //doe het elke zoveel seconden
             {
                 tick = 0;
-                List<IGameObject> tmp = new ArrayList<>(Server.GetTick(name));
+                List<IGameObject> tmp = new ArrayList<>(server.GetTick(name));
 
                 for (IGameObject i : tmp) //add if absent
                 {
@@ -207,7 +203,7 @@ public class GameManager extends UnicastRemoteObject
         for (IGameObject object : clonelist)
         {
             object.update();
-            if (online) Server.UpdateTick(name, object);
+            if (online) server.UpdateTick(name, object);
         }
 
         ArrayList<GameObject[]> hitlist = new ArrayList<>();
@@ -325,13 +321,13 @@ public class GameManager extends UnicastRemoteObject
         //{
         objects.add(go);
         //}
-        if (online) Server.SetTick(name, go);
+        if (online) server.SetTick(name, go);
     }
 
     public void removeGameObject(GameObject go) throws RemoteException
     {
         objects.remove(go);
-        if (online) Server.DeleteTick(name, go);
+        if (online) server.DeleteTick(name, go);
     }
 
     public List<IGameObject> getObjects()
@@ -361,7 +357,7 @@ public class GameManager extends UnicastRemoteObject
 
     public void stop() throws RemoteException
     {
-        Server.DeleteUser(name);
+        server.DeleteUser(name);
     }
 
     public List<Chat> getChats()
