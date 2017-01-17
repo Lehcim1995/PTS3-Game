@@ -12,13 +12,16 @@ import java.util.logging.Logger;
 public class Spectator extends GameObject
 {
     private String name;
-    //private GameManager gm;
     private int playerFromList;
     private Player player;
     private transient Logger logger;
-    private boolean AddedUser;
+    private boolean addedUser;
     private transient InputClass inputClass;
-
+    /**
+     * Spectator Constructor
+     *
+     * @param name - Name of the player that is spectator
+     */
     public Spectator(String name) throws RemoteException
     {
         logger = Logger.getAnonymousLogger();
@@ -33,7 +36,10 @@ public class Spectator extends GameObject
     {
         return name;
     }
-
+    /**
+     * Gets spectators name
+     *
+     */
     public String GetSpectatedName()
     {
         String spectatedName = "No player available to spectate";
@@ -49,21 +55,29 @@ public class Spectator extends GameObject
     @Override
     public void update() throws RemoteException {
         super.update();
-        if (!AddedUser)
+        if (!addedUser)
         {
             setSpectatedPlayer();
-            AddedUser = true;
+            addedUser = true;
         }
     }
-
+    /**
+     * Set a player to be spectated by the specatator
+     *
+     */
     public void setSpectatedPlayer()
     {
         List<Player> playerList = GameManager.getInstance().GetSpectatedPlayer();
         if (!playerList.isEmpty())
         {
-            if (playerFromList < 0) playerFromList = playerList.size() - 1;
-            if (playerFromList > playerList.size() - 1) playerFromList = 0;
-            //TODO: if no players in game to view error
+            if (playerFromList < 0)
+            {
+                playerFromList = playerList.size() - 1;
+            }
+            if (playerFromList > playerList.size() - 1)
+            {
+                playerFromList = 0;
+            }
             player = playerList.get(playerFromList);
             GameManager.getInstance().setSpectator(this);
         }
@@ -72,13 +86,19 @@ public class Spectator extends GameObject
             logger.info("er zijn nog geen spelers om naar te kijken.");
         }
     }
-
+    /**
+     * Next player in the list
+     *
+     */
     public void NextPlayer()
     {
         playerFromList++;
         setSpectatedPlayer();
     }
-
+    /**
+     * Previous player in the list
+     *
+     */
     public void PrevPlayer()
     {
         playerFromList--;

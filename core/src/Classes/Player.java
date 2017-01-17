@@ -139,18 +139,27 @@ public class Player extends GameObject
         }
         setHitbox(circleHitbox(halfWidth));
     }
-
+    /**
+     * Make the player shoot
+     *
+     */
     public void Shoot() throws RemoteException
     {
         this.gunEquipped.shoot();
         shots++;
     }
-
+    /**
+     * Reloads the player's gun
+     *
+     */
     public void Reload()
     {
         gunEquipped.reload();
     }
-
+    /**
+     * Spawns the player on a new location
+     *
+     */
     public void Spawn()
     {
 
@@ -160,24 +169,32 @@ public class Player extends GameObject
         }
         position = new Vector2(r.nextInt(610) + 17, r.nextInt(450) + 17);
     }
-
+    /**
+     * Kills the the player
+     *
+     */
     public void Die(Projectile projectile) throws RemoteException
     {
         health = 0;
         deaths++;
         KillLog kl = new KillLog(projectile, this);
         GameManager.getInstance().addGameObject(kl);
-//        GameManager.getInstance().AddKillLog(kl);
         GameManager.getInstance().SpawnPlayer(this);
     }
-
+    /**
+     * Player is hit by a projectile
+     *
+     */
     public void Hit()
     {
         kills++;
         shotsHit++;
-        System.out.println("Hit player killed by: " + name + " Kills: " + kills + " shotsHit: " + shotsHit);
     }
-
+    /**
+     * Draws the player on the screen
+     *
+     * @param sr - Renderer
+     */
     @Override
     public void Draw(ShapeRenderer sr)
     {
@@ -201,9 +218,9 @@ public class Player extends GameObject
             font.setColor(Color.BLACK);
             String text = GameManager.getInstance().getPlayer().getGunEquipped().toString();
             layout.setText(font, text);
-            float width = layout.width;// contains the width of the current set text
-            float height = layout.height; // contains the height of the current set text
-            font.draw(bc, layout, GameManager.getInstance().getCamera().viewportWidth - width, height);
+            float l_width = layout.width;// contains the width of the current set text
+            float l_height = layout.height; // contains the height of the current set text
+            font.draw(bc, layout, GameManager.getInstance().getCamera().viewportWidth - l_width, l_height);
             bc.end();
         }
 
@@ -311,7 +328,6 @@ public class Player extends GameObject
         {
             Vector2 playerpos = new Vector2(position);
             Vector2 otherpos = ((LevelBlock) other).position;
-            LevelBlock lb = (LevelBlock) other;
 
             Vector2 diff = playerpos.sub(otherpos).setLength(200 * Gdx.graphics.getDeltaTime());
             position.add(diff);
