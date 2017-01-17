@@ -233,6 +233,18 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         //idObjects.entrySet().forEach(set -> everything.removeIf(obj -> obj.getID() == ((IGameObject) set.getValue()).getID()));
         //idObjects.entrySet().removeIf(keyid -> Objects.equals(keyid.getKey(), id));
 
+        if (idObjects.get(id) instanceof User) {
+            User user = (User) idObjects.get(id);
+            for (Object object : everything) {
+                if (object instanceof Player) {
+                    if (user.getName().equals(((Player) object).getName())) {
+                        Player player = (Player) object;
+                        user.UpdateData(player.getKills(), player.getDeaths(), player.getShotsHit(), player.getShots(), player.getKills() >= 10 ? true : false);
+                    }
+                }
+            }
+        }
+
         idObjects.remove(id);
     }
 
