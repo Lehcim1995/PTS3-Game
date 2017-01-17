@@ -86,10 +86,6 @@ public class GameSceneScreen extends AbstractScreen
         super.render(delta);
         try
         {
-            if (GameManager.getInstance().IsStopped())
-            {
-                //ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
-            }
             update();
         }
         catch (RemoteException e)
@@ -208,6 +204,11 @@ public class GameSceneScreen extends AbstractScreen
         }
 //        killBatch.end();
         batch.end();
+        if (GameManager.getInstance().IsStopped())
+        {
+            ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+            ///TODO: switch boolean
+        }
     }
 
     @Override

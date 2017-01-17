@@ -25,7 +25,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     private Level level;
 
     private float matchTime = 5000; //5 * 60 * 1000;
-    private Timer matchTimer;
+    private transient Timer matchTimer;
     private boolean matchStarted;
     private PreGameManager pgm;
 
