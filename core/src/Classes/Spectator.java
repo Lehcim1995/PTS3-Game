@@ -14,6 +14,7 @@ public class Spectator extends GameObject
     private int playerFromList;
     private Player player;
     private Logger logger;
+    private boolean AddedUser;
 
     public Spectator(String name) throws RemoteException
     {
@@ -22,24 +23,7 @@ public class Spectator extends GameObject
 
         this.playerFromList = 0;
 
-        ///TODO: Fix REcursive call of gamemanager.Getistance in constructor of spectator
-        new Thread()
-        {
-            @Override
-            public void run()
-            {
-                super.run();
-                try
-                {
-                    Thread.sleep(100);
-                    setSpectatedPlayer();
-                }
-                catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }.run();
+
 
     }
 
@@ -58,6 +42,16 @@ public class Spectator extends GameObject
         }
 
         return spectatedName;
+    }
+
+    @Override
+    public void update() throws RemoteException {
+        super.update();
+        if (!AddedUser)
+        {
+            setSpectatedPlayer();
+            AddedUser = true;
+        }
     }
 
     public void setSpectatedPlayer()

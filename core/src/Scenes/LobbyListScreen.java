@@ -63,11 +63,7 @@ public class LobbyListScreen extends AbstractScreen
             pgm = (IServer) ScreenManager.getInstance().getRegistry().lookup(ScreenManager.getInstance().GetMeaningOfServer());
             ScreenManager.getInstance().setpgm(pgm);
         }
-        catch (RemoteException e)
-        {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
-        }
-        catch (NotBoundException e)
+        catch (RemoteException|NotBoundException e)
         {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
@@ -78,7 +74,6 @@ public class LobbyListScreen extends AbstractScreen
     @Override
     public void buildStage()
     {
-
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         tfSkin = new Skin(Gdx.files.internal("uiskin.json"));
         //Logout
@@ -124,7 +119,7 @@ public class LobbyListScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
         scrollPaneServers = new ScrollPane(listServers, skin);
         scrollPaneServers.setSize(200.f, 150.f);
@@ -145,7 +140,6 @@ public class LobbyListScreen extends AbstractScreen
             {
 
                 String servernaam = (String) listServers.getItems().get(listServers.getSelectedIndex());
-                System.out.println(servernaam);
                 try
                 {
                     ScreenManager.getInstance().setLobby(txtLobbyName.getText());
@@ -238,11 +232,5 @@ public class LobbyListScreen extends AbstractScreen
                 return false;
             }
         });
-    }
-
-    @Override
-    public void dispose()
-    {
-        super.dispose();
     }
 }

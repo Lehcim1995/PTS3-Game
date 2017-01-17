@@ -5,16 +5,19 @@ import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Random;
+import java.util.logging.*;
+import java.util.logging.Level;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by myron on 11-10-16.
  */
 public class Gun implements Serializable
 {
-    public final static Gun CZ75 = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, null);
-    public final static Gun SUPER = new Gun("SUPER", 0, 50, 0, 10, 500, gunType.Automatic, true, 1000, 1000, null);
+    public static final Gun CZ75 = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, null);
+    public static final Gun SUPER = new Gun("SUPER", 0, 50, 0, 10, 500, gunType.Automatic, true, 1000, 1000, null);
     private String name;
     private float reloadTime;
     private float bulletsPerSecond;
@@ -32,8 +35,22 @@ public class Gun implements Serializable
     private transient long lastShot;
     private transient boolean reloading = false;
     private transient boolean hasShot = false;
-    private gunType GunMode = gunType.Automatic;
-
+    private gunType gunMode = gunType.Automatic;
+    /**
+     * Gun Constructor
+     *
+     * @param name - Gun name
+     * @param reloadTime - Time it takes to reload the gun
+     * @param bulletsPerSecond - Amount of bullets that can be shot in one sec
+     * @param spread - Width range of a gun's bullets
+     * @param currentBullets - Bullets a gun is having
+     * @param maxBullets - Maximum amount of bullets the gun can have
+     * @param gunMode - The mode of the gun
+     * @param hasInfinit - If it has infinit ammo
+     * @param bulletSpeed - Speed of the bullets
+     * @param projectileDamage - Damage of one bullet
+     * @param owner - Owner of the gun
+     */
     public Gun(String name, float reloadTime, float bulletsPerSecond, float spread, int currentBullets, int maxBullets, gunType gunMode, boolean hasInfinit, float bulletSpeed, int projectileDamage, Player owner)
     {
         this.name = name;
@@ -46,7 +63,7 @@ public class Gun implements Serializable
             this.currentBullets = maxBullets;
         }
         this.maxBullets = maxBullets;
-        GunMode = gunMode;
+        this.gunMode = gunMode;
         this.hasInfinit = hasInfinit;
         this.bulletSpeed = bulletSpeed;
         this.projectileDamage = projectileDamage;
@@ -128,10 +145,13 @@ public class Gun implements Serializable
     {
         this.hasShot = hasShot;
     }
-
+    /**
+     * Shooting the gun
+     *
+     */
     public void Shoot() throws RemoteException
     {
-        if (millis() - lastShot > 1000 / bulletsPerSecond && (GunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
+        if (millis() - lastShot > 1000 / bulletsPerSecond && (gunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
             Random r = new Random();
             float rot = owner.getRotation();
@@ -145,56 +165,55 @@ public class Gun implements Serializable
             lastShot = millis();
         }
     }
-
+    /**
+     * Reloading the gun
+     *
+     */
     public void Reload()
     {
 
-        if (!owner.reloadThread)
+        if (!owner.reloadThread && reloadThread == null || !reloadThread.isAlive())
         {
-            if (reloadThread == null || !reloadThread.isAlive())
+            owner.reloadThread = true;
+            reloadThread = new Thread(() ->
             {
-                owner.reloadThread = true;
-                reloadThread = new Thread(() ->
+                if (currentBullets != maxBullets)
                 {
-                    if (currentBullets != maxBullets)
+                    if (currentBullets > 0)
                     {
-                        System.out.println("Reloading");
-                        if (currentBullets > 0)
-                        {
-                            totalBullets += currentBullets;
-                        }
-                        currentBullets = 0;
-                        try
-                        {
-                            Thread.sleep((long) reloadTime);
-                        }
-                        catch (InterruptedException e)
-                        {
-                            e.printStackTrace();
-                        }
+                        totalBullets += currentBullets;
+                    }
+                    currentBullets = 0;
+                    try
+                    {
+                        Thread.sleep((long) reloadTime);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        LOGGER.log(Level.SEVERE,"Interruped ex: " + e);
+                    }
 
-                        if (!hasInfinit)
+                    if (!hasInfinit)
+                    {
+                        if (totalBullets >= maxBullets)
                         {
-                            if (totalBullets >= maxBullets)
-                            {
-                                currentBullets = maxBullets;
-                                totalBullets -= maxBullets;
-                            }
-                            else
-                            {
-                                currentBullets = totalBullets;
-                                totalBullets = 0;
-                            }
+                            currentBullets = maxBullets;
+                            totalBullets -= maxBullets;
                         }
                         else
                         {
-                            currentBullets = maxBullets;
+                            currentBullets = totalBullets;
+                            totalBullets = 0;
                         }
                     }
-                    owner.reloadThread = false;
-                });
-                reloadThread.start();
-            }
+                    else
+                    {
+                        currentBullets = maxBullets;
+                    }
+                }
+                owner.reloadThread = false;
+            });
+            reloadThread.start();
         }
     }
 
@@ -203,7 +222,10 @@ public class Gun implements Serializable
     {
         return name + " " + " Ammo" + currentBullets + "/" + maxBullets;
     }
-
+    /**
+     * The type of a gun
+     *
+     */
     public enum gunType
     {
         Automatic,
