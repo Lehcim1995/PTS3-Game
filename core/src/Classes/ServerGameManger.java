@@ -8,6 +8,7 @@ import LibGDXSerialzableClasses.SerializableColor;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Created by michel on 15-11-2016.
@@ -23,9 +24,10 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     private Random r = new Random();
     private Level level;
 
-    private float matchTime = 5 * 60 * 1000;
+    private float matchTime = 5000; //5 * 60 * 1000;
     private Timer matchTimer;
     private boolean matchStarted;
+    private PreGameManager pgm;
 
     public ServerGameManger() throws RemoteException
     {
@@ -37,6 +39,13 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     {
         Constructor();
         this.name = name;
+    }
+
+    public ServerGameManger(String name, PreGameManager preGameManager) throws RemoteException
+    {
+        Constructor();
+        this.name = name;
+        pgm = preGameManager;
     }
 
 
@@ -79,6 +88,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
                 allbutmeobject.addAll(objlist.getValue());
             }
         }
+
+        allbutmeobject.addAll(everything);
 
         return allbutmeobject;
     }
@@ -251,6 +262,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     @Override
     public void startMatch() throws RemoteException
     {
+        System.out.println("Match start");
+        final ServerGameManger me = this;
         matchTimer.schedule(new TimerTask()
         {
             @Override
@@ -258,8 +271,20 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
             {
                 System.out.println("game over bitch!!");
                 matchTimer.cancel();
+
+                try
+                {
+                    StopGameObject sgo = new StopGameObject();
+                    everything.add(sgo);
+                }
+                catch (RemoteException e)
+                {
+                    e.printStackTrace();
+                }
+
+                pgm.StopLobby(me.getName());
             }
-        }, (long) 0,(long) matchTime);
+        },(long) matchTime, (long) matchTime);
         matchStarted = true;
     }
 

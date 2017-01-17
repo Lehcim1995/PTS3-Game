@@ -2,10 +2,8 @@ package Classes;
 
 import java.rmi.RemoteException;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.logging.Level;
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
-
 /**
  * Created by Jasper on 11-10-2016.
  */
@@ -14,6 +12,7 @@ public class Spectator extends GameObject
     private String name;
     private int playerFromList;
     private Player player;
+    private boolean AddedUser;
     /**
      * Spectator constructor
      *
@@ -43,7 +42,6 @@ public class Spectator extends GameObject
                 }
             }
         }.start();
-
     }
 
     public String getName()
@@ -64,6 +62,16 @@ public class Spectator extends GameObject
         }
 
         return spectatedName;
+    }
+
+    @Override
+    public void update() throws RemoteException {
+        super.update();
+        if (!AddedUser)
+        {
+            setSpectatedPlayer();
+            AddedUser = true;
+        }
     }
     /**
      * Set the player that is being spectated
@@ -114,6 +122,4 @@ public class Spectator extends GameObject
     {
         return player;
     }
-
-
 }
