@@ -4,11 +4,11 @@ import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import Interfaces.IUser;
 import LibGDXSerialzableClasses.SerializableColor;
+import com.badlogic.gdx.math.Vector2;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * Created by michel on 15-11-2016.
@@ -131,6 +131,20 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     }
 
     @Override
+    public void UpdateTick(String id, long objectId, Vector2 newPostion, float newRotation) throws RemoteException
+    {
+        for(IGameObject obj : idObjects.get(id))
+        {
+            if (obj.getID() == objectId)
+            {
+                obj.setPosition(newPostion);
+                obj.setRotation(newRotation);
+                break;
+            }
+        }
+    }
+
+    @Override
     public void UpdateTick(String id, IGameObject object) throws RemoteException
     {
         //System.out.println("Update Object From : " + id);
@@ -233,6 +247,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         //idObjects.entrySet().forEach(set -> everything.removeIf(obj -> obj.getID() == ((IGameObject) set.getValue()).getID()));
         //idObjects.entrySet().removeIf(keyid -> Objects.equals(keyid.getKey(), id));
 
+        /*
         if (idObjects.get(id) instanceof User) {
             User user = (User) idObjects.get(id);
             for (Object object : everything) {
@@ -243,7 +258,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
                     }
                 }
             }
-        }
+        }*/
+
 
         idObjects.remove(id);
         userList.removeIf(user -> user.getName().equals(id));
