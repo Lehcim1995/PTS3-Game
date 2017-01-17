@@ -28,7 +28,7 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 public class GameManager extends UnicastRemoteObject
 {
     private static GameManager instance;
-    private final Level level;
+    private Level level;
     public static String chat = "";
     public static String killLog = "";
     private ArrayList<KillLog> killLogs;
@@ -49,6 +49,11 @@ public class GameManager extends UnicastRemoteObject
     private boolean isStoped;
 
     private GameManager() throws RemoteException
+    {
+        constructor();
+    }
+
+    private void constructor() throws RemoteException
     {
         killLogs = new ArrayList<>();
         objects = new ArrayList<>();
@@ -289,6 +294,8 @@ public class GameManager extends UnicastRemoteObject
     public void StartMatch() throws RemoteException
     {
         gen = true;
+        isStoped =false;
+        constructor();
     }
     /**
      * Removes a projectile

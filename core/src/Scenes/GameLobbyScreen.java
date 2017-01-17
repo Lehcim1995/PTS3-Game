@@ -1,6 +1,7 @@
 package Scenes;
 
 import Classes.Chat;
+import Classes.GameManager;
 import Classes.User;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -147,6 +148,14 @@ public class GameLobbyScreen extends AbstractScreen
                 LOGGER.log(Level.INFO, "A player is ready.");
                 //todo only when all players are ready
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
+                try
+                {
+                    GameManager.getInstance().StartMatch();
+                }
+                catch (RemoteException e)
+                {
+                    e.printStackTrace();
+                }
                 return false;
             }
         });
