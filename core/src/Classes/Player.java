@@ -332,4 +332,24 @@ public class Player extends GameObject
     {
         this.color = color;
     }
+
+    public int getKills()
+    {
+        return kills;
+    }
+
+    public int getDeaths()
+    {
+        return deaths;
+    }
+
+    public int getShots()
+    {
+        return shots;
+    }
+
+    public int getShotsHit()
+    {
+        return shotsHit;
+    }
 }
