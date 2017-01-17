@@ -87,6 +87,16 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
         }
         return null;
     }
+    public void LeaveLobby(String lobbyname, String username) throws RemoteException
+    {
+        for (ServerGameManger sgm : lobbies)
+        {
+            if (sgm.getName().equals(lobbyname))
+            {
+               sgm.DeleteUser(username);
+            }
+        }
+    }
 
     public void StopLobby(String name)
     {

@@ -420,6 +420,7 @@ public class GameManager extends UnicastRemoteObject
         online = false;
         isStoped = true;
         ///TODO: DElete user from lobby registry
+
     }
 
     public List<Chat> getChats()

@@ -73,6 +73,11 @@ public class NewLobbyScreen extends AbstractScreen
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                try {
+                    ScreenManager.getInstance().getGameManager().DeleteUser(ScreenManager.getInstance().getUser().getName());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 return false;
             }
         });
