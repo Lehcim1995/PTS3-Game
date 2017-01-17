@@ -22,12 +22,15 @@ import java.util.logging.Logger;
 
 /**
  * Created by Nick on 11-10-2016.
+ * @param chat
+ * @param killLog
  */
 public class GameManager extends UnicastRemoteObject
 {
     private static GameManager instance;
     private final Level level;
-    public String chat = "";
+    public static String chat = "";
+    public static String killLog = "";
     private ArrayList<KillLog> killLogs;
     private String name;
     private List<IGameObject> objects;

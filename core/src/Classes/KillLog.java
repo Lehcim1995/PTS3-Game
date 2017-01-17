@@ -59,7 +59,7 @@ public class KillLog extends GameObject
         super.Draw(shapeRenderer, batch);
     }
 
-    public void DrawChat(Batch batch) throws RemoteException
+    public void DrawKL(Batch batch) throws RemoteException
     {
         if (font == null || layout == null)
         {

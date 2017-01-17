@@ -19,7 +19,7 @@ public class Chat extends GameObject
 {
     private String message;
     private Player fromPlayer;
-    private float lifeTime = 10000 * 1000; //in milli secondss
+    private float lifeTime = 10000f * 1000; //in milli secondss
     private long born;
     private boolean dead;
 
