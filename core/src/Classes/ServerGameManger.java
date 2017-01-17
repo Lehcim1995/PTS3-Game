@@ -23,6 +23,10 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     private Random r = new Random();
     private Level level;
 
+    private float matchTime = 5 * 60 * 1000;
+    private Timer matchTimer;
+    private boolean matchStarted;
+
     public ServerGameManger() throws RemoteException
     {
         Constructor();
@@ -71,7 +75,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         {
             if (!objlist.getKey().equals(id))
             {
-                System.out.println("Adding from " + objlist.getKey() + " TO " + id);
+                //System.out.println("Adding from " + objlist.getKey() + " TO " + id);
                 allbutmeobject.addAll(objlist.getValue());
             }
         }
@@ -101,7 +105,16 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         everything.add(object); // voeg nieuw object toe aan iedereen
         idObjects.entrySet().stream().filter(entry -> !entry.getKey().equals(id)).forEach(entry -> entry.getValue().add(object)); //voeg object toe aan iedereen behalve ik
         */
-
+        if(!matchStarted){
+            try
+            {
+                startMatch();
+            }
+            catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
+        }
         idObjects.putIfAbsent(id, new ArrayList<>());
         idObjects.get(id).add(object);
     }
@@ -187,6 +200,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         stringUserList = new ArrayList<>();
         idObjects = new HashMap<>(100);
         level = new Level();
+        matchTimer = new Timer();
 
     }
 
@@ -232,6 +246,21 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     public void addUser(IUser user) throws RemoteException
     {
         userList.add((User) user);
+    }
+
+    @Override
+    public void startMatch() throws RemoteException
+    {
+        matchTimer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                System.out.println("game over bitch!!");
+                matchTimer.cancel();
+            }
+        }, (long) matchTime,0);
+        matchStarted = true;
     }
 
     public IGameObject CreatePlayer(String name) throws RemoteException

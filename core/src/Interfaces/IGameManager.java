@@ -43,4 +43,8 @@ public interface IGameManager extends Remote, Serializable
     ArrayList<String> getUsers() throws RemoteException;
 
     void addUser(IUser user) throws RemoteException;
+
+    void startMatch() throws RemoteException;
+
+
 }
