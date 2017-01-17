@@ -174,14 +174,13 @@ public class GameSceneScreen extends AbstractScreen
 
         klFont.setColor(Color.RED);
         killLog.setText(klFont, GameManager.getInstance().killLog);
-        float klHeigth = killLog.height;
+        float klHeight = killLog.height;
         float klPadding = 4;
+        klFont.draw(killBatch, killLog, klPadding, klHeight);
 
         int iKill = (int) (height + height);
         float startKill = (int) (height + height);
         float maxitemsKill = height * 15;
-
-        klFont.draw(killBatch, killLog, padding, height);
 
         for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext(); )
         {
@@ -192,7 +191,7 @@ public class GameSceneScreen extends AbstractScreen
                 //start is max-items = 100% en start = 0;
                 float alpha = 1f - (iKill / (startKill + maxitemsKill));
                 kl.setTextColor(new Color(0, 0, 0, alpha));
-                kl.setPosition(new Vector2(padding, iKill));
+                kl.setPosition(new Vector2(klPadding, iKill));
                 kl.DrawKL(killBatch);
             }
             catch (RemoteException e)

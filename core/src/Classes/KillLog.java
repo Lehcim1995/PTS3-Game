@@ -35,6 +35,8 @@ public class KillLog extends GameObject
         this.player = player;
         born = nanoTime();
         position = new Vector2(0, 0);
+
+        GameManager.getInstance().killLog = toString();
     }
 
     public void setTextColor(Color c)
