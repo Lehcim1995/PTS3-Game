@@ -1,7 +1,11 @@
 package Classes;
 
 import Interfaces.IGameObject;
+import Interfaces.IServer;
 import LibGDXSerialzableClasses.SerializableColor;
+import Scenes.GameSceneScreen;
+import Scenes.ScreenEnum;
+import Scenes.ScreenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -13,6 +17,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.util.Random;
 
 /**
@@ -233,6 +238,12 @@ public class Player extends GameObject
             if (ic.GetKey(Input.Keys.P))
             {
                 Spawn();
+            }
+            if (ic.GetKey(Input.Keys.ESCAPE))
+            {
+                //leave game
+                GameManager.getInstance().stop();
+                ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
             }
         }
 
