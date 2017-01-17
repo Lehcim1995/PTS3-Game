@@ -32,7 +32,7 @@ public class GameObject implements IGameObject, Serializable
         id = this.hashCode();
         position = new Vector2();
         rotation = 0;
-        hitbox = VerticisToPolygon(CircleHitbox(5));
+        hitbox = VerticisToPolygon(circleHitbox(5));
     }
 
     protected GameObject(Vector2 position, float rotation, SerializablePolygon hitbox) throws RemoteException
@@ -48,7 +48,7 @@ public class GameObject implements IGameObject, Serializable
         id = this.hashCode();
         this.position = position;
         this.rotation = rotation;
-        setHitbox(DefaultHitbox(10));
+        setHitbox(defaultHitbox(10));
     }
     /**
      * Returns a hitbox made with the size given
@@ -56,9 +56,9 @@ public class GameObject implements IGameObject, Serializable
      * @param size Hit range
      * @return returns defaulthitbox using the pararm's size
      */
-    public static final Vector2[] DefaultHitbox(float size)
+    public static final Vector2[] defaultHitbox(float size)
     {
-        return DefaultHitbox(size, size);
+        return defaultHitbox(size, size);
     }
     /**
      * Returns a hitbox made with the size given
@@ -66,9 +66,9 @@ public class GameObject implements IGameObject, Serializable
      * @param size Hit range
      * @return returns default cercle hitbox using the pararm's size
      */
-    public static final Vector2[] CircleHitbox(float size)
+    public static final Vector2[] circleHitbox(float size)
     {
-        return CircleHitbox(size, 18);
+        return circleHitbox(size, 18);
     }
     /**
      * Returns a hitbox made with the size given
@@ -77,7 +77,7 @@ public class GameObject implements IGameObject, Serializable
      * @param vertices Vertices
      * @return returns default cercle hitbox using the pararm's size and vertices
      */
-    public static final Vector2[] CircleHitbox(float size, int vertices)
+    public static final Vector2[] circleHitbox(float size, int vertices)
     {
         Vector2[] vList = new Vector2[vertices];
         double rad = Math.toRadians((double) 360 / vertices);
@@ -100,7 +100,7 @@ public class GameObject implements IGameObject, Serializable
      * @param width Width of the vector
      * @return returns Vector2 array of given params
      */
-    public static final Vector2[] DefaultHitbox(float height, float width)
+    public static final Vector2[] defaultHitbox(float height, float width)
     {
         float y = height / 2;
         float x = width / 2;
