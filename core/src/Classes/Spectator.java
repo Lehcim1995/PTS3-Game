@@ -13,7 +13,7 @@ public class Spectator extends GameObject
     //private GameManager gm;
     private int playerFromList;
     private Player player;
-    private Logger logger;
+    private transient Logger logger;
     private boolean AddedUser;
 
     public Spectator(String name) throws RemoteException
@@ -22,9 +22,6 @@ public class Spectator extends GameObject
         this.name = name;
 
         this.playerFromList = 0;
-
-
-
     }
 
     public String getName()
