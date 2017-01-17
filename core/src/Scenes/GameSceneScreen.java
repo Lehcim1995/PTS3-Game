@@ -186,15 +186,14 @@ public class GameSceneScreen extends AbstractScreen
         int iKill = (int) (height + height);
         float startKill = (int) (height + height);
         float maxitemsKill = height * 15;
-        KillLog kl = null;
 
-        Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator();
-
-        if ((kl = logs.next()) != null) {
+        for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext(); )
+        {
+            KillLog kl = logs.next();
+            iKill += kl.getLayout().height + 3;
             try
             {
                 //start is max-items = 100% en start = 0;
-                iKill += kl.getLayout().height + 3;
                 float alpha = 1f - (iKill / (startKill + maxitemsKill));
                 kl.setTextColor(new Color(0, 0, 0, alpha));
                 kl.setPosition(new Vector2(klPadding, iKill));
@@ -203,7 +202,7 @@ public class GameSceneScreen extends AbstractScreen
             }
             catch (RemoteException e)
             {
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
         }
 //        killBatch.end();
