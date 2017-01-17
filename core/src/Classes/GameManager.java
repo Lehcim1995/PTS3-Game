@@ -63,40 +63,38 @@ public class GameManager extends UnicastRemoteObject
         }
         catch (UnknownHostException e)
         {
-            LOGGER.log(java.util.logging.Level.INFO, "Client: UnknownHostException: " + e.getMessage());
+            LOGGER.log(java.util.logging.Level.SEVERE, "Client: UnknownHostException: " + e.getMessage());
             online = false;
         }
-        String ip = ScreenManager.getInstance().getIp();//localhost.getHostAddress();
+        String ip = ScreenManager.getInstance().getIp();//Or get the localhost.getHostAddress();
         int portNumber = ScreenManager.getInstance().getPortNumber();
 
         try
         {
             registry = LocateRegistry.getRegistry(ip, portNumber);
-            String ServerManger = "serermanager";
+            String serverManger = "serermanager";
             //server = (IGameManager) registry.lookup(ServerManger); //TODO dit geeft een IServer terug geen IGamemanger
-            IServer tempserver = (IServer) registry.lookup(ServerManger);
+            IServer tempserver = (IServer) registry.lookup(serverManger);
             //not bound exception
-            String servername = ScreenManager.getInstance().getLobbyname();
-            System.out.println("ServerName: " + servername);
-            server = tempserver.JoinLobby(servername, ScreenManager.getInstance().getUser());
+            String serverName = ScreenManager.getInstance().getLobbyname();
+            System.out.println("ServerName: " + serverName);
+            server = tempserver.JoinLobby(serverName, ScreenManager.getInstance().getUser());
 
 
         }
         catch (RemoteException e)
         {
-            LOGGER.log(java.util.logging.Level.INFO, "Client: RemoteExeption: " + e.getMessage());
+            LOGGER.log(java.util.logging.Level.SEVERE, "Client: RemoteExeption: " + e.getMessage());
             online = false;
         }
         catch (NotBoundException e)
         {
-            LOGGER.log(java.util.logging.Level.INFO, "Client: NotBoundException: " + e.getMessage());
+            LOGGER.log(java.util.logging.Level.SEVERE, "Client: NotBoundException: " + e.getMessage());
             online = false;
         }
-        Random r = new Random();
-        name = ScreenManager.getInstance().getUser().getName(); //r.nextInt(100000000) + "";
-        System.out.println(name);
+        name = ScreenManager.getInstance().getUser().getName();
+        LOGGER.log(java.util.logging.Level.INFO, "User name: " + name);
 
-        //todo: MIGHT NEED FIX
         //Check if spectator if not make Player else make Spectator
         if (ScreenManager.getInstance().getIsSpectator())
         {
@@ -109,8 +107,14 @@ public class GameManager extends UnicastRemoteObject
             me.setColor(SerializableColor.getRandomColor());
             addPlayer(me);
         }
-        if (online) level = server.GetLevel();
-        else level = new Level();
+        if (online)
+        {
+            level = server.GetLevel();
+        }
+        else
+        {
+            level = new Level();
+        }
 
         for (GameObject obj : level.getLevelBlocks())
         {
@@ -124,13 +128,16 @@ public class GameManager extends UnicastRemoteObject
         {
             return instance == null ? (instance = new GameManager()) : instance;
         }
-        catch (RemoteException ex)
+        catch (RemoteException e)
         {
-            //logger.info("Client Remote error " + ex.getMessage());
+            LOGGER.log(java.util.logging.Level.SEVERE, "getInstance Error " + e.getMessage());
         }
         return instance;
     }
-
+    /**
+     * Timed Update
+     *
+     */
     public void Update() throws RemoteException
     {
         if (!gen)
@@ -138,7 +145,6 @@ public class GameManager extends UnicastRemoteObject
             StartMatch();
         }
 
-        //objects.addAll(server.GetTick());
         notMine.clear();
         chatsOnline.clear();
         killLogs.clear();
@@ -152,24 +158,10 @@ public class GameManager extends UnicastRemoteObject
 
                 for (IGameObject i : tmp) //add if absent
                 {
-                    /*if (i.getClass() == Chat.class )
-                    {
-                        chatsOnline.add((Chat) i);
-                    }
-                    else*/
-                    {
-                        notMineMap.putIfAbsent(i.getID(), i);
-                        notMineMap.get(i.getID()).setPosition(i.getPosition());
-                        notMineMap.get(i.getID()).setRotation(i.getRotation());
-                    }
+                    notMineMap.putIfAbsent(i.getID(), i);
+                    notMineMap.get(i.getID()).setPosition(i.getPosition());
+                    notMineMap.get(i.getID()).setRotation(i.getRotation());
                 }
-
-                //als id in notmine niet in tmp staat haaldeze weg
-                //TODO : maak dit korter en sneller
-
-                //Werkt dit?
-                //notMineMap.entrySet().retainAll(tmp);
-                //notMineMap.entrySet().removeIf(longIGameObjectEntry -> tmp.stream().anyMatch(iGameObject -> iGameObject.getID() != longIGameObjectEntry.getValue().getID()));
 
                 for (Iterator iterator = notMineMap.entrySet().iterator(); iterator.hasNext(); ) // remove when extra
                 {
@@ -196,14 +188,17 @@ public class GameManager extends UnicastRemoteObject
 
         chatsOnline.addAll(getObjectList(notMine, Chat.class));
         killLogs.addAll(getObjectList(notMine, KillLog.class));
-        chatsOnline.sort(Comparator.comparingDouble((chat1) -> -chat1.getBorn()));
-        killLogs.sort(Comparator.comparingDouble((killlog1) -> -killlog1.getBorn()));
+        chatsOnline.sort(Comparator.comparingDouble(chat1 -> -chat1.getBorn()));
+        killLogs.sort(Comparator.comparingDouble(killlog1 -> -killlog1.getBorn()));
 
         ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();
         for (IGameObject object : clonelist)
         {
             object.update();
-            if (online) server.UpdateTick(name, object);
+            if (online)
+            {
+                server.UpdateTick(name, object);
+            }
         }
 
         ArrayList<GameObject[]> hitlist = new ArrayList<>();
@@ -211,12 +206,9 @@ public class GameManager extends UnicastRemoteObject
         {
             for (IGameObject go2 : notMine)
             {
-                if (go1 != go2)
+                if (go1 != go2 && go1.isHit(go2))
                 {
-                    if (go1.isHit(go2))
-                    {
-                        hitlist.add(new GameObject[]{(GameObject) go1, (GameObject) go2});
-                    }
+                    hitlist.add(new GameObject[]{(GameObject) go1, (GameObject) go2});
                 }
             }
         }
@@ -245,46 +237,60 @@ public class GameManager extends UnicastRemoteObject
             }
             catch (ClassCastException e)
             {
-                System.out.println("Cast Error " + e.getMessage());
+                LOGGER.log(java.util.logging.Level.SEVERE, "Cast Error " + e.getMessage());
             }
             catch (NullPointerException e)
             {
-
+                LOGGER.log(java.util.logging.Level.SEVERE, "Null Error " + e.getMessage());
             }
         }
 
         return returnList;
     }
-
+    /**
+     * Get the Me Player
+     *
+     */
     public Player getPlayer()
     {
         return playerMe;
     }
-
+    /**
+     * Spawn a Player
+     *
+     * @param player    - Player to be spawned
+     */
     public void SpawnPlayer(Player player)
     {
         player.Spawn();
     }
-
-    //TODO start a match
+    /**
+     * Starts the Match of a lobby
+     *
+     */
     public void StartMatch() throws RemoteException
     {
-        //level = new Level();
         gen = true;
-
-
     }
-
+    /**
+     * Removes a projectile
+     *
+     * @param p    - The projectile to be removed
+     */
     public void ClearProjectile(Projectile p) throws RemoteException
     {
         removeGameObject(p);
     }
-
+    //TODO: Make use of the Method EndMatch. Still needs to be filled in.
     public void EndMatch()
     {
 
     }
-
+    /**
+     * Adds Player to the game.
+     *
+     * @param p    - Player to be added to the game
+     */
     public void addPlayer(Player p) throws RemoteException
     {
         System.out.println("Spawn Player");
@@ -292,17 +298,26 @@ public class GameManager extends UnicastRemoteObject
         playerMe.setName(name);
         addGameObject(p);
     }
-
+    /**
+     * gets the Spectator
+     *
+     */
     public Spectator getSpectator()
     {
         return spectatorMe;
     }
-
+    /**
+     * Sets the Spectator
+     *
+     */
     public void setSpectator(Spectator spectator)
     {
         this.spectatorMe = spectator;
     }
-
+    /**
+     * Adds a Spectator
+     *
+     */
     public void addSpectator(Spectator s) throws RemoteException
     {
         System.out.println("Spawn Spectator");
@@ -310,24 +325,31 @@ public class GameManager extends UnicastRemoteObject
         objects.add(s);
         name = "Spectator";
     }
-
+    /**
+     * Add gameObject to the scene
+     *
+     * @param go    - Game object to be added to the scene
+     */
     public synchronized void addGameObject(GameObject go) throws RemoteException
     {
-        //if (go.getClass() == Chat.class)
-        //{
-        //    chats.add((Chat) go);
-        //}
-        //else
-        //{
         objects.add(go);
-        //}
-        if (online) server.SetTick(name, go);
+        if (online)
+        {
+            server.SetTick(name, go);
+        }
     }
-
+    /**
+     * Removes a specific object from the game
+     *
+     * @param go    - Object to be removed
+     */
     public void removeGameObject(GameObject go) throws RemoteException
     {
         objects.remove(go);
-        if (online) server.DeleteTick(name, go);
+        if (online)
+        {
+            server.DeleteTick(name, go);
+        }
     }
 
     public List<IGameObject> getObjects()
@@ -354,7 +376,10 @@ public class GameManager extends UnicastRemoteObject
     {
         return getScene().getCamera();
     }
-
+    /**
+     * Called when a player leaves the game.
+     *
+     */
     public void stop() throws RemoteException
     {
         server.DeleteUser(name);
@@ -369,7 +394,10 @@ public class GameManager extends UnicastRemoteObject
     {
         return killLogs;
     }
-
+    /**
+     * Clears the chat
+     *
+     */
     public void clearChat(Chat chat) throws RemoteException
     {
         chats.remove(chat);
@@ -381,7 +409,10 @@ public class GameManager extends UnicastRemoteObject
         return notMine;
     }
 
-
+    /**
+     * Gets a Player to be spectated by a spectator
+     *
+     */
     public List<Player> GetSpectatedPlayer()
     {
         ArrayList<Player> playerList = new ArrayList<>();
@@ -393,7 +424,11 @@ public class GameManager extends UnicastRemoteObject
         return playerList;
 
     }
-
+    /**
+     * Adds a new KillLog
+     *
+     * @param kl    - KillLog to be added to the KillLog list
+     */
     public void AddKillLog(KillLog kl)
     {
         killLogs.add(kl);
