@@ -134,12 +134,12 @@ public class GameSceneScreen extends AbstractScreen
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
             }
         }
-        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        for (IGameObject go : GameManager.getInstance().getAllObjects())
-        {
-            shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
-        }
+//        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.setColor(Color.RED);
+//        for (IGameObject go : GameManager.getInstance().getAllObjects())
+//        {
+//            shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
+//        }
         shapeRenderer.end();
 
         batch.begin();

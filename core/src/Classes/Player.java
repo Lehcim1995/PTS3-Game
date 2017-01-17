@@ -334,6 +334,11 @@ public class Player extends GameObject
         }
     }
 
+    public void stop()
+    {
+        Gdx.input.setInputProcessor(null);
+    }
+
     public String getName()
     {
         return this.name;

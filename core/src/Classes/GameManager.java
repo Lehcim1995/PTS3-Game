@@ -217,6 +217,7 @@ public class GameManager extends UnicastRemoteObject
         if (getObjectList(notMine, StopGameObject.class).size() > 0 )
         {
             System.out.println("Stop");
+            playerMe.stop();
             server.DeleteUser(name);
             online = false;
             isStoped = true;
@@ -226,11 +227,8 @@ public class GameManager extends UnicastRemoteObject
 
         //TODO is laggy over internet
         List<IGameObject> clonelist =  new ArrayList<>(objects);
-        System.out.println(clonelist.size());
-        long time = millis();
         for (Iterator<IGameObject> iterator = clonelist.iterator(); iterator.hasNext(); )
         {
-
             IGameObject object = iterator.next();
 
             object.update();
@@ -241,7 +239,6 @@ public class GameManager extends UnicastRemoteObject
                     server.UpdateTick(name, object.getID(), object.getPosition(), object.getRotation());
             }
         }
-        System.out.println("time 5 delay" + (millis() - time));
 
 
         ArrayList<GameObject[]> hitlist = new ArrayList<>();
@@ -437,6 +434,7 @@ public class GameManager extends UnicastRemoteObject
         server.DeleteUser(name);
         online = false;
         isStoped = true;
+        constructed = false;
         ///TODO: DElete user from lobby registry
 
     }
