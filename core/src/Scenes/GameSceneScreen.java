@@ -37,7 +37,7 @@ public class GameSceneScreen extends AbstractScreen
     private ShapeRenderer shapeRenderer;
     private float zoom = 1;
     private BitmapFont font;
-    private BitmapFont klFont;
+//    private BitmapFont klFont;
     private GlyphLayout layout;
     private GlyphLayout killLog;
 
@@ -56,9 +56,9 @@ public class GameSceneScreen extends AbstractScreen
         batch = new SpriteBatch();
         killBatch = new SpriteBatch();
         font = new BitmapFont();
-        klFont = new BitmapFont();
+//        klFont = new BitmapFont();
         font.setColor(Color.BLACK);
-        klFont.setColor(Color.BLACK);
+//        klFont.setColor(Color.BLACK);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -168,15 +168,16 @@ public class GameSceneScreen extends AbstractScreen
             }
         }
 
-        batch.end();
+//        batch.end();
 
-        killBatch.begin();
+//        killBatch.begin();
 
-        klFont.setColor(Color.RED);
-        killLog.setText(klFont, GameManager.getInstance().killLog);
+//        klFont.setColor(Color.RED);
+        killLog.setText(font, GameManager.getInstance().killLog);
         float klHeight = killLog.height;
         float klPadding = 4;
-        klFont.draw(killBatch, killLog, klPadding, klHeight);
+//        klFont.draw(killBatch, killLog, klPadding, klHeight);
+        font.draw(batch, killLog, klPadding, klHeight);
 
         int iKill = (int) (height + height);
         float startKill = (int) (height + height);
@@ -192,14 +193,16 @@ public class GameSceneScreen extends AbstractScreen
                 float alpha = 1f - (iKill / (startKill + maxitemsKill));
                 kl.setTextColor(new Color(0, 0, 0, alpha));
                 kl.setPosition(new Vector2(klPadding, iKill));
-                kl.DrawKL(killBatch);
+//                kl.DrawKL(killBatch);
+                kl.DrawKL(batch);
             }
             catch (RemoteException e)
             {
                 LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
         }
-        killBatch.end();
+//        killBatch.end();
+        batch.end();
     }
 
     @Override
