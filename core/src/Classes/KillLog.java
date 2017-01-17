@@ -34,7 +34,7 @@ public class KillLog extends GameObject
         this.projectile = projectile;
         this.player = player;
         born = nanoTime();
-        position = new Vector2(100, 100);
+        position = new Vector2(400, 400);
 
         GameManager.getInstance().killLog = toString();
     }
