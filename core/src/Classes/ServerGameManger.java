@@ -259,7 +259,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
                 System.out.println("game over bitch!!");
                 matchTimer.cancel();
             }
-        }, (long) matchTime,0);
+        }, (long) matchTime,(long) 0);
         matchStarted = true;
     }
 
