@@ -24,7 +24,7 @@ public class KillLog extends GameObject
     private Player player;
     private transient GlyphLayout layout = new GlyphLayout();
     private transient BitmapFont font;
-    private float lifeTime = 10000 * 1000; //in milli secondss
+    private float lifeTime = 10000f * 1000; //in milli secondss
     private long born;
     private boolean dead;
     private Vector2 position;

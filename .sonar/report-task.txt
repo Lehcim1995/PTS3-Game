@@ -1,5 +1,5 @@
 projectKey=A-S0M_Source_Code
 serverUrl=http://localhost:9000
 dashboardUrl=http://localhost:9000/dashboard/index/A-S0M_Source_Code
-ceTaskId=AVmry97o2nAJr0xjHckM
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AVmry97o2nAJr0xjHckM
+ceTaskId=AVmr6Hcg2nAJr0xjHckN
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVmr6Hcg2nAJr0xjHckN

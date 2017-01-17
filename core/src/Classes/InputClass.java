@@ -9,36 +9,51 @@ import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
+import java.util.logging.*;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by michel on 27-9-2016.
  */
 public class InputClass implements InputProcessor
 {
-    private final float holdDownTimer = 15;
     private Player player;
     private HashMap<Integer, Boolean> KeymapHold;
-    private HashMap<Integer, Date> KeymapUp;
-    private HashMap<Integer, Date> KeymapDown;
-    private Timer timer;
     private boolean chating;
-
+    /**
+     * Input
+     *
+     * @param p    - Player that gives the input
+     */
     public InputClass(Player p)
     {
-        KeymapHold = new HashMap<Integer, Boolean>();
+        KeymapHold = new HashMap<>();
         player = p;
     }
-
+    /**
+     * Gets the input key
+     *
+     * @param code    - the key
+     */
     public boolean GetKey(int code)
     {
         return KeymapHold.get(code) == null ? false : KeymapHold.get(code).booleanValue();
     }
-
+    /**
+     * Gets the input key that is going up
+     *
+     * @param code    - the key
+     */
     public boolean GetKeyUp(int code)
     {
         return false;
     }
-
+    /**
+     * Gets the input key that is going down
+     *
+     * @param code    - the key
+     */
     public boolean GetKeyDown(int code)
     {
         return false;
@@ -49,7 +64,10 @@ public class InputClass implements InputProcessor
     public boolean keyDown(int keycode)
     {
 
-        if (!chating) KeymapHold.put(keycode, true);
+        if (!chating)
+        {
+            KeymapHold.put(keycode, true);
+        }
         if (ScreenManager.getInstance().getIsSpectator())
         {
             if (keycode == Input.Keys.LEFT)
@@ -61,7 +79,6 @@ public class InputClass implements InputProcessor
                 GameManager.getInstance().getSpectator().PrevPlayer();
             }
         }
-        //KeymapDown.put(keycode, Calendar.getInstance().getTime());
         return true;
     }
 
@@ -79,7 +96,7 @@ public class InputClass implements InputProcessor
             }
             catch (RemoteException e)
             {
-                e.printStackTrace();
+                LOGGER.log(java.util.logging.Level.INFO, "Remote Ex: " + e);
             }
 
             GameManager.getInstance().chat = "";
@@ -108,14 +125,16 @@ public class InputClass implements InputProcessor
         }
 
         KeymapHold.put(keycode, false);
-        //KeymapUp.put(keycode, Calendar.getInstance().getTime());
         return true;
     }
 
     @Override
     public boolean keyTyped(char character)
     {
-        if (chating) GameManager.getInstance().chat += character;
+        if (chating)
+        {
+            GameManager.getInstance().chat += character;
+        }
         return chating;
     }
 
@@ -125,7 +144,6 @@ public class InputClass implements InputProcessor
         if (button == Input.Buttons.LEFT)
         {
             // Some stuff
-            //System.out.println("Pew");
             ///player.Shoot();
             player.setShooting(true);
             return true;
@@ -133,7 +151,6 @@ public class InputClass implements InputProcessor
         if (button == Input.Buttons.RIGHT)
         {
             // Some stuff
-            //System.out.println("Pew");
             //GameManager.getInstance().ClearProjectiles();
 
             return true;
@@ -157,28 +174,27 @@ public class InputClass implements InputProcessor
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
-        float deltaX = (int) player.getScreenPosition().x - screenX;
-        float deltaY = (int) player.getScreenPosition().y - screenY;
-        Vector2 delta = new Vector2(deltaX, deltaY);
-
-        player.rotation = delta.angle();
-        return true;
+        return processMouseInput(screenX, screenY);
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY)
     {
-        float deltaX = (int) player.getScreenPosition().x - screenX;
-        float deltaY = (int) player.getScreenPosition().y - screenY;
-        Vector2 delta = new Vector2(deltaX, deltaY);
-
-        player.rotation = delta.angle();
-        return true;
+        return processMouseInput(screenX, screenY);
     }
 
     @Override
     public boolean scrolled(int amount)
     {
         return false;
+    }
+    public boolean processMouseInput(int screenX, int screenY)
+    {
+        float deltaX = player.getScreenPosition().x - screenX;
+        float deltaY = player.getScreenPosition().y - screenY;
+        Vector2 delta = new Vector2(deltaX, deltaY);
+
+        player.rotation = delta.angle();
+        return true;
     }
 }
