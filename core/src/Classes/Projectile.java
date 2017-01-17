@@ -39,7 +39,7 @@ public class Projectile extends GameObject
         bulletSpeed = gun.getBulletSpeed();
         damage = gun.getProjectileDamage();
 
-        setHitbox(DefaultHitbox(size));
+        setHitbox(defaultHitbox(size));
         born = millis();
     }
 

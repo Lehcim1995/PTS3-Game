@@ -157,6 +157,7 @@ public class InputClass implements InputProcessor
             {
                 player.setShooting(true);
             }
+
             return true;
         }
         if (button == Input.Buttons.RIGHT)

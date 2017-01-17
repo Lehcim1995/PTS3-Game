@@ -32,7 +32,7 @@ public class GameObject implements IGameObject, Serializable
         id = this.hashCode();
         position = new Vector2();
         rotation = 0;
-        hitbox = VerticisToPolygon(CircleHitbox(5));
+        hitbox = VerticisToPolygon(circleHitbox(5));
     }
 
     protected GameObject(Vector2 position, float rotation, SerializablePolygon hitbox) throws RemoteException
@@ -48,20 +48,36 @@ public class GameObject implements IGameObject, Serializable
         id = this.hashCode();
         this.position = position;
         this.rotation = rotation;
-        setHitbox(DefaultHitbox(10));
+        setHitbox(defaultHitbox(10));
     }
-
-    public static final Vector2[] DefaultHitbox(float size)
+    /**
+     * Returns a hitbox made with the size given
+     *
+     * @param size Hit range
+     * @return returns defaulthitbox using the pararm's size
+     */
+    public static final Vector2[] defaultHitbox(float size)
     {
-        return DefaultHitbox(size, size);
+        return defaultHitbox(size, size);
     }
-
-    public static final Vector2[] CircleHitbox(float size)
+    /**
+     * Returns a hitbox made with the size given
+     *
+     * @param size Hit range
+     * @return returns default cercle hitbox using the pararm's size
+     */
+    public static final Vector2[] circleHitbox(float size)
     {
-        return CircleHitbox(size, 18);
+        return circleHitbox(size, 18);
     }
-
-    public static final Vector2[] CircleHitbox(float size, int vertices)
+    /**
+     * Returns a hitbox made with the size given
+     *
+     * @param size Hit range
+     * @param vertices Vertices
+     * @return returns default cercle hitbox using the pararm's size and vertices
+     */
+    public static final Vector2[] circleHitbox(float size, int vertices)
     {
         Vector2[] vList = new Vector2[vertices];
         double rad = Math.toRadians((double) 360 / vertices);
@@ -77,8 +93,14 @@ public class GameObject implements IGameObject, Serializable
 
         return vList;
     }
-
-    public static final Vector2[] DefaultHitbox(float height, float width)
+    /**
+     * Returns Vector made with height and width
+     *
+     * @param height Height of the vector
+     * @param width Width of the vector
+     * @return returns Vector2 array of given params
+     */
+    public static final Vector2[] defaultHitbox(float height, float width)
     {
         float y = height / 2;
         float x = width / 2;
@@ -145,7 +167,10 @@ public class GameObject implements IGameObject, Serializable
 
         float dis = position.dst(other);
 
-        if (dis > 100) return false;
+        if (dis > 100)
+        {
+            return false;
+        }
         return isOverlap(hitbox.getLIBGDXPolygon(), go.getHitbox());
     }
 
@@ -159,33 +184,42 @@ public class GameObject implements IGameObject, Serializable
     /**
      * Static Methode to check if 2 polygons are intersecting
      *
-     * @param A Polygon
-     * @param B Polygon
+     * @param a Polygon
+     * @param b Polygon
      * @return Is overlapping or not.
      */
-    public boolean isOverlap(Polygon A, Polygon B)
+    public boolean isOverlap(Polygon a, Polygon b)
     {
-        float[] verticesA = A.getTransformedVertices();
-        float[] verticesB = B.getTransformedVertices();
-        //Check vertices B
-        for (int i = 0; i < verticesB.length; i += 2)
+        float[] verticesA = a.getTransformedVertices();
+        float[] verticesB = b.getTransformedVertices();
+        //Check vertices B  ----  Check vertices A
+        if(checkIntersectLine(verticesB, a) || checkIntersectLine(verticesA, b))
         {
-            float x = verticesB[i];
-            float y = verticesB[i + 1];
-
-            if (isInside(x, y, A)) return true;
-        }
-        //Check vertices A
-        for (int i = 0; i < verticesA.length; i += 2)
-        {
-            float x = verticesA[i];
-            float y = verticesA[i + 1];
-
-            if (isInside(x, y, B)) return true;
+            return true;
         }
         return false;
     }
+    /**
+     * Checks if line intersects other line
+     *
+     * @param vertices Array of float that has to be checked
+     * @param poly Polygon that needs to be checked
+     * @return Is overlapping or not.
+     */
+    private boolean checkIntersectLine(float[] vertices, Polygon poly)
+    {
+        for (int i = 0; i < vertices.length; i += 2)
+        {
+            float x = vertices[i];
+            float y = vertices[i + 1];
 
+            if (isInside(x, y, poly))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     private boolean isInside(float x, float y, Polygon p)
     {
         int i;
@@ -303,10 +337,7 @@ public class GameObject implements IGameObject, Serializable
      */
     public void DrawText(Batch batch, BitmapFont font, GlyphLayout layout, String text, Vector2 position)
     {
-        //font.setColor(Color.BLACK);
         layout.setText(font, text);
-        float width = layout.width;// contains the width of the current set text
-        float height = layout.height; // contains the height of the current set text
         font.draw(batch, layout, position.x, position.y);
     }
 }
