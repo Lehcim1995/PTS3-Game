@@ -137,6 +137,7 @@ public class Projectile extends GameObject
                         catch (InterruptedException e)
                         {
                             LOGGER.log(Level.WARNING, e.getMessage(), e);
+                            Thread.currentThread().interrupt();
                         }
                         catch (RemoteException e)
                         {

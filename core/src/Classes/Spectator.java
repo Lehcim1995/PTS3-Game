@@ -14,7 +14,6 @@ public class Spectator extends GameObject
     private String name;
     private int playerFromList;
     private Player player;
-    private Logger logger;
     /**
      * Spectator constructor
      *
@@ -22,7 +21,6 @@ public class Spectator extends GameObject
      */
     public Spectator(String name) throws RemoteException
     {
-        logger = Logger.getAnonymousLogger();
         this.name = name;
 
         this.playerFromList = 0;
@@ -41,7 +39,7 @@ public class Spectator extends GameObject
                 catch (InterruptedException e)
                 {
                     LOGGER.log(Level.SEVERE, "Speed interruped: " + e);
-                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
                 }
             }
         }.start();

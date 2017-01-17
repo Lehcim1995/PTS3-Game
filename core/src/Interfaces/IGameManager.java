@@ -26,7 +26,7 @@ public interface IGameManager extends Remote, Serializable
 
     int portNumber = 1099;
     int fps = 60;
-    float TICKLENGTH = 1000 / fps; // in milli
+    float TICKLENGTH = 1000f / fps; // in milli
 
     List<IGameObject> GetTick(String id) throws RemoteException;
 

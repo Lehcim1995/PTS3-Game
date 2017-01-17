@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Random;
-import java.util.logging.*;
 import java.util.logging.Level;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
@@ -16,8 +15,8 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
  */
 public class Gun implements Serializable
 {
-    public static final Gun CZ75 = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BoltAction, true, 670, 10, null);
-    public static final Gun SUPER = new Gun("SUPER", 0, 50, 0, 10, 500, gunType.Automatic, true, 1000, 1000, null);
+    public static final Gun CZ75 = new Gun("cz-75", 2000, 5, 0, 10, 7, Gun.gunType.BOLT_ACTION, true, 670, 10, null);
+    public static final Gun SUPER = new Gun("SUPER", 0, 50, 0, 10, 500, gunType.AUTOMATIC, true, 1000, 1000, null);
     private String name;
     private float reloadTime;
     private float bulletsPerSecond;
@@ -35,7 +34,7 @@ public class Gun implements Serializable
     private transient long lastShot;
     private transient boolean reloading = false;
     private transient boolean hasShot = false;
-    private gunType gunMode = gunType.Automatic;
+    private gunType gunMode = gunType.AUTOMATIC;
     /**
      * Gun Constructor
      *
@@ -151,7 +150,7 @@ public class Gun implements Serializable
      */
     public void Shoot() throws RemoteException
     {
-        if (millis() - lastShot > 1000 / bulletsPerSecond && (gunMode == gunType.Automatic || !hasShot) && currentBullets > 0 && !owner.reloadThread)
+        if (millis() - lastShot > 1000 / bulletsPerSecond && (gunMode == gunType.AUTOMATIC || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
             Random r = new Random();
             float rot = owner.getRotation();
@@ -191,6 +190,7 @@ public class Gun implements Serializable
                     catch (InterruptedException e)
                     {
                         LOGGER.log(Level.SEVERE,"Interruped ex: " + e);
+                        Thread.currentThread().interrupt();
                     }
 
                     if (!hasInfinit)
@@ -228,7 +228,7 @@ public class Gun implements Serializable
      */
     public enum gunType
     {
-        Automatic,
-        BoltAction
+        AUTOMATIC,
+        BOLT_ACTION
     }
 }
