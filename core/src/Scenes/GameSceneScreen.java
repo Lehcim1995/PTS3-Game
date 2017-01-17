@@ -37,6 +37,7 @@ public class GameSceneScreen extends AbstractScreen
     private ShapeRenderer shapeRenderer;
     private float zoom = 1;
     private BitmapFont font;
+    private BitmapFont klFont;
     private GlyphLayout layout;
     private GlyphLayout killLog;
 
@@ -55,7 +56,9 @@ public class GameSceneScreen extends AbstractScreen
         batch = new SpriteBatch();
         killBatch = new SpriteBatch();
         font = new BitmapFont();
+        klFont = new BitmapFont();
         font.setColor(Color.BLACK);
+        klFont.setColor(Color.BLACK);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -169,12 +172,16 @@ public class GameSceneScreen extends AbstractScreen
 
         killBatch.begin();
 
-        killLog.setText(font, GameManager.getInstance().chat);
-        font.draw(killBatch, killLog, padding, height);
+        klFont.setColor(Color.RED);
+        killLog.setText(klFont, GameManager.getInstance().killLog);
+        float klHeigth = killLog.height;
+        float klPadding = 4;
 
         int iKill = (int) (height + height);
         float startKill = (int) (height + height);
         float maxitemsKill = height * 15;
+
+        klFont.draw(killBatch, killLog, padding, height);
 
         for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext(); )
         {
@@ -186,7 +193,7 @@ public class GameSceneScreen extends AbstractScreen
                 float alpha = 1f - (iKill / (startKill + maxitemsKill));
                 kl.setTextColor(new Color(0, 0, 0, alpha));
                 kl.setPosition(new Vector2(padding, iKill));
-                kl.DrawChat(killBatch);
+                kl.DrawKL(killBatch);
             }
             catch (RemoteException e)
             {
