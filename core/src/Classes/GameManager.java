@@ -10,6 +10,7 @@ import Scenes.ScreenEnum;
 import Scenes.ScreenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.utils.*;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -20,6 +21,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
+import static com.badlogic.gdx.utils.TimeUtils.millis;
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
@@ -166,6 +168,7 @@ public class GameManager extends UnicastRemoteObject
         killLogs.clear();
         if (online)
         {
+            //System.out.println("time 1 " + millis());
             tick += Gdx.graphics.getDeltaTime();
             if (tick > 0.02f) //doe het elke zoveel seconden
             {
@@ -200,14 +203,16 @@ public class GameManager extends UnicastRemoteObject
             }
             notMine.addAll(notMineMap.values());
             notMine.addAll(objects);
+            //System.out.println("time 2 " + millis());
         }
 
 
-
+        //System.out.println("time 3 " + millis());
         chatsOnline.addAll(getObjectList(notMine, Chat.class));
         killLogs.addAll(getObjectList(notMine, KillLog.class));
         chatsOnline.sort(Comparator.comparingDouble(chat1 -> -chat1.getBorn()));
         killLogs.sort(Comparator.comparingDouble(killlog1 -> -killlog1.getBorn()));
+
 
         if (getObjectList(notMine, StopGameObject.class).size() > 0 )
         {
@@ -218,6 +223,8 @@ public class GameManager extends UnicastRemoteObject
             //return;
         }
 
+        long time = millis();
+        //System.out.println("time 4 " + time);
         List<IGameObject> clonelist =  new ArrayList<>(objects);
 
         for (Iterator<IGameObject> iterator = clonelist.iterator(); iterator.hasNext(); )
@@ -230,6 +237,7 @@ public class GameManager extends UnicastRemoteObject
             }
         }
 
+        System.out.println("time 5 delay" + (millis() - time));
         ArrayList<GameObject[]> hitlist = new ArrayList<>();
         for (IGameObject go1 : notMine)
         {
@@ -241,11 +249,13 @@ public class GameManager extends UnicastRemoteObject
                 }
             }
         }
+        //System.out.println("time 6 " + millis());
 
         for (GameObject[] golist : hitlist)
         {
             golist[0].onCollisionEnter(golist[1]);
         }
+        //System.out.println("time 7 " + millis());
     }
 
     private <T> ArrayList<T> getObjectList(List<IGameObject> list, Class<T> tClass)
