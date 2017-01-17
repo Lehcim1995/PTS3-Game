@@ -39,6 +39,7 @@ public class Spectator extends GameObject
     /**
      * Gets spectators name
      *
+     * @return Name of the player that is spectator
      */
     public String GetSpectatedName()
     {

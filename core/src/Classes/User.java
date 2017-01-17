@@ -17,7 +17,20 @@ public class User implements IUser
     private int matchesWon;
     private int matchesLost;
     private boolean isBanned;
-
+    /**
+     * User constructor
+     *
+     * @param name          - Name of the user
+     * @param email         - Email of the user
+     * @param kills         - Killes made by the user
+     * @param deaths        - Deaths of the user
+     * @param shotsHit      - Shots hit by the user
+     * @param shots         - Amount of times the user shot
+     * @param matchesPlayed - Amount of matches played by the user
+     * @param matchesWon    - Amount of matches won by the user
+     * @param matchesLost   - Amount of matches lost by the user
+     * @param isBanned      - boolean if player banned or not
+     */
     public User(String name, String email, int kills, int deaths, int shotsHit, int shots, int matchesPlayed, int matchesWon, int matchesLost, int isBanned)
     {
         this.name = name;
@@ -41,7 +54,15 @@ public class User implements IUser
 
 
     }
-
+    /**
+     * Chat constructor
+     *
+     * @param kills     - Amount of kills that has to be added to total
+     * @param deaths    - Amount of deaths that has to be added to total
+     * @param shotsHit  - Amount of shotsHit that has to be added to total
+     * @param shots     - Amount of shots that has to be added to total
+     * @param matchWon  - Amount of matchWon that has to be added to total
+     */
     public void UpdateData(int kills, int deaths, int shotsHit, int shots, boolean matchWon)
     {
         this.kills += kills;
