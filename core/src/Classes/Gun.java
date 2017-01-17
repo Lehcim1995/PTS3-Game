@@ -148,7 +148,7 @@ public class Gun implements Serializable
      * Shooting the gun
      *
      */
-    public void Shoot() throws RemoteException
+    public void shoot() throws RemoteException
     {
         if (millis() - lastShot > 1000 / bulletsPerSecond && (gunMode == gunType.AUTOMATIC || !hasShot) && currentBullets > 0 && !owner.reloadThread)
         {
@@ -168,7 +168,7 @@ public class Gun implements Serializable
      * Reloading the gun
      *
      */
-    public void Reload()
+    public void reload()
     {
 
         if (!owner.reloadThread && reloadThread == null || !reloadThread.isAlive())

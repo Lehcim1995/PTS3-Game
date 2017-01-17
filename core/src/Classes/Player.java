@@ -122,13 +122,13 @@ public class Player extends GameObject
 
     public void Shoot() throws RemoteException
     {
-        this.gunEquipped.Shoot();
+        this.gunEquipped.shoot();
         shots++;
     }
 
     public void Reload()
     {
-        gunEquipped.Reload();
+        gunEquipped.reload();
     }
 
     public void Spawn()
