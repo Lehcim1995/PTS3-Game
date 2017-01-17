@@ -131,7 +131,7 @@ public class Projectile extends GameObject
                         super.run();
                         try
                         {
-                            Thread.sleep(100);
+                            Thread.sleep(20);
                             GameManager.getInstance().ClearProjectile(meProjectile);
                         }
                         catch (InterruptedException e)
