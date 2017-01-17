@@ -63,10 +63,11 @@ public class GameManager extends UnicastRemoteObject
         }
         catch (UnknownHostException e)
         {
+            //Log this
             LOGGER.log(java.util.logging.Level.SEVERE, "Client: UnknownHostException: " + e.getMessage());
             online = false;
         }
-        String ip = ScreenManager.getInstance().getIp();//Or get the localhost.getHostAddress();
+        String ip = ScreenManager.getInstance().getIp();
         int portNumber = ScreenManager.getInstance().getPortNumber();
 
         try
@@ -77,18 +78,19 @@ public class GameManager extends UnicastRemoteObject
             IServer tempserver = (IServer) registry.lookup(serverManger);
             //not bound exception
             String serverName = ScreenManager.getInstance().getLobbyname();
-            System.out.println("ServerName: " + serverName);
             server = tempserver.JoinLobby(serverName, ScreenManager.getInstance().getUser());
 
 
         }
         catch (RemoteException e)
         {
+            //Log this
             LOGGER.log(java.util.logging.Level.SEVERE, "Client: RemoteExeption: " + e.getMessage());
             online = false;
         }
         catch (NotBoundException e)
         {
+            //Log this
             LOGGER.log(java.util.logging.Level.SEVERE, "Client: NotBoundException: " + e.getMessage());
             online = false;
         }
@@ -130,6 +132,7 @@ public class GameManager extends UnicastRemoteObject
         }
         catch (RemoteException e)
         {
+            //Log this
             LOGGER.log(java.util.logging.Level.SEVERE, "getInstance Error " + e.getMessage());
         }
         return instance;
@@ -237,10 +240,12 @@ public class GameManager extends UnicastRemoteObject
             }
             catch (ClassCastException e)
             {
+                //Log this
                 LOGGER.log(java.util.logging.Level.SEVERE, "Cast Error " + e.getMessage());
             }
             catch (NullPointerException e)
             {
+                //Log this
                 LOGGER.log(java.util.logging.Level.SEVERE, "Null Error " + e.getMessage());
             }
         }
