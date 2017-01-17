@@ -43,6 +43,10 @@ public class KillLog extends GameObject
 
     public void setTextColor(Color c)
     {
+        if (font == null)
+        {
+            font = new BitmapFont();
+        }
         font.setColor(c);
     }
 
@@ -60,6 +64,11 @@ public class KillLog extends GameObject
 
     public void DrawKL(Batch batch) throws RemoteException
     {
+        if (font == null || layout == null)
+        {
+            font = new BitmapFont();
+            layout = new GlyphLayout();
+        }
         DrawText(batch, font, layout, toString(), position);
 
         dead = millis() - born > lifeTime;
