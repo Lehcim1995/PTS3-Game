@@ -246,6 +246,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
         }
 
         idObjects.remove(id);
+        userList.removeIf(user -> user.getName().equals(id));
+
     }
 
     @Override

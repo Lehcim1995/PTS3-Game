@@ -417,6 +417,9 @@ public class GameManager extends UnicastRemoteObject
     public void stop() throws RemoteException
     {
         server.DeleteUser(name);
+        online = false;
+        isStoped = true;
+        ///TODO: DElete user from lobby registry
     }
 
     public List<Chat> getChats()

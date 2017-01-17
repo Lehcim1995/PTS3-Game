@@ -277,7 +277,7 @@ public class Player extends GameObject
             {
                 //leave game
                 GameManager.getInstance().stop();
-                ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+                //ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
             }
         }
 
