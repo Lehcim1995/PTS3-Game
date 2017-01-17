@@ -38,7 +38,7 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
 
     private <T> ArrayList<T> getObjectList(ArrayList<Object> list, Class<T> tocast)
     {
-        ArrayList<T> returnList = new ArrayList<T>();
+        ArrayList<T> returnList = new ArrayList<>();
 
         for (Object go : list)
         {
@@ -62,27 +62,55 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     {
         if (id.equals("Spectator"))
         {
-            return everything;
+            return GetEverything();
         }
-        return idObjects.get(id);
+
+        List<IGameObject> allbutmeobject = new ArrayList<>();
+
+        for (Map.Entry<String, List<IGameObject>> objlist : idObjects.entrySet())
+        {
+            if (!objlist.getKey().equals(id))
+            {
+                System.out.println("Adding from " + objlist.getKey() + " TO " + id);
+                allbutmeobject.addAll(objlist.getValue());
+            }
+        }
+
+        return allbutmeobject;
+    }
+
+    public List<IGameObject> GetEverything()
+    {
+        List<IGameObject> alllist = new ArrayList<>();
+
+        for (Map.Entry<String, List<IGameObject>> objlist : idObjects.entrySet())
+        {
+            alllist.addAll(objlist.getValue());
+        }
+
+        return alllist;
     }
 
     @Override
     public void SetTick(String id, IGameObject object)
     {
-        System.out.println("New Object From : " + id);
-
+        //System.out.println("New Object From : " + id);
+        /*
         idObjects.putIfAbsent(id, new ArrayList<>(everything)); //Waaneer id niet bestaat voeg alles toe aan die speler
 
         everything.add(object); // voeg nieuw object toe aan iedereen
         idObjects.entrySet().stream().filter(entry -> !entry.getKey().equals(id)).forEach(entry -> entry.getValue().add(object)); //voeg object toe aan iedereen behalve ik
+        */
+
+        idObjects.putIfAbsent(id, new ArrayList<>());
+        idObjects.get(id).add(object);
     }
 
     @Override
     public void UpdateTick(String id, IGameObject object) throws RemoteException
     {
-        System.out.println("Update Object From : " + id);
-
+        //System.out.println("Update Object From : " + id);
+        /*
         //Update de position voor iedereen
         for (IGameObject go : everything)
         {
@@ -108,6 +136,16 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
                         break;
                     }
                 }
+            }
+        }*/
+
+        for(IGameObject obj : idObjects.get(id))
+        {
+            if (obj.getID() == object.getID())
+            {
+                obj.setPosition(object.getPosition());
+                obj.setRotation(object.getRotation());
+                break;
             }
         }
     }
@@ -156,8 +194,10 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     public void DeleteTick(String id, IGameObject object) throws RemoteException
     {
         //haald object overal weg waar hij bestaat
-        idObjects.entrySet().forEach(stringListEntry -> stringListEntry.getValue().removeIf(gameObject -> gameObject.getID() == object.getID()));
-        everything.removeIf(gameObject -> gameObject.getID() == object.getID());
+        //idObjects.entrySet().forEach(stringListEntry -> stringListEntry.getValue().removeIf(gameObject -> gameObject.getID() == object.getID()));
+        //everything.removeIf(gameObject -> gameObject.getID() == object.getID());
+
+        idObjects.get(id).removeIf(obj -> obj.getID() == object.getID());
 
     }
 
@@ -165,8 +205,10 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
     public void DeleteUser(String id)
     {
         //delete alles van een user
-        idObjects.entrySet().forEach(set -> everything.removeIf(obj -> obj.getID() == ((IGameObject) set.getValue()).getID()));
-        idObjects.entrySet().removeIf(keyid -> Objects.equals(keyid.getKey(), id));
+        //idObjects.entrySet().forEach(set -> everything.removeIf(obj -> obj.getID() == ((IGameObject) set.getValue()).getID()));
+        //idObjects.entrySet().removeIf(keyid -> Objects.equals(keyid.getKey(), id));
+
+        idObjects.remove(id);
     }
 
     @Override
