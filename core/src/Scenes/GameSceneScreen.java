@@ -123,7 +123,7 @@ public class GameSceneScreen extends AbstractScreen
             try
             {
                 go.Draw(shapeRenderer, batch);
-                go.Draw(shapeRenderer, killBatch);
+//                go.Draw(shapeRenderer, killBatch);
             }
             catch (RemoteException e)
             {
@@ -174,7 +174,7 @@ public class GameSceneScreen extends AbstractScreen
 //        killBatch.begin();
 
 //        klFont.setColor(Color.RED);
-        killLog.setText(font, GameManager.getInstance().killLog);
+//        killLog.setText(font, GameManager.getInstance().killLog);
         float klHeight = killLog.height;
         float klPadding = 4;
 //        klFont.draw(killBatch, killLog, klPadding, klHeight);
@@ -222,7 +222,7 @@ public class GameSceneScreen extends AbstractScreen
     {
         super.dispose();
         batch.dispose();
-        killBatch.dispose();
+//        killBatch.dispose();
         shapeRenderer.dispose();
         try
         {
