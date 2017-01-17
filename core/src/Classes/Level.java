@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -20,8 +21,6 @@ public class Level implements Serializable
     private ArrayList<LevelBlock> levelBlocks;
     private ArrayList<LevelBlock> blockModule;
     private int levelSize = 4;
-    private int row = 1;
-    private int block = 1;
     private int blockSize = 26;
     private int levelBlockSizeX = (int) (LevelSizeX / blockSize);
     private int levelBlockSizeY = (int) (LevelSizeY / blockSize);
@@ -52,14 +51,14 @@ public class Level implements Serializable
         this.levelBlocks = generateLevelBlocks();
     }
 
-    public ArrayList<LevelBlock> getLevelBlocks()
+    public List<LevelBlock> getLevelBlocks()
     {
         return levelBlocks;
     }
 
-    public void setLevelBlocks(ArrayList<LevelBlock> levelBlocks)
+    public void setLevelBlocks(List<LevelBlock> levelBlocks)
     {
-        this.levelBlocks = levelBlocks;
+        this.levelBlocks = (ArrayList) levelBlocks;
     }
 
     public long getSeed()
@@ -169,7 +168,7 @@ public class Level implements Serializable
                 }
                 else
                 {
-                    if (Math.sqrt((double)x * x + y * y) > halfsize - 0.5f && Math.sqrt(x * x + y * y) < halfsize + 0.5f)
+                    if (Math.sqrt((double)x * x + y * y) > halfsize - 0.5f && Math.sqrt((double) x * x + y * y) < halfsize + 0.5f)
                     {
                         Vector2 addpos = new Vector2(x, y).scl(blockSize);
                         LevelBlock bl = new LevelBlock(addpos.add(position), 0);
@@ -189,13 +188,7 @@ public class Level implements Serializable
         {
             for (int y = 0; y < size; y++)
             {
-                if (filled)
-                {
-                    Vector2 addpos = new Vector2(x, y).scl(blockSize);
-                    LevelBlock bl = new LevelBlock(addpos.add(offset), 0);
-                    blockList.add(bl);
-                }
-                else if(x == 0 || x == size - 1 || y == 0 || y == size - 1)
+                if (filled || (x == 0 || x == size - 1 || y == 0 || y == size - 1))
                 {
                     Vector2 addpos = new Vector2(x, y).scl(blockSize);
                     LevelBlock bl = new LevelBlock(addpos.add(offset), 0);
@@ -213,7 +206,7 @@ public class Level implements Serializable
         Random random = new Random(seed);
         for (int i = 0; i < (levelSize * levelSize); i++)
         {
-            LevelBlock levelBlock = new LevelBlock(new Vector2(0, 0), 0); //blockModule.get(/*random.nextInt(blockModule.size())*/ 0);
+            LevelBlock levelBlock = new LevelBlock(new Vector2(0, 0), 0);
             levelBlock.setPosition(new Vector2(random.nextInt((int) LevelSizeX), random.nextInt((int) LevelSizeY)));
             newLevelBlockList.add(levelBlock);
         }

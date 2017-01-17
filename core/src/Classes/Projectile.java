@@ -82,18 +82,15 @@ public class Projectile extends GameObject
     {
         if (other instanceof Projectile)
         {
-            if (((Projectile) other).gun != null)
+            if (((Projectile) other).gun != null && ((Projectile) other).gun.getOwner().getID() != gun.getOwner().getID())
             {
-                if (((Projectile) other).gun.getOwner().getID() != gun.getOwner().getID())
+                try
                 {
-                    try
-                    {
-                        GameManager.getInstance().ClearProjectile(this);
-                    }
-                    catch (RemoteException e)
-                    {
-                        LOGGER.log(Level.WARNING, e.getMessage(), e);
-                    }
+                    GameManager.getInstance().ClearProjectile(this);
+                }
+                catch (RemoteException e)
+                {
+                    LOGGER.log(Level.WARNING, e.getMessage(), e);
                 }
             }
         }
@@ -109,50 +106,44 @@ public class Projectile extends GameObject
             }
 
         }
-        else if (other instanceof Player)
+        else if (other instanceof Player &&
+                gun != null && gun.getOwner().getID() != other.getID())
         {
-            if (gun != null && gun.getOwner().getID() != other.getID())
+            LOGGER.log(Level.INFO, "Gun owner : " + gun.getOwner().getID());
+            LOGGER.log(Level.INFO, "Target : " + other.getID());
+            LOGGER.log(Level.INFO, "GameManager Player " + GameManager.getInstance().getPlayer().getID());
+
+            if (other.getID() == GameManager.getInstance().getPlayer().getID()) //geraakte speler moet weg gaan
             {
-                LOGGER.log(Level.INFO, "Gun owner : " + gun.getOwner().getID());
-                LOGGER.log(Level.INFO, "Target : " + other.getID());
-                LOGGER.log(Level.INFO, "GameManager Player " + GameManager.getInstance().getPlayer().getID());
+                LOGGER.log(Level.INFO, new KillLog(this, (Player) other).toString());
+                ((Player) other).Die(this);
+                gun.getOwner().Hit();
+            }
 
-                if (other.getID() == GameManager.getInstance().getPlayer().getID()) //geraakte speler moet weg gaan
+            if (gun.getOwner().getID() == GameManager.getInstance().getPlayer().getID()) // Schieter moet zijn kogel weg halen
+            {
+                Projectile meProjectile = this;
+                new Thread()
                 {
-                    LOGGER.log(Level.INFO, new KillLog(this, (Player) other).toString());
-                    ((Player) other).Die(this);
-                    gun.getOwner().Hit();
-                }
-
-                if (gun.getOwner().getID() == GameManager.getInstance().getPlayer().getID()) // Schieter moet zijn kogel weg halen
-                {
-                    Projectile meProjectile = this;
-                    new Thread()
+                    @Override
+                    public void run()
                     {
-                        @Override
-                        public void run()
+                        super.run();
+                        try
                         {
-                            super.run();
-                            try
-                            {
-                                Thread.sleep(20);
-                                try
-                                {
-                                    GameManager.getInstance().ClearProjectile(meProjectile);
-                                }
-                                catch (RemoteException e)
-                                {
-                                    LOGGER.log(Level.WARNING, e.getMessage(), e);
-                                }
-                            }
-                            catch (InterruptedException e)
-                            {
-                                LOGGER.log(Level.WARNING, e.getMessage(), e);
-                            }
-
+                            Thread.sleep(20);
+                            GameManager.getInstance().ClearProjectile(meProjectile);
                         }
-                    }.run();
-                }
+                        catch (InterruptedException e)
+                        {
+                            LOGGER.log(Level.WARNING, e.getMessage(), e);
+                        }
+                        catch (RemoteException e)
+                        {
+                            LOGGER.log(Level.WARNING, e.getMessage(), e);
+                        }
+                    }
+                }.start();
             }
         }
     }
