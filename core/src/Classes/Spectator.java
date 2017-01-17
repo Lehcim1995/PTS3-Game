@@ -3,6 +3,8 @@ package Classes;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.logging.Level;
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Jasper on 11-10-2016.
@@ -10,11 +12,14 @@ import java.util.logging.Logger;
 public class Spectator extends GameObject
 {
     private String name;
-    //private GameManager gm;
     private int playerFromList;
     private Player player;
     private Logger logger;
-
+    /**
+     * Spectator constructor
+     *
+     * @param name    - Name of the player that is spectator
+     */
     public Spectator(String name) throws RemoteException
     {
         logger = Logger.getAnonymousLogger();
@@ -22,7 +27,6 @@ public class Spectator extends GameObject
 
         this.playerFromList = 0;
 
-        ///TODO: Fix REcursive call of gamemanager.Getistance in constructor of spectator
         new Thread()
         {
             @Override
@@ -36,10 +40,11 @@ public class Spectator extends GameObject
                 }
                 catch (InterruptedException e)
                 {
+                    LOGGER.log(Level.SEVERE, "Speed interruped: " + e);
                     e.printStackTrace();
                 }
             }
-        }.run();
+        }.start();
 
     }
 
@@ -47,8 +52,11 @@ public class Spectator extends GameObject
     {
         return name;
     }
-
-    public String GetSpectatedName()
+    /**
+     * Get the name of player being spectated
+     *
+     */
+    public String getSpectatedName()
     {
         String spectatedName = "No player available to spectate";
 
@@ -59,30 +67,45 @@ public class Spectator extends GameObject
 
         return spectatedName;
     }
-
+    /**
+     * Set the player that is being spectated
+     *
+     */
     public void setSpectatedPlayer()
     {
         List<Player> playerList = GameManager.getInstance().GetSpectatedPlayer();
         if (!playerList.isEmpty())
         {
-            if (playerFromList < 0) playerFromList = playerList.size() - 1;
-            if (playerFromList > playerList.size() - 1) playerFromList = 0;
+            if (playerFromList < 0)
+            {
+                playerFromList = playerList.size() - 1;
+            }
+            if (playerFromList > playerList.size() - 1)
+            {
+                playerFromList = 0;
+            }
             //TODO: if no players in game to view error
             player = playerList.get(playerFromList);
             GameManager.getInstance().setSpectator(this);
         }
         else
         {
-            logger.info("er zijn nog geen spelers om naar te kijken.");
+            LOGGER.log(Level.INFO, "er zijn nog geen spelers om naar te kijken.");
         }
     }
-
+    /**
+     * Specatate the next player
+     *
+     */
     public void NextPlayer()
     {
         playerFromList++;
         setSpectatedPlayer();
     }
-
+    /**
+     * Specatate the previous player
+     *
+     */
     public void PrevPlayer()
     {
         playerFromList--;

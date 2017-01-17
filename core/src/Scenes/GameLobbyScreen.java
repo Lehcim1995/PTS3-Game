@@ -14,6 +14,9 @@ import com.badlogic.gdx.utils.Align;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -24,13 +27,13 @@ public class GameLobbyScreen extends AbstractScreen
     private Texture txtrReady;
     private Texture txtrSpec;
     private Texture txtrRefresh;
-    private TextureRegion TrLeave;
-    private TextureRegion TrReady;
-    private TextureRegion TrSpec;
+    private TextureRegion trLeave;
+    private TextureRegion trReady;
+    private TextureRegion trSpec;
     private TextureRegion trRefresh;
-    private TextureRegionDrawable TrdLeave;
-    private TextureRegionDrawable TrdReady;
-    private TextureRegionDrawable TrdSpec;
+    private TextureRegionDrawable trdLeave;
+    private TextureRegionDrawable trdReady;
+    private TextureRegionDrawable trdSpec;
     private TextureRegionDrawable trdRefresh;
     private List listPlayers;
     private List listChat;
@@ -42,7 +45,10 @@ public class GameLobbyScreen extends AbstractScreen
     private BitmapFont font = new BitmapFont();
     private GlyphLayout layout = new GlyphLayout();
     private Batch bc = new SpriteBatch();
-
+    /**
+     * Screen Constructor
+     *
+     */
     public GameLobbyScreen()
     {
         super();
@@ -58,21 +64,21 @@ public class GameLobbyScreen extends AbstractScreen
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         //Button Leave
-        TrLeave = new TextureRegion(txtrLeave);
-        TrdLeave = new TextureRegionDrawable(TrLeave);
-        ImageButton btnLeave = new ImageButton(TrdLeave);
+        trLeave = new TextureRegion(txtrLeave);
+        trdLeave = new TextureRegionDrawable(trLeave);
+        ImageButton btnLeave = new ImageButton(trdLeave);
         btnLeave.setPosition(125.f, 40.f, Align.center);
 
         //Button Ready
-        TrReady = new TextureRegion(txtrReady);
-        TrdReady = new TextureRegionDrawable(TrReady);
-        ImageButton btnReady = new ImageButton(TrdReady);
+        trReady = new TextureRegion(txtrReady);
+        trdReady = new TextureRegionDrawable(trReady);
+        ImageButton btnReady = new ImageButton(trdReady);
         btnReady.setPosition(375.f, 40.f, Align.center);
 
         //Spectate button
-        TrSpec = new TextureRegion(txtrSpec);
-        TrdSpec = new TextureRegionDrawable(TrSpec);
-        ImageButton btnSpectate = new ImageButton(TrdSpec);
+        trSpec = new TextureRegion(txtrSpec);
+        trdSpec = new TextureRegionDrawable(trSpec);
+        ImageButton btnSpectate = new ImageButton(trdSpec);
         btnSpectate.setPosition(375.f, 475.f, Align.center);
 
         //refresh
@@ -90,7 +96,7 @@ public class GameLobbyScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "SetPlayers error: " + e);
         }
         scrollPanePlayer = new ScrollPane(listPlayers, skin);
         scrollPanePlayer.setSize(200.f, 150.f);
@@ -101,17 +107,14 @@ public class GameLobbyScreen extends AbstractScreen
         listChat.setItems("asd", "qwe", "zxc", "fdg", "Sibe", "Myron");
         Table textAreaHolder = new Table();
         textAreaHolder.debug();
+        //ScrollPanel
         scrollPaneChat = new ScrollPane(textAreaHolder);
         scrollPaneChat.setForceScroll(false, true);
         scrollPaneChat.setFlickScroll(true);
         scrollPaneChat.setOverscroll(false, false);
         scrollPaneChat.setSize(200.f, 150.f);
         scrollPaneChat.setPosition(25.f, 110.f);
-        //final Table table = new Table();
-        // table.setFillParent(true);
-        //table.add(scrollPaneChat).fill();
-        //scrollPaneChat.setForceScroll(false, true);
-        //ChatBoxInput
+        //Chat
         txtChatInput = new TextField("", skin);
         txtChatInput.setSize(200f, 25f);
         txtChatInput.setPosition(125.f, 85.f, Align.center);
@@ -141,7 +144,7 @@ public class GameLobbyScreen extends AbstractScreen
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
                 //todo set player to ready
-                System.out.println("Player X is ready");
+                LOGGER.log(Level.INFO, "A player is ready.");
                 //todo only when all players are ready
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 return false;
@@ -157,13 +160,13 @@ public class GameLobbyScreen extends AbstractScreen
 
                 if (!ScreenManager.getInstance().getIsSpectator())
                 {
-                    System.out.println("Spectating");
+                    LOGGER.log(Level.INFO, "A player is spectating.");
                     ScreenManager.getInstance().setIsSpectator(true);
                     ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 }
                 else
                 {
-                    System.out.println("No longer spectating");
+                    LOGGER.log(Level.INFO, "A player is no longer spectating.");
                     ScreenManager.getInstance().setIsSpectator(false);
                 }
 
@@ -189,33 +192,31 @@ public class GameLobbyScreen extends AbstractScreen
             @Override
             public void keyTyped(TextField textField, char key)
             {
-                if ((key == '\r' || key == '\n'))
+                if (key == '\r' || key == '\n')
                 {
                     textField.next(Gdx.input.isKeyPressed(Input.Keys.ENTER));
                     listChat.setItems(listChat.getItems().toString(System.lineSeparator()) + System.lineSeparator() + textField.getText());
-//                    if (font != null && layout != null)
-//                    {
-//                        bc.begin();
-//                        font.setColor(com.badlogic.gdx.graphics.Color.BLACK);
-//                        String text = txtChatInput.getText();
-//                        layout.setText(font, text);
-//                        float width = layout.width;// contains the width of the current set text
-//                        float height = layout.height; // contains the height of the current set text
-//                        font.draw(bc, layout, 0f, 0f);
-//                        bc.end();
-//                    }
                     textField.setText("");
                 }
             }
         });
 
     }
-
+    /**
+     * New message by a player
+     *
+     * @param message    - Text message send by player
+     * @param user    - User that send the message
+     */
     public void addNewMessage(String message, User user)
     {
         //TODO: add message to the list of messages (may need to update the scrollpane)
     }
-
+    /**
+     * New user in lobby
+     *
+     * @param user    - The user that is new
+     */
     public void addNewUser(User user)
     {
         //TODO: add user to the list of users in the lobby (may need to update the scrollpane)
