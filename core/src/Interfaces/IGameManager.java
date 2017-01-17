@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Classes.Level;
+import com.badlogic.gdx.math.Vector2;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -33,6 +34,8 @@ public interface IGameManager extends Remote, Serializable
     void SetTick(String id, IGameObject object) throws RemoteException;
 
     void UpdateTick(String id, IGameObject object) throws RemoteException;
+
+    void UpdateTick(String id, long objectId, Vector2 newPostion, float newRotation) throws RemoteException;
 
     void DeleteTick(String id, IGameObject object) throws RemoteException;
 

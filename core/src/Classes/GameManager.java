@@ -224,7 +224,7 @@ public class GameManager extends UnicastRemoteObject
             object.update();
             if (online && playerMe != null)
             {
-                server.UpdateTick(name, object);
+                server.UpdateTick(name, object.getID(), object.getPosition(), object.getRotation());
             }
         }
 
