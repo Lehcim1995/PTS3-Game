@@ -223,21 +223,27 @@ public class GameManager extends UnicastRemoteObject
             //return;
         }
 
-        long time = millis();
-        //System.out.println("time 4 " + time);
-        List<IGameObject> clonelist =  new ArrayList<>(objects);
 
+        //TODO is laggy over internet
+        List<IGameObject> clonelist =  new ArrayList<>(objects);
+        System.out.println(clonelist.size());
+        long time = millis();
         for (Iterator<IGameObject> iterator = clonelist.iterator(); iterator.hasNext(); )
         {
+
             IGameObject object = iterator.next();
+
             object.update();
+
             if (online && playerMe != null)
             {
-                server.UpdateTick(name, object.getID(), object.getPosition(), object.getRotation());
+                if (!(object instanceof LevelBlock))
+                    server.UpdateTick(name, object.getID(), object.getPosition(), object.getRotation());
             }
         }
-
         System.out.println("time 5 delay" + (millis() - time));
+
+
         ArrayList<GameObject[]> hitlist = new ArrayList<>();
         for (IGameObject go1 : notMine)
         {
