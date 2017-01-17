@@ -22,8 +22,8 @@ public class KillLog extends GameObject
 {
     private Projectile projectile;
     private Player player;
-    private transient GlyphLayout layout = new GlyphLayout();
-    private transient BitmapFont font = new BitmapFont();
+    private transient GlyphLayout layout;
+    private transient BitmapFont font;
     private float lifeTime = 10000f * 1000; //in milli secondss
     private long born;
     private boolean dead;
@@ -34,18 +34,15 @@ public class KillLog extends GameObject
         this.projectile = projectile;
         this.player = player;
         born = nanoTime();
-        position = new Vector2(400, 400);
+        position = new Vector2(450, 400);
+        layout = new GlyphLayout();
+        font = new BitmapFont();
 
         GameManager.getInstance().killLog = toString();
     }
 
     public void setTextColor(Color c)
     {
-        if (font == null)
-        {
-            font = new BitmapFont();
-        }
-
         font.setColor(c);
     }
 
@@ -63,12 +60,6 @@ public class KillLog extends GameObject
 
     public void DrawKL(Batch batch) throws RemoteException
     {
-        if (font == null || layout == null)
-        {
-            font = new BitmapFont();
-            layout = new GlyphLayout();
-        }
-
         DrawText(batch, font, layout, toString(), position);
 
         dead = millis() - born > lifeTime;
