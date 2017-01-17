@@ -167,7 +167,7 @@ public class GameManager extends UnicastRemoteObject
         if (online)
         {
             tick += Gdx.graphics.getDeltaTime();
-            if (tick > 0.005f) //doe het elke zoveel seconden
+            if (tick > 0.0005f) //doe het elke zoveel seconden
             {
                 tick = 0;
                 List<IGameObject> tmp = new ArrayList<>(server.GetTick(name));
