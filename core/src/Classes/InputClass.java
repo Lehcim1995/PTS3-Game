@@ -19,6 +19,7 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 public class InputClass implements InputProcessor
 {
     private Player player;
+    private Spectator spectator;
     private HashMap<Integer, Boolean> KeymapHold;
     private boolean chating;
     /**
@@ -31,6 +32,13 @@ public class InputClass implements InputProcessor
         KeymapHold = new HashMap<>();
         player = p;
     }
+
+    public InputClass(Spectator s)
+    {
+        KeymapHold = new HashMap<>();
+        spectator = s;
+    }
+
     /**
      * Gets the input key
      *
@@ -91,7 +99,7 @@ public class InputClass implements InputProcessor
             Chat c;
             try
             {
-                c = new Chat(GameManager.getInstance().chat, player);
+                c = new Chat(GameManager.getInstance().chat, player == null ? spectator.getName() : player.getName());
                 GameManager.getInstance().addGameObject(c);
             }
             catch (RemoteException e)
@@ -145,7 +153,10 @@ public class InputClass implements InputProcessor
         {
             // Some stuff
             ///player.Shoot();
-            player.setShooting(true);
+            if (player!=null)
+            {
+                player.setShooting(true);
+            }
             return true;
         }
         if (button == Input.Buttons.RIGHT)
@@ -162,11 +173,14 @@ public class InputClass implements InputProcessor
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
-        if (button == Input.Buttons.LEFT)
+        if (player!=null)
         {
-            player.getGunEquipped().setHasShot(false);
-            player.setShooting(false);
-            return true;
+            if (button == Input.Buttons.LEFT)
+            {
+                player.getGunEquipped().setHasShot(false);
+                player.setShooting(false);
+                return true;
+            }
         }
         return false;
     }
@@ -174,13 +188,13 @@ public class InputClass implements InputProcessor
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
-        return processMouseInput(screenX, screenY);
+        return player != null && processMouseInput(screenX, screenY);
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY)
     {
-        return processMouseInput(screenX, screenY);
+        return player != null && processMouseInput(screenX, screenY);
     }
 
     @Override
@@ -188,6 +202,7 @@ public class InputClass implements InputProcessor
     {
         return false;
     }
+
     public boolean processMouseInput(int screenX, int screenY)
     {
         float deltaX = player.getScreenPosition().x - screenX;

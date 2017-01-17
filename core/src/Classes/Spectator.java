@@ -1,5 +1,7 @@
 package Classes;
 
+import com.badlogic.gdx.Gdx;
+
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -15,6 +17,7 @@ public class Spectator extends GameObject
     private Player player;
     private transient Logger logger;
     private boolean AddedUser;
+    private transient InputClass inputClass;
 
     public Spectator(String name) throws RemoteException
     {
@@ -22,6 +25,8 @@ public class Spectator extends GameObject
         this.name = name;
 
         this.playerFromList = 0;
+        inputClass = new InputClass(this);
+        Gdx.input.setInputProcessor(inputClass);
     }
 
     public String getName()

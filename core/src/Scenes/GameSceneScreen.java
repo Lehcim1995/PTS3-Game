@@ -104,7 +104,10 @@ public class GameSceneScreen extends AbstractScreen
         }
         if (GameManager.getInstance().getSpectator() != null)
         {
-            camera.position.set(GameManager.getInstance().getSpectator().getSpectatedPlayer().getPosition().x, GameManager.getInstance().getSpectator().getSpectatedPlayer().getPosition().y, 1);
+            if (GameManager.getInstance().getSpectator().getSpectatedPlayer() != null)
+            {
+                camera.position.set(GameManager.getInstance().getSpectator().getSpectatedPlayer().getPosition().x, GameManager.getInstance().getSpectator().getSpectatedPlayer().getPosition().y, 1);
+            }
         }
 
         camera.update();

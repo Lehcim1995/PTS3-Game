@@ -47,10 +47,14 @@ public class GameManager extends UnicastRemoteObject
     private AbstractScreen scene;
     private float tick = 0;
     private boolean isStoped;
+    private boolean constructed;
 
     private GameManager() throws RemoteException
     {
-        constructor();
+        if (!constructed)
+        {
+            constructor();
+        }
     }
 
     private void constructor() throws RemoteException
@@ -129,6 +133,8 @@ public class GameManager extends UnicastRemoteObject
         {
             objects.add(obj);
         }
+
+        constructed = true;
     }
 
     public static GameManager getInstance()
@@ -206,7 +212,7 @@ public class GameManager extends UnicastRemoteObject
         if (getObjectList(notMine, StopGameObject.class).size() > 0 )
         {
             System.out.println("Stop");
-            //ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+            server.DeleteUser(name);
             online = false;
             isStoped = true;
             //return;
@@ -216,7 +222,7 @@ public class GameManager extends UnicastRemoteObject
         for (IGameObject object : clonelist)
         {
             object.update();
-            if (online)
+            if (online && playerMe != null)
             {
                 server.UpdateTick(name, object);
             }
@@ -295,7 +301,10 @@ public class GameManager extends UnicastRemoteObject
     {
         gen = true;
         isStoped =false;
-        constructor();
+        if (!constructed)
+        {
+            constructor();
+        }
     }
     /**
      * Removes a projectile
@@ -358,7 +367,7 @@ public class GameManager extends UnicastRemoteObject
     public synchronized void addGameObject(GameObject go) throws RemoteException
     {
         objects.add(go);
-        if (online)
+        if (online && playerMe != null)
         {
             server.SetTick(name, go);
         }
@@ -371,7 +380,7 @@ public class GameManager extends UnicastRemoteObject
     public void removeGameObject(GameObject go) throws RemoteException
     {
         objects.remove(go);
-        if (online)
+        if (online && playerMe != null)
         {
             server.DeleteTick(name, go);
         }
@@ -440,14 +449,7 @@ public class GameManager extends UnicastRemoteObject
      */
     public List<Player> GetSpectatedPlayer()
     {
-        ArrayList<Player> playerList = new ArrayList<>();
-        for (IGameObject go : objects)
-            if (go instanceof Player)
-            {
-                playerList.add((Player) go);
-            }
-        return playerList;
-
+        return getObjectList(notMine, Player.class);
     }
 
     public boolean IsStopped()
