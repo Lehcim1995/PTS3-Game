@@ -213,6 +213,7 @@ public class GameSceneScreen extends AbstractScreen
     {
         super.dispose();
         batch.dispose();
+        killBatch.dispose();
         shapeRenderer.dispose();
         try
         {
