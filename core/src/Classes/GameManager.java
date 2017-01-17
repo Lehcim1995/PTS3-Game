@@ -6,6 +6,7 @@ import Interfaces.IServer;
 import LibGDXSerialzableClasses.SerializableColor;
 import Scenes.AbstractScreen;
 import Scenes.GameSceneScreen;
+import Scenes.ScreenEnum;
 import Scenes.ScreenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -45,6 +46,7 @@ public class GameManager extends UnicastRemoteObject
     private Spectator spectatorMe;
     private AbstractScreen scene;
     private float tick = 0;
+    private boolean isStoped;
 
     private GameManager() throws RemoteException
     {
@@ -189,10 +191,21 @@ public class GameManager extends UnicastRemoteObject
             notMine.addAll(objects);
         }
 
+
+
         chatsOnline.addAll(getObjectList(notMine, Chat.class));
         killLogs.addAll(getObjectList(notMine, KillLog.class));
         chatsOnline.sort(Comparator.comparingDouble(chat1 -> -chat1.getBorn()));
         killLogs.sort(Comparator.comparingDouble(killlog1 -> -killlog1.getBorn()));
+
+        if (getObjectList(notMine, StopGameObject.class).size() > 0 )
+        {
+            System.out.println("Stop");
+            //ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+            online = false;
+            isStoped = true;
+            //return;
+        }
 
         ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();
         for (IGameObject object : clonelist)
@@ -428,6 +441,11 @@ public class GameManager extends UnicastRemoteObject
             }
         return playerList;
 
+    }
+
+    public boolean IsStopped()
+    {
+        return isStoped;
     }
     /**
      * Adds a new KillLog

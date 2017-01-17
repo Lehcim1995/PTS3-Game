@@ -19,12 +19,13 @@ public class Chat extends GameObject
 {
     private String message;
     private Player fromPlayer;
+    private String fromPlayerName;
     private float lifeTime = 10000f * 1000; //in milli secondss
     private long born;
     private boolean dead;
 
-    private transient BitmapFont font = new BitmapFont();
-    private transient GlyphLayout layout = new GlyphLayout();
+    private transient BitmapFont font;
+    private transient GlyphLayout layout;
 
     /**
      * Chat constructor
@@ -36,7 +37,22 @@ public class Chat extends GameObject
     {
         super();
         this.message = message;
-        this.fromPlayer = fromPlayer;
+        this.fromPlayerName = fromPlayer.getName();
+        born = nanoTime();
+        position = new Vector2(0, 0);
+    }
+
+    /**
+     * Chat constructor
+     *
+     * @param message    - text message from a player
+     * @param fromPlayer - player that send the message
+     */
+    public Chat(String message, String fromPlayer) throws RemoteException
+    {
+        super();
+        this.message = message;
+        this.fromPlayerName = fromPlayer;
         born = nanoTime();
         position = new Vector2(0, 0);
     }
@@ -103,7 +119,7 @@ public class Chat extends GameObject
     @Override
     public String toString()
     {
-        return fromPlayer.getName() + " : " + message;
+        return fromPlayerName + " : " + message;
     }
 
     public GlyphLayout getLayout()

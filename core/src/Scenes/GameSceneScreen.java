@@ -86,6 +86,10 @@ public class GameSceneScreen extends AbstractScreen
         super.render(delta);
         try
         {
+            if (GameManager.getInstance().IsStopped())
+            {
+                //ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
+            }
             update();
         }
         catch (RemoteException e)
@@ -128,6 +132,7 @@ public class GameSceneScreen extends AbstractScreen
             catch (RemoteException e)
             {
                 LOGGER.log(Level.WARNING, e.getMessage(), e);
+                ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
             }
         }
         shapeRenderer.set(ShapeRenderer.ShapeType.Line);
@@ -230,7 +235,10 @@ public class GameSceneScreen extends AbstractScreen
      */
     public void update() throws RemoteException
     {
-        GameManager.getInstance().Update();
+        if (!GameManager.getInstance().IsStopped())
+        {
+            GameManager.getInstance().Update();
+        }
     }
 
     @Override

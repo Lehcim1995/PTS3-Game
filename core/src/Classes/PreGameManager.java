@@ -12,6 +12,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Stefan on 12/20/2016.
@@ -38,11 +39,7 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
         {
             IServer pgm = new PreGameManager();
         }
-        catch (RemoteException e)
-        {
-            e.printStackTrace();
-        }
-        catch (UnknownHostException e)
+        catch (RemoteException | UnknownHostException e)
         {
             e.printStackTrace();
         }
@@ -66,7 +63,7 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
         ServerGameManger sgm = null;
         try
         {
-            sgm = new ServerGameManger(name);
+            sgm = new ServerGameManger(name, this);
             lobbies.add(sgm);
         }
         catch (RemoteException e)
@@ -89,6 +86,11 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
             }
         }
         return null;
+    }
+
+    public void StopLobby(String name)
+    {
+        lobbies.removeIf(lb -> Objects.equals(lb.getName(), name));
     }
 
 
