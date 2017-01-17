@@ -167,7 +167,7 @@ public class GameManager extends UnicastRemoteObject
         if (online)
         {
             tick += Gdx.graphics.getDeltaTime();
-            if (tick > 0.0005f) //doe het elke zoveel seconden
+            if (tick > 0.02f) //doe het elke zoveel seconden
             {
                 tick = 0;
                 List<IGameObject> tmp = new ArrayList<>(server.GetTick(name));
@@ -218,9 +218,11 @@ public class GameManager extends UnicastRemoteObject
             //return;
         }
 
-        ArrayList<IGameObject> clonelist = (ArrayList<IGameObject>) ((ArrayList<IGameObject>) objects).clone();
-        for (IGameObject object : clonelist)
+        List<IGameObject> clonelist =  new ArrayList<>(objects);
+
+        for (Iterator<IGameObject> iterator = clonelist.iterator(); iterator.hasNext(); )
         {
+            IGameObject object = iterator.next();
             object.update();
             if (online && playerMe != null)
             {
