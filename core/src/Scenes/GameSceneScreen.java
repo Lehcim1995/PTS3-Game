@@ -43,6 +43,7 @@ public class GameSceneScreen extends AbstractScreen
 
     private Skin skin;
     private TextField txtChatInput;
+    private boolean debugMode = false;
 
     public GameSceneScreen()
     {
@@ -134,12 +135,16 @@ public class GameSceneScreen extends AbstractScreen
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
             }
         }
-//        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-//        shapeRenderer.setColor(Color.RED);
-//        for (IGameObject go : GameManager.getInstance().getAllObjects())
-//        {
-//            shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
-//        }
+
+        if (debugMode)
+        {
+            shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.RED);
+            for (IGameObject go : GameManager.getInstance().getAllObjects())
+            {
+                shapeRenderer.polygon(go.getHitbox().getTransformedVertices());
+            }
+        }
         shapeRenderer.end();
 
         batch.begin();
@@ -172,24 +177,17 @@ public class GameSceneScreen extends AbstractScreen
             }
         }
 
-//        batch.end();
-
-//        killBatch.begin();
-
-//        klFont.setColor(Color.RED);
-//        killLog.setText(font, GameManager.getInstance().killLog);
         float klHeight = killLog.height;
         float klPadding = 4;
-//        klFont.draw(killBatch, killLog, klPadding, klHeight);
         font.draw(batch, killLog, klPadding, klHeight);
 
         int iKill = (int) (height + height);
         float startKill = (int) (height + height);
         float maxitemsKill = height * 15;
 
-        for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext(); )
-        {
-            KillLog kl = logs.next();
+        //for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext(); )
+        //{
+            KillLog kl = GameManager.getInstance().getKillLogs().get(0);//logs.next();
             iKill += kl.getLayout().height + 3;
             try
             {
@@ -197,15 +195,13 @@ public class GameSceneScreen extends AbstractScreen
                 float alpha = 1f - (iKill / (startKill + maxitemsKill));
                 kl.setTextColor(new Color(0, 0, 0, alpha));
                 kl.setPosition(new Vector2(klPadding, iKill));
-//                kl.DrawKL(killBatch);
                 kl.DrawKL(batch);
             }
             catch (RemoteException e)
             {
                 LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
-        }
-//        killBatch.end();
+        //}
         batch.end();
         if (GameManager.getInstance().IsStopped())
         {
