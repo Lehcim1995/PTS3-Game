@@ -305,7 +305,7 @@ public class SerializableColor implements Serializable
         rr = r.nextFloat();
         rg = r.nextFloat();
         rb = r.nextFloat();
-        ra = r.nextFloat();
+        ra = 1;//r.nextFloat();
 
         return new SerializableColor(rr, rg, rb, ra);
     }

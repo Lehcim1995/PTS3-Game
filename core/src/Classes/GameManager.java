@@ -61,6 +61,7 @@ public class GameManager extends UnicastRemoteObject
 
     private void constructor() throws RemoteException
     {
+        scene = null;
         killLogs = new ArrayList<>();
         objects = new ArrayList<>();
         notMine = new ArrayList<>();
@@ -236,7 +237,9 @@ public class GameManager extends UnicastRemoteObject
             if (online && playerMe != null)
             {
                 if (!(object instanceof LevelBlock))
+                {
                     server.UpdateTick(name, object.getID(), object.getPosition(), object.getRotation());
+                }
             }
         }
 

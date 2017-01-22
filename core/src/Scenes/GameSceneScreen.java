@@ -149,8 +149,10 @@ public class GameSceneScreen extends AbstractScreen
 
         batch.begin();
 
+        GameManager.getInstance().getPlayer().DrawAmmo(batch);
+
         font.setColor(Color.RED);
-        layout.setText(font, GameManager.getInstance().chat);
+        layout.setText(font, GameManager.chat);
         float height = layout.height;
         float padding = 4;
         font.draw(batch, layout, padding, height);
@@ -187,6 +189,8 @@ public class GameSceneScreen extends AbstractScreen
 
         //for (Iterator<KillLog> logs = GameManager.getInstance().getKillLogs().iterator(); logs.hasNext(); )
         //{
+        if (GameManager.getInstance().getKillLogs().size() > 0)
+        {
             KillLog kl = GameManager.getInstance().getKillLogs().get(0);//logs.next();
             iKill += kl.getLayout().height + 3;
             try
@@ -201,6 +205,7 @@ public class GameSceneScreen extends AbstractScreen
             {
                 LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
+        }
         //}
         batch.end();
         if (GameManager.getInstance().IsStopped())
