@@ -17,8 +17,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -117,7 +116,7 @@ public class RegisterScreen extends AbstractScreen
                 String password = tfPassword.getText();
                 String IP = tfIP.getText();
 
-                LOGGER.log(Level.INFO, "Empty string: " + name.isEmpty());
+                Logger.getAnonymousLogger().log(Level.INFO, "Empty string: " + name.isEmpty());
                 try
                 {
                     ScreenManager.getInstance().setIp(IP);
@@ -134,15 +133,15 @@ public class RegisterScreen extends AbstractScreen
                 }
                 catch (RemoteException | SQLException e)
                 {
-                    LOGGER.log(Level.WARNING, "Remote / SQL Exception: " + e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, "Remote / SQL Exception: " + e.getMessage(), e);
                 }
                 catch (NotBoundException e)
                 {
-                    LOGGER.log(Level.WARNING, "NotBoundException: " + e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, "NotBoundException: " + e.getMessage(), e);
                 }
                 catch (Exception e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
                 return false;
             }

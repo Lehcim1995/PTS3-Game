@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.logging.*;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
-
 /**
  * Created by michel on 27-9-2016.
  */
@@ -104,7 +102,7 @@ public class InputClass implements InputProcessor
             }
             catch (RemoteException e)
             {
-                LOGGER.log(java.util.logging.Level.INFO, "Remote Ex: " + e);
+                Logger.getAnonymousLogger().log(java.util.logging.Level.INFO, "Remote Ex: " + e);
             }
 
             GameManager.getInstance().chat = "";

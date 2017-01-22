@@ -9,9 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.rmi.RemoteException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 11-10-2016.
@@ -90,7 +90,7 @@ public class Projectile extends GameObject
                 }
                 catch (RemoteException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
             }
         }
@@ -102,20 +102,20 @@ public class Projectile extends GameObject
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
             }
 
         }
         else if (other instanceof Player &&
                 gun != null && gun.getOwner().getID() != other.getID())
         {
-            LOGGER.log(Level.INFO, "Gun owner : " + gun.getOwner().getID());
-            LOGGER.log(Level.INFO, "Target : " + other.getID());
-            LOGGER.log(Level.INFO, "GameManager Player " + GameManager.getInstance().getPlayer().getID());
+            Logger.getAnonymousLogger().log(Level.INFO, "Gun owner : " + gun.getOwner().getID());
+            Logger.getAnonymousLogger().log(Level.INFO, "Target : " + other.getID());
+            Logger.getAnonymousLogger().log(Level.INFO, "GameManager Player " + GameManager.getInstance().getPlayer().getID());
 
             if (other.getID() == GameManager.getInstance().getPlayer().getID()) //geraakte speler moet weg gaan
             {
-                LOGGER.log(Level.INFO, new KillLog(this, (Player) other).toString());
+                Logger.getAnonymousLogger().log(Level.INFO, new KillLog(this, (Player) other).toString());
                 ((Player) other).Die(this);
                 gun.getOwner().Hit();
             }
@@ -136,12 +136,12 @@ public class Projectile extends GameObject
                         }
                         catch (InterruptedException e)
                         {
-                            LOGGER.log(Level.WARNING, e.getMessage(), e);
+                            Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                             Thread.currentThread().interrupt();
                         }
                         catch (RemoteException e)
                         {
-                            LOGGER.log(Level.WARNING, e.getMessage(), e);
+                            Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                         }
                     }
                 }.start();

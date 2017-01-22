@@ -7,8 +7,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+//import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.*;
 
 
 /**
@@ -53,7 +54,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
 
             try
             {
-                LOGGER.log(Level.INFO, "Querry: " + logInQuery);
+                Logger.getAnonymousLogger().log(Level.INFO, "Querry: " + logInQuery);
                 ArrayList<User> resultSet = database.LogIn(logInQuery, email, password);
                 if (resultSet.size() == 1)
                 {
@@ -62,7 +63,7 @@ public class Connection extends UnicastRemoteObject implements IConnection
             }
             catch (Exception e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
             }
         }
 

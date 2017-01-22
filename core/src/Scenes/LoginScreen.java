@@ -18,8 +18,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 
 /**
@@ -108,11 +107,11 @@ public class LoginScreen extends AbstractScreen
                         }
                         catch (RemoteException e)
                         {
-                            LOGGER.log(Level.WARNING, "RemoteException: " + e.getMessage(), e);
+                            Logger.getAnonymousLogger().log(Level.WARNING, "RemoteException: " + e.getMessage(), e);
                         }
                         catch (NotBoundException e)
                         {
-                            LOGGER.log(Level.WARNING, "NotBoundException: " + e.getMessage(), e);
+                            Logger.getAnonymousLogger().log(Level.WARNING, "NotBoundException: " + e.getMessage(), e);
                         }
                         if (conn != null)
                         {
@@ -120,7 +119,7 @@ public class LoginScreen extends AbstractScreen
                         }
                         else
                         {
-                            LOGGER.log(Level.INFO, "kon registry niet juist ophalen");
+                            Logger.getAnonymousLogger().log(Level.INFO, "kon registry niet juist ophalen");
                         }
                         if (user != null)
                         {
@@ -129,12 +128,12 @@ public class LoginScreen extends AbstractScreen
                         }
                         else
                         {
-                            LOGGER.log(Level.INFO, "Niet geregistreerd!");
+                            Logger.getAnonymousLogger().log(Level.INFO, "Niet geregistreerd!");
                         }
                     }
                     catch (Exception e)
                     {
-                        LOGGER.log(Level.WARNING, "Error: lege strings" + e.getMessage(), e);
+                        Logger.getAnonymousLogger().log(Level.WARNING, "Error: lege strings" + e.getMessage(), e);
                     }
                 }
                 return false;
@@ -146,7 +145,7 @@ public class LoginScreen extends AbstractScreen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                LOGGER.log(Level.INFO, "Registerbutton klicked");
+                Logger.getAnonymousLogger().log(Level.INFO, "Registerbutton klicked");
                 ScreenManager.getInstance().showScreen(ScreenEnum.REGISTER);
                 return false;
             }

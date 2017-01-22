@@ -38,7 +38,7 @@ public class KillLog extends GameObject
         layout = new GlyphLayout();
         font = new BitmapFont();
 
-        GameManager.getInstance().killLog = toString();
+        GameManager.killLog = toString();
     }
 
     public void setTextColor(Color c)

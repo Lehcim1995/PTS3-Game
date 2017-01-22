@@ -10,8 +10,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 /**
@@ -49,16 +49,16 @@ public class Database
         {
             if (DatabaseConnection(url))
             {
-                LOGGER.log(Level.INFO, "School db connected");
+                Logger.getAnonymousLogger().log(Level.INFO, "School db connected");
             }
             else
             {
-                LOGGER.log(Level.INFO, "Cannot connect to any database");
+                Logger.getAnonymousLogger().log(Level.INFO, "Cannot connect to any database");
             }
         }
         catch (SQLException e)
         {
-            LOGGER.log(Level.WARNING, "SQLError in Constructor: " + e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, "SQLError in Constructor: " + e.getMessage(), e);
         }
     }
 
@@ -120,12 +120,12 @@ public class Database
         }
         catch (SQLException e)
         {
-            LOGGER.log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
             return -1;
         }
         catch (ClassNotFoundException e)
         {
-            LOGGER.log(Level.WARNING, "Class Error " + e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Class Error " + e.getMessage(), e);
             return -1;
         }
         finally
@@ -133,14 +133,14 @@ public class Database
             if (conn != null)
             {
                 //close and commit
-                LOGGER.log(Level.INFO, "Commit" + sql);
+                Logger.getAnonymousLogger().log(Level.INFO, "Commit" + sql);
                 try
                 {
                     conn.commit();
                 }
                 catch (SQLException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
                 try
                 {
@@ -148,7 +148,7 @@ public class Database
                 }
                 catch (SQLException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
             }
 
@@ -160,7 +160,7 @@ public class Database
                 }
                 catch (SQLException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
             }
 
@@ -172,7 +172,7 @@ public class Database
                 }
                 catch (SQLException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
             }
         }
@@ -238,11 +238,11 @@ public class Database
         }
         catch (SQLException e)
         {
-            LOGGER.log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
         }
         catch (ClassNotFoundException e)
         {
-            LOGGER.log(Level.WARNING, "Class Error: " + e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Class Error: " + e.getMessage(), e);
         }
         finally
         {
@@ -277,12 +277,12 @@ public class Database
         }
         catch (SQLException e)
         {
-            LOGGER.log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, "SQL Error: " + e.getMessage(), e);
             return false;
         }
         catch (ClassNotFoundException e)
         {
-            LOGGER.log(Level.WARNING, "Class Error: " + e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Class Error: " + e.getMessage(), e);
             return false;
         }
         finally
@@ -313,7 +313,7 @@ public class Database
         }
         catch (SQLException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
         }
         return new ArrayList<>();
     }

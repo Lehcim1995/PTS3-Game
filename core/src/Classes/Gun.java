@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Random;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by myron on 11-10-16.
@@ -189,7 +189,7 @@ public class Gun implements Serializable
                     }
                     catch (InterruptedException e)
                     {
-                        LOGGER.log(Level.SEVERE,"Interruped ex: " + e);
+                        Logger.getAnonymousLogger().log(Level.SEVERE,"Interruped ex: " + e);
                         Thread.currentThread().interrupt();
                     }
 

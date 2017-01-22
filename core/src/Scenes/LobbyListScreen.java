@@ -14,8 +14,7 @@ import com.badlogic.gdx.utils.Align;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -65,7 +64,7 @@ public class LobbyListScreen extends AbstractScreen
         }
         catch (RemoteException|NotBoundException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
         }
 
 
@@ -119,7 +118,7 @@ public class LobbyListScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
         }
         scrollPaneServers = new ScrollPane(listServers, skin);
         scrollPaneServers.setSize(200.f, 150.f);
@@ -155,7 +154,7 @@ public class LobbyListScreen extends AbstractScreen
                 }
                 catch (RemoteException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
 
                 return false;
@@ -193,13 +192,13 @@ public class LobbyListScreen extends AbstractScreen
                     }
                     else
                     {
-                        LOGGER.log(Level.INFO, "Voer geldige Lobby in!");
+                        Logger.getAnonymousLogger().log(Level.INFO, "Voer geldige Lobby in!");
                     }
 
                 }
                 catch (RemoteException e)
                 {
-                    LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
                 return false;
             }

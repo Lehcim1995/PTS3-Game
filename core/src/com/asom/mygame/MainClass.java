@@ -15,8 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 public class MainClass extends Game implements ApplicationListener
 {
@@ -55,7 +54,7 @@ public class MainClass extends Game implements ApplicationListener
         }
         catch (RemoteException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
         }
 
         if (GameManager.getInstance().getPlayer() != null)
@@ -78,7 +77,7 @@ public class MainClass extends Game implements ApplicationListener
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
             }
         }
 

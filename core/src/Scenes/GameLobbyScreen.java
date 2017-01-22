@@ -16,8 +16,7 @@ import com.badlogic.gdx.utils.Align;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -97,7 +96,7 @@ public class GameLobbyScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            LOGGER.log(Level.SEVERE, "SetPlayers error: " + e);
+            Logger.getAnonymousLogger().log(Level.SEVERE, "SetPlayers error: " + e);
         }
         scrollPanePlayer = new ScrollPane(listPlayers, skin);
         scrollPanePlayer.setSize(200.f, 150.f);
@@ -145,7 +144,7 @@ public class GameLobbyScreen extends AbstractScreen
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
                 //todo set player to ready
-                LOGGER.log(Level.INFO, "A player is ready.");
+                Logger.getAnonymousLogger().log(Level.INFO, "A player is ready.");
                 //todo only when all players are ready
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 try
@@ -169,13 +168,13 @@ public class GameLobbyScreen extends AbstractScreen
 
                 if (!ScreenManager.getInstance().getIsSpectator())
                 {
-                    LOGGER.log(Level.INFO, "A player is spectating.");
+                    Logger.getAnonymousLogger().log(Level.INFO, "A player is spectating.");
                     ScreenManager.getInstance().setIsSpectator(true);
                     ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);
                 }
                 else
                 {
-                    LOGGER.log(Level.INFO, "A player is no longer spectating.");
+                    Logger.getAnonymousLogger().log(Level.INFO, "A player is no longer spectating.");
                     ScreenManager.getInstance().setIsSpectator(false);
                 }
 

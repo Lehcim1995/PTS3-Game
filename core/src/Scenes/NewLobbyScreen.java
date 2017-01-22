@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.Align;
 
 import java.rmi.RemoteException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -96,13 +96,13 @@ public class NewLobbyScreen extends AbstractScreen
                     }
                     catch (RemoteException e)
                     {
-                        LOGGER.log(Level.WARNING, e.getMessage(), e);
+                        Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                     }
                     ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                 }
                 else
                 {
-                    LOGGER.log(Level.INFO, "Geen lobby naam.");
+                    Logger.getAnonymousLogger().log(Level.INFO, "Geen lobby naam.");
                 }
                 return false;
             }

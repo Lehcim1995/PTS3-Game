@@ -20,9 +20,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.logging.*;
+import java.util.logging.Logger;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * Created by Nick on 11-10-2016.
@@ -78,7 +79,7 @@ public class GameManager extends UnicastRemoteObject
         catch (UnknownHostException e)
         {
             //Log this
-            LOGGER.log(java.util.logging.Level.SEVERE, "Client: UnknownHostException: " + e.getMessage());
+            java.util.logging.Logger.getAnonymousLogger().log(java.util.logging.Level.SEVERE, "Client: UnknownHostException: " + e.getMessage());
             online = false;
         }
         String ip = ScreenManager.getInstance().getIp();
@@ -99,17 +100,17 @@ public class GameManager extends UnicastRemoteObject
         catch (RemoteException e)
         {
             //Log this
-            LOGGER.log(java.util.logging.Level.SEVERE, "Client: RemoteExeption: " + e.getMessage());
+            Logger.getAnonymousLogger().log(java.util.logging.Level.SEVERE, "Client: RemoteExeption: " + e.getMessage());
             online = false;
         }
         catch (NotBoundException e)
         {
             //Log this
-            LOGGER.log(java.util.logging.Level.SEVERE, "Client: NotBoundException: " + e.getMessage());
+            Logger.getAnonymousLogger().log(java.util.logging.Level.SEVERE, "Client: NotBoundException: " + e.getMessage());
             online = false;
         }
         name = ScreenManager.getInstance().getUser().getName();
-        LOGGER.log(java.util.logging.Level.INFO, "User name: " + name);
+        Logger.getAnonymousLogger().log(java.util.logging.Level.INFO, "User name: " + name);
 
         //Check if spectator if not make Player else make Spectator
         if (ScreenManager.getInstance().getIsSpectator())
@@ -149,7 +150,7 @@ public class GameManager extends UnicastRemoteObject
         catch (RemoteException e)
         {
             //Log this
-            LOGGER.log(java.util.logging.Level.SEVERE, "getInstance Error " + e.getMessage());
+            Logger.getAnonymousLogger().log(java.util.logging.Level.SEVERE, "getInstance Error " + e.getMessage());
         }
         return instance;
     }
@@ -283,12 +284,12 @@ public class GameManager extends UnicastRemoteObject
             catch (ClassCastException e)
             {
                 //Log this
-                LOGGER.log(java.util.logging.Level.SEVERE, "Cast Error " + e.getMessage());
+                Logger.getAnonymousLogger().log(java.util.logging.Level.SEVERE, "Cast Error " + e.getMessage());
             }
             catch (NullPointerException e)
             {
                 //Log this
-                LOGGER.log(java.util.logging.Level.SEVERE, "Null Error " + e.getMessage());
+                Logger.getAnonymousLogger().log(java.util.logging.Level.SEVERE, "Null Error " + e.getMessage());
             }
         }
 

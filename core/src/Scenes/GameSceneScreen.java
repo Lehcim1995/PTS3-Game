@@ -21,8 +21,7 @@ import com.badlogic.gdx.utils.Align;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 /**
  * Created by Nick on 22-11-2016.
@@ -91,7 +90,7 @@ public class GameSceneScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
         }
 
         if (GameManager.getInstance().getScene() == null)
@@ -131,7 +130,7 @@ public class GameSceneScreen extends AbstractScreen
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
             }
         }
@@ -175,7 +174,7 @@ public class GameSceneScreen extends AbstractScreen
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
             }
         }
 
@@ -203,7 +202,7 @@ public class GameSceneScreen extends AbstractScreen
             }
             catch (RemoteException e)
             {
-                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
             }
         }
         //}
@@ -234,7 +233,7 @@ public class GameSceneScreen extends AbstractScreen
         }
         catch (RemoteException e)
         {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
         }
     }
 
