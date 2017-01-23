@@ -148,19 +148,8 @@ public class GameSceneScreen extends AbstractScreen
 
         batch.begin();
 
-        if (GameManager.getInstance().getPlayer() != null)
-        {
-            GameManager.getInstance().getPlayer().DrawAmmo(batch);
-        }
-        else
-        {
-            try {
-                GameManager.getInstance().stop();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
-        }
+        GameManager.getInstance().getPlayer().DrawAmmo(batch);
+
 
         font.setColor(Color.RED);
         layout.setText(font, GameManager.chat);

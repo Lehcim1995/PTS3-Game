@@ -137,24 +137,21 @@ public class LobbyListScreen extends AbstractScreen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                if (listServers.getItems().get(listServers.getSelectedIndex())!= null) {
+                    String servernaam = (String) listServers.getItems().get(listServers.getSelectedIndex());
+                    try {
+                        ScreenManager.getInstance().setLobby(txtLobbyName.getText());
+                        IGameManager sgm = pgm.JoinLobby(servernaam, ScreenManager.getInstance().getUser());
+                        if (sgm != null) {
+                            ScreenManager.getInstance().setGameManager(sgm);
+                            sgm.addUser(ScreenManager.getInstance().getUser());
+                            ScreenManager.getInstance().setLobbyName(servernaam);
+                            ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
+                        }
 
-                String servernaam = (String) listServers.getItems().get(listServers.getSelectedIndex());
-                try
-                {
-                    ScreenManager.getInstance().setLobby(txtLobbyName.getText());
-                    IGameManager sgm = pgm.JoinLobby(servernaam, ScreenManager.getInstance().getUser());
-                    if (sgm != null)
-                    {
-                        ScreenManager.getInstance().setGameManager(sgm);
-                        sgm.addUser(ScreenManager.getInstance().getUser());
-                        ScreenManager.getInstance().setLobbyName(servernaam);
-                        ScreenManager.getInstance().showScreen(ScreenEnum.GAMELOBBY);
+                    } catch (RemoteException e) {
+                        Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                     }
-
-                }
-                catch (RemoteException e)
-                {
-                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                 }
 
                 return false;
