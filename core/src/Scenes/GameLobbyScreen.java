@@ -149,6 +149,7 @@ public class GameLobbyScreen extends AbstractScreen
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
                 //todo set player to ready
+                ScreenManager.getInstance().setIsSpectator(false);
                 Logger.getAnonymousLogger().log(Level.INFO, "A player is ready.");
                 //todo only when all players are ready
                 ScreenManager.getInstance().showScreen(ScreenEnum.GAMESCENE);

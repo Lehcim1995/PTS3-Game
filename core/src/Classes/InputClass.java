@@ -72,6 +72,7 @@ public class InputClass implements InputProcessor
         if (keycode == Input.Keys.ESCAPE)
         {
             try {
+                GameManager.getInstance().setSpectator(null);
                 GameManager.getInstance().stop();
             } catch (RemoteException e) {
                 e.printStackTrace();
