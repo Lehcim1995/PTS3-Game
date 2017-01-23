@@ -177,6 +177,7 @@ public class Player extends GameObject
     {
         health = 0;
         deaths++;
+        this.getGunEquipped().setCurrentBullets();
         KillLog kl = new KillLog(projectile, this);
         GameManager.getInstance().addGameObject(kl);
         GameManager.getInstance().SpawnPlayer(this);

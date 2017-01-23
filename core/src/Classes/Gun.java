@@ -125,6 +125,8 @@ public class Gun implements Serializable
         this.owner = owner;
     }
 
+    public void setCurrentBullets () {this.currentBullets = this.maxBullets; }
+
     public float getBulletSpeed()
     {
         return bulletSpeed;
