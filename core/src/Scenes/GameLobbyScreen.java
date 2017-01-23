@@ -133,6 +133,11 @@ public class GameLobbyScreen extends AbstractScreen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                try {
+                    GameManager.getInstance().stop();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
                 return false;
             }
