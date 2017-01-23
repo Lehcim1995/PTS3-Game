@@ -137,7 +137,7 @@ public class LobbyListScreen extends AbstractScreen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                if (listServers.getItems().get(listServers.getSelectedIndex())!= null) {
+                try {
                     String servernaam = (String) listServers.getItems().get(listServers.getSelectedIndex());
                     try {
                         ScreenManager.getInstance().setLobby(txtLobbyName.getText());
@@ -153,7 +153,10 @@ public class LobbyListScreen extends AbstractScreen
                         Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
                     }
                 }
-
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+                    Logger.getAnonymousLogger().log(Level.WARNING, e.getMessage(), e);
+                }
                 return false;
             }
         });

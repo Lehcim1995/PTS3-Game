@@ -276,12 +276,6 @@ public class Player extends GameObject
             {
                 Spawn();
             }
-            if (ic.GetKey(Input.Keys.ESCAPE))
-            {
-                //leave game
-                GameManager.getInstance().stop();
-                //ScreenManager.getInstance().showScreen(ScreenEnum.LOBBYLIST);
-            }
         }
 
         position.add(pos.scl(speed * Gdx.graphics.getDeltaTime()));

@@ -69,6 +69,14 @@ public class InputClass implements InputProcessor
     @Override
     public boolean keyDown(int keycode)
     {
+        if (keycode == Input.Keys.ESCAPE)
+        {
+            try {
+                GameManager.getInstance().stop();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
 
         if (!chating)
         {
