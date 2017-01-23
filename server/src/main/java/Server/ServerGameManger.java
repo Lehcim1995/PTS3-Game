@@ -1,5 +1,6 @@
-package Classes;
+package Server;
 
+import Classes.*;
 import Interfaces.IGameManager;
 import Interfaces.IGameObject;
 import Interfaces.IUser;
@@ -313,6 +314,8 @@ public class ServerGameManger extends UnicastRemoteObject implements IGameManage
                 }
 
                 pgm.StopLobby(me.getName());
+                userList.forEach( u ->  pgm.getConnectionInstance().UpdateStats(u));
+
             }
         },(long) matchTime, (long) matchTime);
         matchStarted = true;

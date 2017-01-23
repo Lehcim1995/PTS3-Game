@@ -37,8 +37,8 @@ public class NewLobbyScreen extends AbstractScreen
     public NewLobbyScreen()
     {
         super();
-        txrBack = new Texture(Gdx.files.internal("core\\assets\\btn_back.png"));
-        txrCreate = new Texture(Gdx.files.internal("core\\assets\\btn_create.png"));
+        txrBack = new Texture(Gdx.files.internal("btn_back.png"));
+        txrCreate = new Texture(Gdx.files.internal("btn_create.png"));
     }
 
     @Override

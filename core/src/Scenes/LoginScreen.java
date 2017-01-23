@@ -45,8 +45,8 @@ public class LoginScreen extends AbstractScreen
     public LoginScreen()
     {
         super();
-        txtrLogin = new Texture(Gdx.files.internal("core\\assets\\btn_login.png"));
-        txtrRegister = new Texture(Gdx.files.internal("core\\assets\\btn_register.png"));
+        txtrLogin = new Texture(Gdx.files.internal("btn_login.png"));
+        txtrRegister = new Texture(Gdx.files.internal("btn_register.png"));
     }
 
     @Override

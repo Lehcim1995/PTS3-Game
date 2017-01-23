@@ -52,10 +52,10 @@ public class GameLobbyScreen extends AbstractScreen
     public GameLobbyScreen()
     {
         super();
-        txtrLeave = new Texture(Gdx.files.internal("core\\assets\\btn_leave.png"));
-        txtrReady = new Texture(Gdx.files.internal("core\\assets\\btn_ready.png"));
-        txtrSpec = new Texture(Gdx.files.internal("core\\assets\\btn_spectate.png"));
-        txtrRefresh = new Texture(Gdx.files.internal("core\\assets\\btn_refresh.png"));
+        txtrLeave = new Texture(Gdx.files.internal("btn_leave.png"));
+        txtrReady = new Texture(Gdx.files.internal("btn_ready.png"));
+        txtrSpec = new Texture(Gdx.files.internal("btn_spectate.png"));
+        txtrRefresh = new Texture(Gdx.files.internal("btn_refresh.png"));
     }
 
     @Override

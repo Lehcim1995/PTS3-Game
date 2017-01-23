@@ -51,11 +51,11 @@ public class LobbyListScreen extends AbstractScreen
     {
         super();
 
-        txtrLogout = new Texture(Gdx.files.internal("core\\assets\\btn_logout.png"));
-        txtrJoin = new Texture(Gdx.files.internal("core\\assets\\btn_join.png"));
-        txtrStats = new Texture(Gdx.files.internal("core\\assets\\btn_stats.png"));
-        txtrCreate = new Texture(Gdx.files.internal("core\\assets\\btn_create.png"));
-        txtrRefresh = new Texture(Gdx.files.internal("core\\assets\\btn_refresh.png"));
+        txtrLogout = new Texture(Gdx.files.internal("btn_logout.png"));
+        txtrJoin = new Texture(Gdx.files.internal("btn_join.png"));
+        txtrStats = new Texture(Gdx.files.internal("btn_stats.png"));
+        txtrCreate = new Texture(Gdx.files.internal("btn_create.png"));
+        txtrRefresh = new Texture(Gdx.files.internal("btn_refresh.png"));
 
         try
         {

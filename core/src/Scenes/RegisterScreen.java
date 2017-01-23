@@ -45,8 +45,8 @@ public class RegisterScreen extends AbstractScreen
     public RegisterScreen()
     {
         super();
-        txtrRegister = new Texture(Gdx.files.internal("core\\assets\\btn_register.png"));
-        txtrCancel = new Texture(Gdx.files.internal("core\\assets\\btn_back.png"));
+        txtrRegister = new Texture(Gdx.files.internal("btn_register.png"));
+        txtrCancel = new Texture(Gdx.files.internal("btn_back.png"));
     }
 
     @Override

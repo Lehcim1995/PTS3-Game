@@ -1,10 +1,14 @@
-package Classes;
+package Server;
 
+import Classes.Connection;
 import Interfaces.IConnection;
 import Interfaces.IGameManager;
 import Interfaces.IServer;
 import Interfaces.IUser;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
@@ -22,6 +26,11 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
     private transient Registry registry;
     private IConnection connectionInstance = new Connection();
     private ArrayList<ServerGameManger> lobbies;
+
+    public Connection getConnectionInstance()
+    {
+        return (Connection) connectionInstance;
+    }
 
     public PreGameManager() throws RemoteException, UnknownHostException
     {
@@ -43,6 +52,26 @@ public class PreGameManager extends UnicastRemoteObject implements IServer
         {
             e.printStackTrace();
         }
+
+        while (true)
+        {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String input = null;
+            try
+            {
+                input = br.readLine();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (input.equals("Exit"))
+            {
+                break;
+            }
+        }
+
     }
 
     @Override

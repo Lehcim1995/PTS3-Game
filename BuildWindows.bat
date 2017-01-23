@@ -1,1 +1,1 @@
-gradlew.bat desktop:dist
+gradlew.bat dist
