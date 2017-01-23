@@ -45,7 +45,7 @@ public class StatsScreen extends AbstractScreen
         Label winRatio = new Label("Win ratio: " + String.valueOf(user.getWinPercentage() + "%"), skin);
         Label matchesWon = new Label("Total matches won: " + String.valueOf(user.getMatchesWon()), skin);
         Label matchesLost = new Label("Total matches lost: " + String.valueOf(user.getMatchesLost()), skin);
-        ImageButton btnBack = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("core\\assets\\btn_back.png")))));
+        ImageButton btnBack = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("btn_back.png")))));
 
         stats.setPosition(50.f, 440.f, Align.left);
 
